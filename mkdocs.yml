@@ -15,7 +15,6 @@ theme:
     - content.code.select
   palette:
     primary: black
-  custom_dir: overrides
   icon:
     admonition:
       note: octicons/tag-16
