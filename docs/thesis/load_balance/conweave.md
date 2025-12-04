@@ -13,4 +13,4 @@ ConWeave 的核心思想是屏蔽目的端 ToR 连接的 RDMA 终端主机收到
 
 本文提出的思路是使用tofino2队列暂停/恢复以及有状态ALU进行数据包顺序的维护，具体过程如下
 
-![An illustration of the packet reordering mechanism.](../assets/screenshots/thesis-01.png)
+![An illustration of the packet reordering mechanism.](thesis-01.png)
