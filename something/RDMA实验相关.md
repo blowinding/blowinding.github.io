@@ -42,10 +42,32 @@
 | 10.150.240.232 | 2/0  | enp10s0f1np1  |
 | 10.150.240.233 | 16/0 | enp173s0f0np0 |
 | 10.150.240.234 | 15/0 | enp173s0f1np1 |
+## extra experiment
+### 随机丢包
+实验初步结果
+
+|            | 1000      | 10000    | 100000   | 1000000  | no loss  |
+| ---------- | --------- | -------- | -------- | -------- | -------- |
+| mean_small | 1728.622  | 404.418  | 256.625  | 243.433  | 257.176  |
+| mean_large | 2094.184  | 1159.794 | 928.069  | 909.798  | 919.574  |
+| p99_small  | 17714.336 | 6743.304 | 4898.529 | 4677.402 | 4881.993 |
+| p99_large  | 18728.538 | 9335.806 | 7524.924 | 7221.196 | 7355.450 |
+
+### 拥塞丢包
+#### random packet spray
+实验配置
+- DCQCN参数
+	- DCQCN_K_MIN = 580
+	- DCQCN_K_MAX = 2520
+	- DCQCN_P_MAX = 0.1
+- buffer size
+	- 50000cells->4000cells
+### PFC副作用
+### slow-restart+incast
+### AI workload
 ## motivation
 - rate limit
 	- 收到CNP和loss的速率变化
 		- 只开启DCQCN
 		- 只开启slow start，但设置不同的DCQCN参数
 		- 同时开启DCQCN和slow start
-	- 
