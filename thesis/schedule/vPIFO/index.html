@@ -1,0 +1,638 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://blowindingblog.cn/thesis/schedule/vPIFO/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>vPIFO - blowinding's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1%207.775V2.75C1%201.784%201.784%201%202.75%201h5.025c.464%200%20.91.184%201.238.513l6.25%206.25a1.75%201.75%200%200%201%200%202.474l-5.026%205.026a1.75%201.75%200%200%201-2.474%200l-6.25-6.25A1.75%201.75%200%200%201%201%207.775m1.5%200c0%20.066.026.13.073.177l6.25%206.25a.25.25%200%200%200%20.354%200l5.025-5.025a.25.25%200%200%200%200-.354l-6.25-6.25a.25.25%200%200%200-.177-.073H2.75a.25.25%200%200%200-.25.25ZM6%205a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.5%201.75v11.5c0%20.138.112.25.25.25h3.17a.75.75%200%200%201%200%201.5H2.75A1.75%201.75%200%200%201%201%2013.25V1.75C1%20.784%201.784%200%202.75%200h8.5C12.216%200%2013%20.784%2013%201.75v7.736a.75.75%200%200%201-1.5%200V1.75a.25.25%200%200%200-.25-.25h-8.5a.25.25%200%200%200-.25.25m13.274%209.537zl-4.557%204.45a.75.75%200%200%201-1.055-.008l-1.943-1.95a.75.75%200%200%201%201.062-1.058l1.419%201.425%204.026-3.932a.75.75%200%201%201%201.048%201.074M4.75%204h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M4%207.75A.75.75%200%200%201%204.75%207h2a.75.75%200%200%201%200%201.5h-2A.75.75%200%200%201%204%207.75%22/%3E%3C/svg%3E');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M3.499.75a.75.75%200%200%201%201.5%200v.996C5.9%202.903%206.793%203.65%207.662%204.376l.24.202c-.036-.694.055-1.422.426-2.163C9.1.873%2010.794-.045%2012.622.26%2014.408.558%2016%201.94%2016%204.25c0%201.278-.954%202.575-2.44%202.734l.146.508.065.22c.203.701.412%201.455.476%202.226.142%201.707-.4%203.03-1.487%203.898C11.714%2014.671%2010.27%2015%208.75%2015h-6a.75.75%200%200%201%200-1.5h1.376a4.5%204.5%200%200%201-.563-1.191%203.84%203.84%200%200%201-.05-2.063%204.65%204.65%200%200%201-2.025-.293.75.75%200%200%201%20.525-1.406c1.357.507%202.376-.006%202.698-.318l.009-.01a.747.747%200%200%201%201.06%200%20.75.75%200%200%201-.012%201.074c-.912.92-.992%201.835-.768%202.586.221.74.745%201.337%201.196%201.621H8.75c1.343%200%202.398-.296%203.074-.836.635-.507%201.036-1.31.928-2.602-.05-.603-.216-1.224-.422-1.93l-.064-.221c-.12-.407-.246-.84-.353-1.29a2.4%202.4%200%200%201-.507-.441%203.1%203.1%200%200%201-.633-1.248.75.75%200%200%201%201.455-.364c.046.185.144.436.31.627.146.168.353.305.712.305.738%200%201.25-.615%201.25-1.25%200-1.47-.95-2.315-2.123-2.51-1.172-.196-2.227.387-2.706%201.345-.46.92-.27%201.774.019%203.062l.042.19.01.05c.348.443.666.949.94%201.553a.75.75%200%201%201-1.365.62c-.553-1.217-1.32-1.94-2.3-2.768L6.7%205.527c-.814-.68-1.75-1.462-2.692-2.619a3.7%203.7%200%200%200-1.023.88c-.406.495-.663%201.036-.722%201.508.116.122.306.21.591.239.388.038.797-.06%201.032-.19a.75.75%200%200%201%20.728%201.31c-.515.287-1.23.439-1.906.373-.682-.067-1.473-.38-1.879-1.193L.75%205.677V5.5c0-.984.48-1.94%201.077-2.664.46-.559%201.05-1.055%201.673-1.353z%22/%3E%3C/svg%3E');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M13.78%204.22a.75.75%200%200%201%200%201.06l-7.25%207.25a.75.75%200%200%201-1.06%200L2.22%209.28a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018L6%2010.94l6.72-6.72a.75.75%200%200%201%201.06%200%22/%3E%3C/svg%3E');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.92%206.085h.001a.749.749%200%201%201-1.342-.67c.169-.339.436-.701.849-.977C6.845%204.16%207.369%204%208%204a2.76%202.76%200%200%201%201.637.525c.503.377.863.965.863%201.725%200%20.448-.115.83-.329%201.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6%206%200%200%200-.26.16%201%201%200%200%200-.276.245.75.75%200%200%201-1.248-.832c.184-.264.42-.489.692-.661q.154-.1.313-.195l.007-.004c.1-.061.182-.11.258-.161a1%201%200%200%200%20.277-.245C8.96%206.514%209%206.427%209%206.25a.61.61%200%200%200-.262-.525A1.27%201.27%200%200%200%208%205.5c-.369%200-.595.09-.74.187a1%201%200%200%200-.34.398M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.344%202.343za8%208%200%200%201%2011.314%2011.314A8.002%208.002%200%200%201%20.234%2010.089a8%208%200%200%201%202.11-7.746m1.06%2010.253a6.5%206.5%200%201%200%209.108-9.275%206.5%206.5%200%200%200-9.108%209.275M6.03%204.97%208%206.94l1.97-1.97a.749.749%200%200%201%201.275.326.75.75%200%200%201-.215.734L9.06%208l1.97%201.97a.749.749%200%200%201-.326%201.275.75.75%200%200%201-.734-.215L8%209.06l-1.97%201.97a.749.749%200%200%201-1.275-.326.75.75%200%200%201%20.215-.734L6.94%208%204.97%206.03a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4.72.22a.75.75%200%200%201%201.06%200l1%20.999a3.5%203.5%200%200%201%202.441%200l.999-1a.748.748%200%200%201%201.265.332.75.75%200%200%201-.205.729l-.775.776c.616.63.995%201.493.995%202.444v.327q0%20.15-.025.292c.408.14.764.392%201.029.722l1.968-.787a.75.75%200%200%201%20.556%201.392L13%207.258V9h2.25a.75.75%200%200%201%200%201.5H13v.5q-.002.615-.141%201.186l2.17.868a.75.75%200%200%201-.557%201.392l-2.184-.873A5%205%200%200%201%208%2016a5%205%200%200%201-4.288-2.427l-2.183.873a.75.75%200%200%201-.558-1.392l2.17-.868A5%205%200%200%201%203%2011v-.5H.75a.75.75%200%200%201%200-1.5H3V7.258L.971%206.446a.75.75%200%200%201%20.558-1.392l1.967.787c.265-.33.62-.583%201.03-.722a1.7%201.7%200%200%201-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72%201.28a.75.75%200%200%201%200-1.06m.53%206.28a.75.75%200%200%200-.75.75V11a3.5%203.5%200%201%200%207%200V7.25a.75.75%200%200%200-.75-.75ZM6.173%205h3.654A.17.17%200%200%200%2010%204.827V4.5a2%202%200%201%200-4%200v.327c0%20.096.077.173.173.173%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#abstract" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="blowinding&#39;s blog" class="md-header__button md-logo" aria-label="blowinding's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            blowinding's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              vPIFO
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Introduction
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="blowinding&#39;s blog" class="md-nav__button md-logo" aria-label="blowinding's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    blowinding's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#abstract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ABSTRACT
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INTRODUCTION
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background-and-motivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BACKGROUND AND MOTIVATION
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BACKGROUND AND MOTIVATION">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hierarchical-scheduling-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        层次化调度算法（Hierarchical Scheduling Algorithm）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pifo-pifo-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PIFO 树（PIFO Tree）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pifo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PIFO 树的实现
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PIFO 树的实现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pifo_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        基于多个 PIFO 队列的实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pifo_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        基于虚拟化的单 PIFO 队列实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vpifo-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vPIFO Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>vPIFO</h1>
+
+<h2 id="abstract">ABSTRACT</h2>
+<p>可编程分组调度使得调度算法能够在无需重新设计硬件的情况下集成到交换机中。Push-In First-Out（PIFO）队列为可编程分组调度器提供了一种机制，能够灵活地支持单一调度算法。然而，多租户数据中心（MTDC）中所需的层次化调度仍然是不可编程的。动态且多样化的层次化调度算法往往需要改变 PIFO 队列的数量及其连接拓扑结构，这在固定硬件上支持这些算法带来了巨大挑战。</p>
+<p>在本文中，我们提出了虚拟化 PIFO（vPIFO）系统，这是一种面向多租户数据中心中可编程层次化分组调度的硬件虚拟化解决方案。vPIFO 系统仅依赖一个物理 PIFO，即可灵活构建具有多种形态的 PIFO 树，从而使网络运营者能够定制细粒度的流量调度策略。我们给出了一个高性能、可大规模扩展的 vPIFO 硬件设计，并在 FPGA 和 ASIC 上实现了原型系统。在 GlobalFoundries 28nm 工艺下的综合结果表明，vPIFO 在支持最多 128 个 PIFO 实例、6 层层次化调度的情况下，仍可实现高达 400 Gbps 的吞吐率。</p>
+<p>据我们所知，vPIFO 是首个通过硬件虚拟化方式支持<strong>精确可编程层次化分组调度</strong>的分组调度器方案。</p>
+<h2 id="introduction">INTRODUCTION</h2>
+<p>包括 Google Cloud、Microsoft Azure 和 Amazon Web Services（AWS）在内的现代云服务提供商，通常采用<strong>多租户数据中心（MultiTenant Data Center，MTDC）</strong>基础设施来向客户交付云计算服务 [10, 26]。在 MTDC 中，多个租户（即用户或组织）共享网络资源。为了履行服务等级协议（Service Level Agreement，SLA），网络运营者必须确保租户之间的隔离性以及资源的确定性保障。此外，租户往往同时运行大量具有不同性能需求的应用。为了实现细粒度的服务质量（Quality of Service，QoS），分配给租户的资源需要在这些应用之间进行合理分配，以满足其各自的需求。</p>
+<p><strong>分组调度</strong>是网络管理中的关键组成部分，用于保障服务质量。调度算法通常针对特定的调度目标进行设计。例如，加权公平队列（Weighted Fair Queueing，WFQ）[12] 用于保证公平的资源分配；pFabric [4] 用于最小化对时延敏感应用的流完成时间；而严格优先级（Strict Priority，SP）则用于区分不同优先级的流量。</p>
+<p>同时满足<strong>租户级</strong>和<strong>应用级</strong>的需求，必须依赖<strong>层次化调度算法</strong>。在 MTDC 中，不同企业的调度需求差异很大。例如，门户网站可能将互联网访问流量和在线游戏流量视为关键业务，而金融行业则更关注实时交易流量。此外，企业租户往往会将网络资源进一步分配给内部部门和项目，从而形成二级、三级租户结构，加深调度层次 [22, 34, 41]。当部门结构或项目发生变化时，调度需求也会随之动态调整。为了适应多样且不断变化的调度需求，MTDC 需要具备支持<strong>可编程层次化调度</strong>的调度器。</p>
+<p>基于软件的层次化调度器具有良好的可编程性，但在高速网络环境中难以达到线速转发 [32]。在工业界，包括 Broadcom、Cisco、Juniper 和 Huawei 在内的多家厂商，已经在商用交换机中实现了层次化调度策略 [9, 11, 16, 19]。然而，这些交换机通常只能支持固定且较为简单的调度算法，难以灵活适配 MTDC 中动态变化的调度需求。要在<strong>线速条件下支持任意层次化调度任务</strong>，亟需一种硬件可编程的层次化调度器。</p>
+<p>Push-In-First-Out（PIFO）[33] 是一种广受关注的可编程调度模型。一个 PIFO 队列与一个<strong>秩（rank）计算函数</strong>相关联，该函数通过分组事务（Packet Transaction）为每个分组分配一个秩值，并根据秩值维护一个优先级队列对分组进行缓存。通过改变秩计算函数，PIFO 队列可以实现多种调度算法。例如，使用虚拟完成时间作为秩可以实现 WFQ，而使用优先级等级作为秩则可以实现 SP [33]。通过将多个 PIFO 连接成一棵 <strong>PIFO 树（PIFO Tree）</strong>，并按层级对分组进行调度，即可实现层次化调度。然而，仅仅将硬件 PIFO 进行静态连接，并不足以支持真正的可编程层次化调度。当调度需求发生变化时，必须重构 PIFO 树，而这在固定硬件上是极具挑战性的。</p>
+<p>为了解决硬件中可编程层次化调度的问题，我们提出了一种名为 <strong>vPIFO（virtualized PIFO）</strong> 的虚拟化调度系统。该系统对一个物理 PIFO 调度器进行虚拟化，使其能够在硬件资源约束下实例化任意形态的逻辑 PIFO 树。vPIFO 可以在<strong>无需任何硬件修改</strong>的情况下，适应不断变化的调度目标。它支持基于应用、用户、虚拟局域网（VLAN）、网络切片（slice）以及物理端口等多种维度的流量管理。vPIFO 的一个实际应用场景是在高速交换设备中，用于同时对多个低速物理端口的流量进行调度。</p>
+<p>除 MTDC 外，vPIFO 还适用于多种由不同实体共享的物理网络基础设施，例如：由住宅用户和企业用户共同使用的 ISP 汇聚网络、连接总部、分支机构和远程办公场所的私有广域网（WAN），以及为多个切片服务的 5G 无线接入网（RAN）。</p>
+<p>本文的主要贡献总结如下：</p>
+<ul>
+<li>
+<p><strong>我们设计了 vPIFO 调度系统</strong>，首次将虚拟化思想引入 PIFO。vPIFO 是首个虚拟化的可编程分组调度器，能够在调度实例数量、层级结构以及调度算法等方面提供高度灵活性，从而精确实现层次化调度策略，并提供细粒度的 QoS 保障。<br />
+    在 vPIFO 系统中，我们提出了<strong>调度描述语言（Scheduling Description Language）及其编译器</strong>，使网络运营者和租户能够方便地描述调度需求。同时，我们设计了一种<strong>高性价比、支持虚拟化的 PIFO 引擎（PIFO Engine）</strong>，具有高工作频率和大规模能力。此外，我们引入 <strong>PIFO Visor</strong> 来进行资源管理与分配，从而优化 PIFO 引擎的资源利用率。</p>
+</li>
+<li>
+<p><strong>我们在 XCU200 FPGA 上使用 SystemVerilog 实现了 vPIFO 的硬件设计</strong>。相比原始 PIFO 实现 [33] 在 XCU200 FPGA 上只能支持一个、容量为 4096 流的逻辑 PIFO，vPIFO 最多可支持 24 个逻辑 PIFO，每个逻辑 PIFO 的容量可达 5460 条流。在该规模下，vPIFO 可在三级层次化调度算法中，以 100 Gbps 的速率调度 MTU 大小的分组。与最先进的可编程调度器 BMW-Tree [40] 相比，vPIFO 在提供虚拟化支持的同时，仅增加不到 0.4% 的硬件资源消耗，并保持了相近的工作频率。总体而言，vPIFO 在实现高吞吐和大规模的同时，支持精确的可编程层次化调度。</p>
+</li>
+<li>
+<p><strong>我们在 28nm ASIC 工艺下对 vPIFO 的 SystemVerilog 代码进行了综合</strong>。vPIFO 可以在最多 128 个逻辑 PIFO 的规模下灵活支持层次化调度，而不受层级深度或各层逻辑 PIFO 数量的限制。在 6 层调度层次结构下，vPIFO 可实现高达 400 Gbps 的吞吐率。该项目已开源，地址为：https://github.com/vPIFOimage/vPIFO。</p>
+</li>
+</ul>
+<h2 id="background-and-motivation">BACKGROUND AND MOTIVATION</h2>
+<h3 id="hierarchical-scheduling-algorithm">层次化调度算法（Hierarchical Scheduling Algorithm）</h3>
+<p>调度算法在保障服务质量方面起着至关重要的作用。传统的 QoS DiffServ 模型采用<strong>扁平化调度（flat scheduling）</strong>，无法对来自不同租户的多种流量类型进行有效区分 [41]。为了同时满足<strong>租户级</strong>和<strong>应用级</strong>的性能需求，分组调度必须采用<strong>层次化调度策略</strong>。</p>
+<p>图 1 展示了一个 MTDC 中层次化调度策略的简单示例。在该策略树中，顶部的“叶子节点”（A、B、C、D、E）表示应用，它们是分组的来源；非叶子节点（Root、X、Y、Z）表示用于管理流量的调度器。流量在<strong>跨租户组（inter-tenant-group）</strong>、<strong>租户组内（intra-tenant-group）</strong>以及<strong>应用级</strong>三个层面接受调度管理：租户被划分为 VIP 组和普通组，根节点 Root 规定 VIP 租户的流量应当严格优先于普通租户的流量；节点 X 和 Y 规定同一租户组内的竞争租户采用 WFQ 算法公平共享带宽；租户 1 包含两个应用，节点 Z 指定在该租户内，Memcached 流量（A）应当严格优先于 Spark 流量（B）。</p>
+<p>数据中心运营者面临着<strong>动态且多样化的租户与应用需求</strong>，因此必须部署不同的层次化调度策略。我们将<strong>可编程层次化调度</strong>定义为：在具备足够存储资源的前提下，系统能够在<strong>不修改硬件设计</strong>的情况下，实现多种不同的层次化调度策略¹。为了使网络运营者和租户能够根据自身需求定制调度算法，我们进一步探讨如何在系统中支持可编程的层次化调度。</p>
+<h3 id="pifo-pifo-tree">PIFO 树（PIFO Tree）</h3>
+<p>PIFO 是一种广泛使用的可编程调度模型。它引入了<strong>调度树（PIFO Tree）</strong>这一抽象 [33]，使得通过可编程调度节点实现层次化调度成为可能。</p>
+<p>一棵 PIFO 树由多个 PIFO 节点组成，每个节点可以被赋予不同的<strong>秩（rank）计算函数</strong>，以实现不同的调度需求。除根节点外，每个 PIFO 节点都包含一个<strong>引用（reference）</strong>，表示该节点所聚合的流量。该引用随后由父节点进行调度，以满足更高层级的调度需求。通过逐层执行 PIFO 调度，流量的发送顺序能够同时满足各个层级的调度要求。</p>
+<p>图 2(a) 展示了实现图 1 中层次化调度策略的 PIFO 树。策略树中的每个非叶子节点（调度器）在 PIFO 树中均对应一个 PIFO 节点。当一个分组到达时（即 <strong>Packet In Event</strong>），它会被压入负责该分组调度的最低层 PIFO 节点，即图 1 中的应用级调度器。随后，该 PIFO 节点会将自身的引用压入其父节点，这一过程会递归进行，直至根 PIFO 节点。引用在图中以黑色表示。图 2(b) 展示了来自应用 A 的分组在 Packet In 事件中，各层级的 Push 操作。分组及其引用在 PIFO 节点中的插入位置，由对应节点所采用的调度算法决定。</p>
+<p>当链路空闲时，会触发 <strong>Packet Out Event</strong>。此时，根 PIFO 节点弹出队首元素：若该元素是一个分组，则直接转发；若该元素是某个子 PIFO 节点的引用，则向该子节点发送 Pop 请求，并递归执行该过程，直到最终弹出一个分组。图 2(c) 说明了在 Packet Out 事件中，通过一系列 Pop 操作来确定下一个待发送分组的过程：根节点首先弹出一个指向 PIFO-X 的引用，随后 PIFO-X 弹出其队首元素，该元素是来自应用 D 的分组，事件处理至此完成。</p>
+<p>实现某一层次化调度策略，需要构建一棵专用的 PIFO 树。而支持可编程层次化调度，意味着需要在<strong>固定硬件</strong>上构造<strong>不同形态的 PIFO 树</strong>：PIFO 节点数量随流量类别数量增长，而 PIFO 树的深度则随着流量管理粒度的细化而增加。尽管单个 PIFO 节点本身是可编程的，但实现真正的可编程层次化调度依然极具挑战性。</p>
+<h3 id="pifo">PIFO 树的实现</h3>
+<h4 id="pifo_1">基于多个 PIFO 队列的实现</h4>
+<p>Sivaraman 等人 [33] 提出了一种使用多个<strong>全互连物理 PIFO 队列</strong>（基于移位寄存器的优先级队列）的方案，其中，PIFO 树中同一层级的 PIFO 节点共享一个物理 PIFO 队列。具体而言，每个 PIFO 节点都具有一个 ID。当分组进入物理 PIFO 队列时，仅根据其 rank 进行排序，而不考虑 PIFO 节点 ID；在出队时，系统首先在物理队列中筛选属于特定 ID 的分组，然后弹出其中 rank 最小的分组。</p>
+<p>然而，该方案存在以下缺陷：<br />
+首先，不同 PIFO 节点之间缺乏隔离机制，单个 PIFO 节点可能独占整个物理队列，从而无法保障所有调度需求；<br />
+其次，PIFO 树的深度受限于物理 PIFO 队列的数量，限制了可编程层次化调度能力；<br />
+最后，基于移位寄存器的实现天然只能支持约 4K 个排序元素，使得所有 PIFO 节点能够调度的流总数被限制在 4K 以内。</p>
+<p>鉴于这些限制，简单地连接多个 PIFO 队列，并不适合在 MTDC 中对大量流量进行灵活的层次化调度。虽然可以通过预先实现大量物理 PIFO 队列来满足复杂的层次化调度需求，但其硬件成本过高，而且在部署简单调度算法时会造成计算资源的浪费²。</p>
+<p>这引出了一个关键问题：<strong>能否在固定硬件上实现可编程层次化调度，并同时高效利用所有计算资源？</strong></p>
+<h4 id="pifo_2">基于虚拟化的单 PIFO 队列实现</h4>
+<p>答案是肯定的。我们认为 <strong>PIFO 虚拟化</strong> 是一种极具前景的解决方案，其核心思想是将一个物理 PIFO 队列虚拟化，用以服务多个逻辑 PIFO 节点。物理 PIFO 的实现可以划分为两个部分：<strong>计算（computation）</strong> 与 <strong>存储（storage）</strong>。在以往的工作中，这两部分是一一绑定、紧密耦合的。我们打破这种关系，将二者完全解耦，使多个逻辑 PIFO 节点的存储数据能够<strong>时分复用</strong>同一套计算资源。</p>
+<p>这一机制类似于现代操作系统中在单个 CPU 上构建多进程抽象：通过频繁的上下文切换，每个进程都仿佛独占处理器。在 PIFO 虚拟化中，每个节点的数据看起来就像由一个独立的调度器进行排序。通过为虚拟化的 PIFO 队列引入一个类似<strong>虚拟机监控器（hypervisor）</strong>的组件，我们可以灵活调整支持的逻辑 PIFO 节点数量，并将其逻辑连接成不同的结构，以实现多种层次化调度算法，从而支持可编程层次化调度。此外，无论逻辑 PIFO 节点数量多少，所有计算资源都可以被充分利用。</p>
+<p>除了支持可编程层次化调度外，PIFO 虚拟化在许多需要多个 PIFO 队列的场景中同样适用。例如，在一台 400 Gbps 的网络设备中，PIFO 虚拟化可以用于支持 10 个 40 Gbps 的虚拟端口，使每个端口看起来都拥有独立的流量调度器，从而显著降低硬件成本。</p>
+<p>基于 PIFO 虚拟化的思想，我们提出了 <strong>vPIFO 系统</strong>。逻辑 PIFO 节点被称为 <strong>PIFO 实例（PIFO instance）</strong>。Packet In/Out 事件会根据 PIFO 树触发对应 PIFO 实例的 Push/Pop 操作（P/P 操作）。一个虚拟化的物理 PIFO 队列通过处理这些 P/P 操作，为多个 PIFO 实例完成分组排序。</p>
+<h2 id="vpifo-overview">vPIFO Overview</h2>
+<p>为了在高速 MTDC 中支持可编程层次化调度，vPIFO 系统需要实现以下目标：</p>
+<p><strong>目标 0：虚拟化支持</strong><br />
+系统应当原生支持虚拟化，能够同时服务多个 PIFO 实例，并在实例之间实现有效的分组隔离。</p>
+<p><strong>目标 1：高性能</strong><br />
+系统必须具备线速调度能力，这要求满足以下子目标：</p>
+<ul>
+<li>
+<p><strong>目标 1.1：高频率</strong>——系统应以高时钟频率运行，在单位时间内处理大量 P/P 操作；</p>
+</li>
+<li>
+<p><strong>目标 1.2：低实例切换开销</strong>——在处理不同 PIFO 实例的 P/P 操作时，上下文切换成本应尽可能低；</p>
+</li>
+<li>
+<p><strong>目标 1.3：高效的计算资源利用</strong>——物理计算资源应当被高效分配给各个 PIFO 实例。<br />
+    上述三点共同保证系统在实现可编程层次化调度时具备高性能。</p>
+</li>
+</ul>
+<p><strong>目标 2：大规模能力</strong><br />
+系统应能够在存储资源受限的条件下，对大量流量执行复杂的层次化调度。这要求系统能够灵活配置 PIFO 实例数量及每个实例支持的流数量：</p>
+<ul>
+<li>
+<p><strong>目标 2.1：支持大量 PIFO 实例</strong>，以适配灵活多样的 PIFO 树结构；</p>
+</li>
+<li>
+<p><strong>目标 2.2：支持大量流</strong>，以应对 MTDC 中庞大的流规模 [32]。</p>
+</li>
+</ul>
+<p><strong>目标 3：易用性</strong><br />
+系统应为网络运营者和租户提供友好的使用体验，使其能够轻松描述调度需求，而无需理解复杂的硬件逻辑、进行繁琐的编程或解析层次化分组处理过程。这要求将高层调度需求与底层调度器实现解耦，并配备完善的自动化工具，以在硬件中实现层次化调度。</p>
+<p>为实现上述目标，我们提出了一套软硬件协同的整体解决方案。vPIFO 系统由三个核心组件组成：<br />
+1）<strong>调度描述语言（Scheduling Description Language，SDL）及其编译器</strong>，为用户提供描述调度需求的高层接口；<br />
+2）<strong>PIFO Engine</strong>，作为支持虚拟化的物理 PIFO 调度器；<br />
+3）<strong>PIFO Visor</strong>，作为硬件化的“调度器虚拟机监控器”，以周期为单位高效分配 PIFO Engine 的虚拟化计算资源。</p>
+<p>图 3 展示了 vPIFO 系统的双阶段工作流程。第一阶段为初始化阶段（虚线表示）。在该阶段，租户和网络运营者使用 SDL 描述调度需求，SDL 编译器解析其中的 PIFO 实例及其调度关系，并生成<strong>秩计算算法</strong>、<strong>操作生成规则</strong>以及<strong>数据放置方案</strong>。秩计算算法以 SDL 中间表示（IR）的形式给出，可由不同平台的后端编译器进一步编译，通过 Packet Transaction 实现秩计算；操作生成规则和数据放置方案作为系统运行时的配置，其中前者用于构建<strong>操作生成表</strong>（§5.2.2），使 PIFO Visor 能够将 Packet In/Out 事件转换为 PIFO 实例的 P/P 操作；后者用于创建 <strong>PIFO 实例地址表</strong>（§6），为各个 PIFO 实例在 PIFO Engine 中分配存储资源。</p>
+<p>第二阶段为运行阶段（图 3 中的实线）。在该阶段，PIFO Visor 接收携带秩值的分组，将 Packet In/Out 事件转换为 P/P 操作并存入操作队列；在每个时钟周期，PIFO Visor 通过操作分发器将 P/P 操作派发至 PIFO Engine 进行处理。</p>
+<p>vPIFO 系统为 MTDC 提供了一种完整的调度解决方案。后续章节将详细介绍 SDL 的设计（§4）、PIFO Engine（§5）以及 PIFO Visor（§6）。在全文中，我们将持续强调设计目标，阐述设计取舍背后的考量及其带来的收益。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["search.suggest", "search.highlight", "search.share", "navigation.tabs", "navigation.path", "navigation.top", "navigation.footer", "navigation.indexes", "content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
