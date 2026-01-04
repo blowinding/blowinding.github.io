@@ -1,4 +1,19 @@
-## BACKGROUND
+## PLAN(WEEKLY UPDATE)
+### OVERALL PLAN
+- BACKGROUND & MOTIVATION 1 week DELAY
+- DESIGN 2 week TODO
+- IMPLEMENTATION 6 weeks TODO
+- EXPERIMENTS 4 weeks TODO
+### GOALS FROM PREVIOUS WEEK
+- 完成BACKGROUND和MOTIVATION
+### UPDATES FROM PREVIOUS WEEK
+- 阅读SP-PIFO、AIFO、PACKS、vPIFO、BC-PQP等论文，总结BACKGROUND
+- 思考MOTIVATION和DESIGN GOALS
+### NEXT WEEK PLAN
+- 完善BACKGROUND和MOTIVATION
+- 构思DESIGN
+## DETAILS
+### BACKGROUND
 - PIFO系列
 	- SP-PIFO
 		- 可扩展性不足，需要占用大量队列
@@ -9,21 +24,21 @@
 		- 不适合用于ISP（丢包损害更严重）
 		- 和phantom queue机理相似（都是准入控制）
 	- PACKS
-		- TODO
+		- 将准入控制和优先级映射结合
 	- vPIFO
 		- 基本实现HQoS，但是除了调度没有其他策略（shaping、policy）
 		- TODO
 	- BMW tree
 		- TODO
-- phantom queue
+- BC-PQP
 	- 没有优先级调度
-## MOTIVATION
+### MOTIVATION
 - ISP的流量分类、调度依赖路由器，为支持更丰富的调度策略以及更多用户，需要添加路由器中的队列容量
 - 但是受芯片工艺制约，同等芯片面积无法承载更多的缓存，因此需要架构设计
 - 是否可以使用虚拟队列替换物理队列
 - 路由器的调度策略在TM实现，是否可以在NP实现以增加灵活性
 - 本质上是如何设计一个最小化队列占用，以实现正确或接近正确多级调度的的调度算法
-## DESIGN
+### DESIGN
 - 问题
 	- 如何在NP中正确实现多层调度（SP、DWRR等）
 	- 如何使用较少的队列（减少Queue Info Table占用）执行正确调度策略
