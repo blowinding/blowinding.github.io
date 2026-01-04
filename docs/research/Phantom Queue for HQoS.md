@@ -11,9 +11,21 @@
 - 思考MOTIVATION和DESIGN GOALS
 ### NEXT WEEK PLAN
 - 完善BACKGROUND和MOTIVATION
-- 构思DESIGN
+	- BACKGROUND
+		- ISP流量分类、调度具体讲清楚，加上论据
+		- 路由器结构、调度策略详细解释（画图）
+	- MOTIVATION
+		- related work
+			- PACKS
+			- vPIFO
+			- BMW tree
+		- 添加论据
+		- 把问题具体定义（精确描述）
 ## DETAILS
 ### BACKGROUND
+- ISP的流量分类、调度依赖路由器（加上论据、TODO）
+- 详细解释路由器的结构、调度策略（加上图进行解释）（TODO）
+### MOTIVATION
 - PIFO系列
 	- SP-PIFO
 		- 可扩展性不足，需要占用大量队列
@@ -25,6 +37,7 @@
 		- 和phantom queue机理相似（都是准入控制）
 	- PACKS
 		- 将准入控制和优先级映射结合
+		- TODO
 	- vPIFO
 		- 基本实现HQoS，但是除了调度没有其他策略（shaping、policy）
 		- TODO
@@ -32,12 +45,12 @@
 		- TODO
 - BC-PQP
 	- 没有优先级调度
-### MOTIVATION
-- ISP的流量分类、调度依赖路由器，为支持更丰富的调度策略以及更多用户，需要添加路由器中的队列容量
-- 但是受芯片工艺制约，同等芯片面积无法承载更多的缓存，因此需要架构设计
-- 是否可以使用虚拟队列替换物理队列
+- 为支持更丰富的调度策略以及更多用户，需要添加路由器中的队列容量（加上论据、TODO）
+- 提升队列容量需要的队列容量的逻辑（Queue Info Table讲清楚、TODO）
+- 但是受芯片工艺制约，同等芯片面积无法承载更多的缓存，因此需要架构设计（加上论据、TODO）
+- 是否可以使用虚拟队列替换物理队列（challenge、TODO）
 - 路由器的调度策略在TM实现，是否可以在NP实现以增加灵活性
-- 本质上是如何设计一个最小化队列占用，以实现正确或接近正确多级调度的的调度算法
+- 本质上是如何设计一个最小化队列占用，以实现（TODO）多级调度的的调度算法
 ### DESIGN
 - 问题
 	- 如何在NP中正确实现多层调度（SP、DWRR等）
