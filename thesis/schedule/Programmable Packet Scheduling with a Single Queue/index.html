@@ -1,0 +1,723 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://blowindingblog.cn/thesis/schedule/Programmable%20Packet%20Scheduling%20with%20a%20Single%20Queue/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Programmable Packet Scheduling with a Single Queue - blowinding's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1%207.775V2.75C1%201.784%201.784%201%202.75%201h5.025c.464%200%20.91.184%201.238.513l6.25%206.25a1.75%201.75%200%200%201%200%202.474l-5.026%205.026a1.75%201.75%200%200%201-2.474%200l-6.25-6.25A1.75%201.75%200%200%201%201%207.775m1.5%200c0%20.066.026.13.073.177l6.25%206.25a.25.25%200%200%200%20.354%200l5.025-5.025a.25.25%200%200%200%200-.354l-6.25-6.25a.25.25%200%200%200-.177-.073H2.75a.25.25%200%200%200-.25.25ZM6%205a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.5%201.75v11.5c0%20.138.112.25.25.25h3.17a.75.75%200%200%201%200%201.5H2.75A1.75%201.75%200%200%201%201%2013.25V1.75C1%20.784%201.784%200%202.75%200h8.5C12.216%200%2013%20.784%2013%201.75v7.736a.75.75%200%200%201-1.5%200V1.75a.25.25%200%200%200-.25-.25h-8.5a.25.25%200%200%200-.25.25m13.274%209.537zl-4.557%204.45a.75.75%200%200%201-1.055-.008l-1.943-1.95a.75.75%200%200%201%201.062-1.058l1.419%201.425%204.026-3.932a.75.75%200%201%201%201.048%201.074M4.75%204h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M4%207.75A.75.75%200%200%201%204.75%207h2a.75.75%200%200%201%200%201.5h-2A.75.75%200%200%201%204%207.75%22/%3E%3C/svg%3E');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M3.499.75a.75.75%200%200%201%201.5%200v.996C5.9%202.903%206.793%203.65%207.662%204.376l.24.202c-.036-.694.055-1.422.426-2.163C9.1.873%2010.794-.045%2012.622.26%2014.408.558%2016%201.94%2016%204.25c0%201.278-.954%202.575-2.44%202.734l.146.508.065.22c.203.701.412%201.455.476%202.226.142%201.707-.4%203.03-1.487%203.898C11.714%2014.671%2010.27%2015%208.75%2015h-6a.75.75%200%200%201%200-1.5h1.376a4.5%204.5%200%200%201-.563-1.191%203.84%203.84%200%200%201-.05-2.063%204.65%204.65%200%200%201-2.025-.293.75.75%200%200%201%20.525-1.406c1.357.507%202.376-.006%202.698-.318l.009-.01a.747.747%200%200%201%201.06%200%20.75.75%200%200%201-.012%201.074c-.912.92-.992%201.835-.768%202.586.221.74.745%201.337%201.196%201.621H8.75c1.343%200%202.398-.296%203.074-.836.635-.507%201.036-1.31.928-2.602-.05-.603-.216-1.224-.422-1.93l-.064-.221c-.12-.407-.246-.84-.353-1.29a2.4%202.4%200%200%201-.507-.441%203.1%203.1%200%200%201-.633-1.248.75.75%200%200%201%201.455-.364c.046.185.144.436.31.627.146.168.353.305.712.305.738%200%201.25-.615%201.25-1.25%200-1.47-.95-2.315-2.123-2.51-1.172-.196-2.227.387-2.706%201.345-.46.92-.27%201.774.019%203.062l.042.19.01.05c.348.443.666.949.94%201.553a.75.75%200%201%201-1.365.62c-.553-1.217-1.32-1.94-2.3-2.768L6.7%205.527c-.814-.68-1.75-1.462-2.692-2.619a3.7%203.7%200%200%200-1.023.88c-.406.495-.663%201.036-.722%201.508.116.122.306.21.591.239.388.038.797-.06%201.032-.19a.75.75%200%200%201%20.728%201.31c-.515.287-1.23.439-1.906.373-.682-.067-1.473-.38-1.879-1.193L.75%205.677V5.5c0-.984.48-1.94%201.077-2.664.46-.559%201.05-1.055%201.673-1.353z%22/%3E%3C/svg%3E');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M13.78%204.22a.75.75%200%200%201%200%201.06l-7.25%207.25a.75.75%200%200%201-1.06%200L2.22%209.28a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018L6%2010.94l6.72-6.72a.75.75%200%200%201%201.06%200%22/%3E%3C/svg%3E');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.92%206.085h.001a.749.749%200%201%201-1.342-.67c.169-.339.436-.701.849-.977C6.845%204.16%207.369%204%208%204a2.76%202.76%200%200%201%201.637.525c.503.377.863.965.863%201.725%200%20.448-.115.83-.329%201.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6%206%200%200%200-.26.16%201%201%200%200%200-.276.245.75.75%200%200%201-1.248-.832c.184-.264.42-.489.692-.661q.154-.1.313-.195l.007-.004c.1-.061.182-.11.258-.161a1%201%200%200%200%20.277-.245C8.96%206.514%209%206.427%209%206.25a.61.61%200%200%200-.262-.525A1.27%201.27%200%200%200%208%205.5c-.369%200-.595.09-.74.187a1%201%200%200%200-.34.398M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.344%202.343za8%208%200%200%201%2011.314%2011.314A8.002%208.002%200%200%201%20.234%2010.089a8%208%200%200%201%202.11-7.746m1.06%2010.253a6.5%206.5%200%201%200%209.108-9.275%206.5%206.5%200%200%200-9.108%209.275M6.03%204.97%208%206.94l1.97-1.97a.749.749%200%200%201%201.275.326.75.75%200%200%201-.215.734L9.06%208l1.97%201.97a.749.749%200%200%201-.326%201.275.75.75%200%200%201-.734-.215L8%209.06l-1.97%201.97a.749.749%200%200%201-1.275-.326.75.75%200%200%201%20.215-.734L6.94%208%204.97%206.03a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4.72.22a.75.75%200%200%201%201.06%200l1%20.999a3.5%203.5%200%200%201%202.441%200l.999-1a.748.748%200%200%201%201.265.332.75.75%200%200%201-.205.729l-.775.776c.616.63.995%201.493.995%202.444v.327q0%20.15-.025.292c.408.14.764.392%201.029.722l1.968-.787a.75.75%200%200%201%20.556%201.392L13%207.258V9h2.25a.75.75%200%200%201%200%201.5H13v.5q-.002.615-.141%201.186l2.17.868a.75.75%200%200%201-.557%201.392l-2.184-.873A5%205%200%200%201%208%2016a5%205%200%200%201-4.288-2.427l-2.183.873a.75.75%200%200%201-.558-1.392l2.17-.868A5%205%200%200%201%203%2011v-.5H.75a.75.75%200%200%201%200-1.5H3V7.258L.971%206.446a.75.75%200%200%201%20.558-1.392l1.967.787c.265-.33.62-.583%201.03-.722a1.7%201.7%200%200%201-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72%201.28a.75.75%200%200%201%200-1.06m.53%206.28a.75.75%200%200%200-.75.75V11a3.5%203.5%200%201%200%207%200V7.25a.75.75%200%200%200-.75-.75ZM6.173%205h3.654A.17.17%200%200%200%2010%204.827V4.5a2%202%200%201%200-4%200v.327c0%20.096.077.173.173.173%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#abstract" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="blowinding&#39;s blog" class="md-header__button md-logo" aria-label="blowinding's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            blowinding's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Programmable Packet Scheduling with a Single Queue
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Introduction
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="blowinding&#39;s blog" class="md-nav__button md-logo" aria-label="blowinding's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    blowinding's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#abstract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ABSTRACT
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INTRODUCTION
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background-and-motivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BACKGROUND AND MOTIVATION
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BACKGROUND AND MOTIVATION">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#programmable-packet-scheduling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Programmable Packet Scheduling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#motivating-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivating Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DESIGN GOAL
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aifo-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AIFO DESIGN
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AIFO DESIGN">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-ideas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Ideas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Algorithm
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Programmable Packet Scheduling with a Single Queue</h1>
+
+<h2 id="abstract">ABSTRACT</h2>
+<p>可编程分组调度使得调度算法可以直接被编程进数据平面，而无需更改硬件。现有方案要么尚未在交换机 ASIC 上实现硬件支持，要么需要多个严格优先级队列。我们提出了 <strong>Admission-In First-Out（AIFO）队列</strong>，这是一种新的可编程分组调度方案，仅使用<strong>单个先进先出（FIFO）队列</strong>即可实现。</p>
+<p>AIFO 的提出源于两个近期趋势的交汇：<strong>交换机中的浅缓冲（shallow buffers）</strong> 以及<strong>端主机中快速收敛的拥塞控制算法</strong>。这两者共同导致了一个简单但关键的观察：在现代数据中心网络中，决定一个流完成时间（FCT）的关键因素，往往是<strong>哪些分组被接收进入队列或被丢弃</strong>，而不是这些分组从交换机中离开的具体顺序。</p>
+<p>AIFO 的核心思想是维护一个<strong>滑动窗口</strong>，用于跟踪最近到达分组的“排名”，并在分组到达时，计算该分组在窗口中的<strong>相对排名</strong>，从而据此进行<strong>准入控制（admission control）</strong>。</p>
+<p>在理论上，我们证明了 AIFO 相对于 <strong>Push-In First-Out（PIFO）</strong> 能够提供<strong>有界的性能保证</strong>；在实验上，我们对 AIFO 进行了完整实现，并在多种真实工作负载下对其进行了评估，结果表明 AIFO 能够很好地逼近 PIFO 的性能。</p>
+<p>更重要的是，与 PIFO 不同，AIFO 可以在<strong>现有硬件上以线速运行</strong>，并且只需要<strong>极少的交换机资源</strong>——<strong>最少仅需一个队列</strong>。</p>
+<h2 id="introduction">INTRODUCTION</h2>
+<p><strong>Push-In First-Out（PIFO）队列</strong>是一种广受关注的可编程分组调度抽象 [3, 47]。在 PIFO 中，每个分组都会被赋予一个 <strong>rank（排名）</strong>，并存储在一个<strong>按 rank 排序的队列</strong>中。新到达的分组会根据其 rank 被插入到队列中的相应位置，而分组始终从队首被取出。通过改变 <strong>rank 的计算函数</strong>，即可在 PIFO 之上实现不同的分组调度算法。</p>
+<p>在本文中，我们提出了 <strong>Admission-In First-Out（AIFO）队列</strong>，这是一种新的可编程分组调度方案，<strong>仅使用一个先进先出（FIFO）队列</strong>即可实现。FIFO（drop-tail）队列是最简单的一类队列，能够以线速运行，并且几乎在所有交换机中都可用。因此，AIFO 非常适合在高速交换机上以线速实现。本文不仅给出了 AIFO 的具体设计，还在现有硬件（<strong>Barefoot Tofino</strong>）上实现了 AIFO，对硬件原语的要求极低——<strong>只需要一个 FIFO 队列</strong>，而非多个严格优先级队列。</p>
+<p>AIFO 的提出源于数据中心网络中两个近期趋势的交汇：<strong>交换机中的浅缓冲（shallow buffers）</strong> [5]，以及<strong>端主机中实现的快速收敛拥塞控制协议</strong> [22]。二者共同显著降低了网络内部的排队时延，这一点在数据中心环境中尤为重要，因为低时延对具有严格服务等级目标（SLO）的实时在线服务至关重要 [5]。在这样的背景下，我们观察到，在现代数据中心中，<strong>决定性因素往往是交换机接收（入队）或丢弃了哪些分组，而不是分组离开交换机的具体顺序</strong>。例如，当一个“大象流”与两个“老鼠流”竞争时，<strong>丢弃大象流的分组</strong>，相比调整分组出队顺序，对老鼠流的流完成时间（FCT）影响更为关键，尤其是在队列长度保持较小、任一时刻仅有少量分组驻留的情况下。</p>
+<p>基于这一洞察，本文所要解决的核心技术挑战是：<strong>如何选择合适的一组分组准入队列</strong>。理想情况下，AIFO 应当接纳与 PIFO 相同的分组集合，从而尽可能逼近 PIFO 的行为。AIFO 通过维护一个<strong>滑动窗口</strong>来跟踪窗口内近期分组的 rank，并在新分组到达时计算其<strong>相对 rank</strong>，据此决定是否接纳该分组，或者<strong>即使队列仍有空间也主动丢弃该分组</strong>。与传统的主动队列管理（AQM）方案不同，AIFO 是<strong>基于相对 rank 进行丢包决策</strong>，而不是依赖平均队列长度的阈值比较 [12, 34, 35]，或基于时延估计的方法 [32]。</p>
+<p>在理论方面，我们证明了 AIFO 能够提供<strong>接近 PIFO 的性能</strong>；在实践方面，我们给出了具体的数据平面设计与实现，展示了如何在 <strong>Barefoot Tofino</strong> 上高效地实现 AIFO。AIFO 探索了一个颇具意义的设计问题：<strong>实现可编程分组调度所需的最小硬件资源是什么？</strong> AIFO 位于该设计空间的一个极端点——<strong>只需要一个 FIFO 队列</strong>。这一点不仅在理论上具有吸引力，也具有重要的现实意义。</p>
+<p>我们与多家工业界合作伙伴（包括一家大规模搜索引擎公司和一家大型电子商务服务提供商）的交流表明，<strong>物理队列是极其关键的资源</strong>，通常被预留用于在多租户环境中实现应用之间的<strong>强物理隔离与差异化服务</strong>；而现代数据中心交换机中，物理队列资源本就十分紧张。与需要多个物理队列来实现分组调度的 <strong>SP-PIFO</strong> 不同，AIFO 使得运营者能够继续将物理队列用于多租户之间的强隔离和差异化保障，同时<strong>额外利用 AIFO 对租户内部流量进行可编程调度</strong>（例如使用 SRPT 来最小化流完成时间）。</p>
+<h2 id="background-and-motivation">BACKGROUND AND MOTIVATION</h2>
+<h3 id="programmable-packet-scheduling">Programmable Packet Scheduling</h3>
+<p>可编程分组调度使得交换机中的分组调度算法可以在<strong>无需更改交换机 ASIC</strong> 的情况下进行修改。<strong>PIFO</strong> [47] 是一种用于可编程分组调度的方案，它包含两个组成部分：<strong>PIFO 队列</strong>和<strong>rank（排名）计算模块</strong>。每个分组都会关联一个 rank。PIFO 队列本质上是一个<strong>按 rank 排序的优先级队列</strong>：分组根据其 rank 被插入队列，并从队首（即 rank 最小的分组）出队。PIFO 的<strong>可编程性</strong>体现在 rank 计算模块中——在 PIFO 语境下，编程一个分组调度算法，指的就是<strong>编程如何为每个分组计算 rank</strong>。</p>
+<p>一个简单的例子是编程 <strong>SRPT（Shortest Remaining Processing Time）</strong> [41]，用于最小化流完成时间（FCT），如图 1 所示。在该示例中，分组的 rank 就是该流的<strong>剩余处理时间</strong>（或等价地，流的剩余字节数）。需要注意的是，SRPT 要求端主机将剩余处理时间填入分组头部的某个字段中 [6, 41]，这一点与交换机内部的分组调度机制是正交的。基于这样的 rank 计算方式，PIFO 队列将优先调度剩余处理时间最短的分组，从而实现 SRPT。</p>
+<p>一个更为复杂的例子是编程 <strong>STFQ（Start-Time Fair Queueing）</strong> [13] 以实现加权公平性，这同样如图 1 所示。在该示例中，分组的 rank 是其在 STFQ 中的<strong>虚拟开始时间（virtual start time）</strong>。虚拟开始时间的计算方式为：当前系统的虚拟时间与同一流上一个分组的虚拟完成时间二者中的较大值。系统的虚拟时间维护的是<strong>所有流中最近一次出队分组的虚拟开始时间</strong>。而某个分组的虚拟完成时间等于该分组的虚拟开始时间，加上该分组长度除以该流权重的结果。基于这种 rank 计算方式，PIFO 队列将优先调度虚拟开始时间最小的分组，从而实现 STFQ。</p>
+<p>除了上述两个示例之外，已有研究表明，<strong>PIFO 能够支持非常广泛的分组调度算法</strong>，例如 <strong>Least-Slack Time-First（最小松弛时间优先）</strong> [23]、<strong>Service-Curve Earliest Deadline First（SC-EDF）</strong> [40] 等。</p>
+<h3 id="motivating-example">Motivating Example</h3>
+<p>尽管 <strong>PIFO</strong> 是一种非常有吸引力的可编程分组调度方案，但在硬件中，尤其是在交换机 ASIC 上实现它存在很大挑战。<strong>rank 计算组件</strong>相对容易实现，可以作为一个数据平面中的分组事务（packet transaction）[46] 在现有可编程交换机上实现。主要的挑战在于 <strong>PIFO 队列的实现</strong>。现有交换机的数据平面不支持排序队列。虽然有一项工作提出了在数据平面以 1 GHz 支持排序队列的设计方案 [47]，但该方案仅提供设计，并未进行实际实现，而且可扩展性有限，只能支持几千条流。<strong>SP-PIFO</strong> [3] 提供了一种使用多个严格优先级队列（strict-priority queue）来近似 PIFO 队列的方案。然而，严格优先级队列是宝贵的硬件资源，因为商用交换机中的严格优先级队列数量有限，而且运营者希望将它们用于确保多租户之间的<strong>强物理隔离</strong>。</p>
+<p>在本文中，我们的目标是设计一种<strong>对可编程分组调度具有最小硬件需求的解决方案</strong>。</p>
+<p>为了找到这样的方案，我们从基础出发分析问题。考虑一个队列的<strong>到达流量（arrival traffic）</strong>和<strong>离开流量（departure traffic）</strong>：</p>
+<ul>
+<li>
+<p>当分组到达速率不高于链路速率（即离开速率的上界）时，<strong>所有流量都是可接纳的</strong>，不会出现持续排队。此时，无论队列是 PIFO、FIFO 还是其他类型，表现都没有区别。</p>
+</li>
+<li>
+<p>区别出现在<strong>到达速率超过链路速率</strong>的情况，这可能由短时突发（microburst）或长期拥塞引起。这时，部分分组是<strong>不可接纳的</strong>，队列调度策略就很重要。</p>
+</li>
+</ul>
+<p>假设交换机收到<strong>一波六个分组的突发流量</strong>，队列有 4 个空位，初始为空。</p>
+<ol>
+<li>
+<p><strong>PIFO 行为</strong>：</p>
+<ul>
+<li>
+<p>前四个分组依次入队，排序后的队列为 <code>[1, 1, 4, 5]</code></p>
+</li>
+<li>
+<p>第五个分组到达，rank = 2，PIFO 会将其插入队列，并因队列溢出而丢弃队尾分组，队列变为 <code>[1, 1, 2, 4]</code></p>
+</li>
+<li>
+<p>第六个分组到达，再次丢弃队尾分组，最终队列为 <code>[1, 1, 2, 2]</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>FIFO 行为</strong>：</p>
+<ul>
+<li>
+<p>分组按到达顺序入队</p>
+</li>
+<li>
+<p>四个分组入队后，队列满，后两个分组无法入队</p>
+</li>
+<li>
+<p>最终队列为 <code>[1, 4, 5, 1]</code></p>
+</li>
+</ul>
+</li>
+</ol>
+<p>可以看出，PIFO 和 FIFO 的行为差别很大。</p>
+<p>如果存在一个<strong>事先知道分组精确到达模式的神谕（oracle）</strong>，交换机可以在分组入队前进行<strong>准入控制（admission control）</strong>。</p>
+<ul>
+<li>
+<p>对图 2 中的例子：</p>
+<ul>
+<li>
+<p>可以设定准入阈值为 3</p>
+</li>
+<li>
+<p>如果分组 rank ≤ 3，则入队，否则丢弃</p>
+</li>
+<li>
+<p>在此策略下，第二和第三个分组会被丢弃，最终队列为 <code>[1, 1, 2, 2]</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>结论</strong>：在加入这样的准入控制后，FIFO 的行为可以在该例中<strong>与 PIFO 完全一致</strong>。</p>
+<h2 id="design-goal">DESIGN GOAL</h2>
+<p>基于前述示例所获得的洞察，我们可以将<strong>分组调度问题转化为一个准入控制（admission control）问题</strong>，并用<strong>带准入控制的 FIFO</strong> 来近似 <strong>PIFO</strong>。我们将这种方法称为 <strong>AIFO</strong>。我们的目标是<strong>最小化理想情况（即 PIFO）与近似方案（即 AIFO）之间的差距</strong>。</p>
+<p>这一差距可以通过如下指标进行定量衡量：<strong>PIFO 与 AIFO 实际出队分组集合之间的差异</strong>。形式化地，设在时间 (t) 之前，PIFO 与 AIFO 已经出队的分组集合分别为 (P(t)) 和 (A(t))。我们定义</p>
+<p>$$
+\Delta(t) = \frac{|P(t)\setminus A(t)| + |A(t)\setminus P(t)|}{|P(t)| + |A(t)|}<br />
+\tag{1}<br />
+$$</p>
+<p>来衡量 PIFO 与 AIFO 之间的差距。其中，$|P(t)\setminus A(t)|$ 表示集合 $P(t)$与 $A(t)$ 的差集大小，$|A(t)\setminus P(t)|$ 类似；$|P(t)|$ 和 $|A(t)|$ 分别表示集合 $P(t)$ 和 $A(t)$ 的基数。显然，$\Delta(t)\in[0,1]$，其值越大，表示 AIFO 与 PIFO 之间的差距越大。当 AIFO 与 PIFO 出队的分组集合完全相同时（即没有差距），$\Delta=0$；当二者出队的分组集合完全不同时，$\Delta=1$。</p>
+<p>我们在理论上证明了：当系统处于<strong>稳态（stationary）</strong> 时，AIFO 与 PIFO 之间的差异可以忽略不计（§4）；并在实验上通过多种真实工作负载验证了 AIFO 在性能上<strong>非常接近 PIFO</strong>（§5）。</p>
+<p>另一种可能的度量方式，不仅统计出队分组集合的差异，还考虑<strong>分组出队顺序的不同</strong>。图 3 给出了一个示例来说明这一点。该示例与图 2 类似，唯一的区别是图 3 中第三个和第四个到达的分组顺序被交换了。在这种到达序列下，AIFO 仍然接纳了与 PIFO 相同的一组分组，即 ({1, 1, 2, 2})，但二者的出队顺序不同：AIFO 的出队顺序为 ([1, 2, 1, 2])，而 PIFO 的出队顺序为 ([1, 1, 2, 2])。</p>
+<p>我们认为，相比前一种指标，这种考虑出队顺序差异的度量<strong>并不那么重要，甚至在某些情况下并不值得优化</strong>。原因有二：</p>
+<ol>
+<li>
+<p><strong>数据中心网络的两个重要趋势</strong>：<br />
+    (i) 为了降低时延，现代数据中心正趋向于使用<strong>浅缓冲（shallow buffers）</strong> [5]；<br />
+    (ii) 端主机侧采用<strong>紧密的控制回路（tight control loops）</strong> [22]。<br />
+    这两个趋势的叠加，使得交换机队列中缓存的分组数量很少，从而使得 PIFO 与 AIFO 在分组出队顺序上的差异非常有限。由于我们本质上是在用 FIFO 队列来模拟 PIFO，因此希望保持队列尽可能浅，使分组在队列中的等待时间很短。实验结果（§5）表明，这种出队顺序上的差异<strong>几乎不会影响诸如流完成时间（FCT）等流级指标</strong>，AIFO 的行为与 PIFO 几乎一致。</p>
+</li>
+<li>
+<p><strong>严格遵循 PIFO 反而会导致分组乱序（packet reordering）</strong>，这是不理想的。<br />
+<strong>SRPT</strong> 被证明在最小化 FCT 方面具有近似最优性 [41]，其思想是根据剩余流大小对流进行调度，使小流优先于大流。然而，当 PIFO 被编程为使用“剩余流大小”作为 rank 来实现 SRPT（如图 1 所示）时，就会发生分组乱序：对于同一条流，后到达的分组具有更小的剩余流大小，因此如果多个分组同时在队列中，后到达的分组可能会被先调度。这是一个已知问题。<strong>pFabric</strong> [6] 通过引入一个称为<strong>防饥饿（starvation prevention）</strong>的机制来解决该问题：同一流内的分组按到达顺序出队，从而保证第一个分组不会被饿死；而在不同流之间，仍然使用 SRPT 决定优先调度哪一条流。</p>
+</li>
+</ol>
+<p>鉴于数据中心网络对低时延的强烈需求，<strong>pFabric 可以说是可编程分组调度的“杀手级应用”</strong>。然而，pFabric 无法由 PIFO 支持 [47]。出乎意料的是，<strong>AIFO 的一个积极副产品是：它在设计上天然支持防饥饿机制，并且自动消除了分组乱序问题</strong>。</p>
+<p>综上所述，我们的目标是设计一种<strong>具有最小硬件需求（即仅需一个队列）</strong> 的算法，通过<strong>接纳合适的一组分组</strong>来最小化 $\Delta$，并保持队列缓冲较浅。该算法应当能够在<strong>现有硬件的数据平面中实现并以线速运行</strong>，同时保证在 $\Delta$ 指标下，<strong>相对于 PIFO 具有有界的性能逼近</strong>。</p>
+<h2 id="aifo-design">AIFO DESIGN</h2>
+<h3 id="key-ideas">Key Ideas</h3>
+<p>AIFO 仅使用<strong>一个 FIFO 队列</strong>，而不是 PIFO 队列或多个严格优先级的 FIFO 队列。它在 FIFO 队列前增加了一个<strong>准入控制（admission control）模块</strong>，用于决定一个到达的数据包是被接收还是被丢弃。被接收的数据包进入队列并按照 FIFO 顺序发送，<strong>无需额外的调度逻辑</strong>。</p>
+<p>准入控制的设计目标是最小化第 3 节中定义的 Δ，从而尽量缩小 AIFO 与 PIFO 之间的差距。AIFO 通过一种<strong>二维准入控制机制</strong>来近似实现 PIFO，该机制<strong>同时考虑时间维度和空间维度</strong>：</p>
+<ul>
+<li>
+<p><strong>时间维度（temporal component）</strong>：通过根据到达速率的波动，随时间动态调整准入阈值；</p>
+</li>
+<li>
+<p><strong>空间维度（spatial component）</strong>：通过根据不同时间点上数据包的 rank（优先级）来决定准入阈值。</p>
+</li>
+</ul>
+<p>这两个维度共同作用，确保 AIFO 接收的数据包集合与 PIFO 接收的数据包集合高度相似。</p>
+<p>从整体上看，这两个组件的工作方式如下：</p>
+<ul>
+<li>
+<p><strong>时间组件（Temporal component）</strong><br />
+    准入控制的阈值是<strong>动态变化的，而不是固定的</strong>。该阈值会根据实时的<strong>到达速率与离开速率之间的差异</strong>进行更新。当到达速率显著高于离开速率时，阈值会变得更加严格，从而限制准入的数据包数量。这样可以保证被接收的数据包速率大致与系统的发送速率相匹配。</p>
+</li>
+<li>
+<p><strong>空间组件（Spatial component）</strong><br />
+    准入控制会<strong>根据数据包的 rank 区分对待不同数据包</strong>，而不是采用与 rank 无关的简单策略（例如随机丢弃 10% 的数据包）。系统更倾向于丢弃 <strong>高-rank（低优先级）</strong> 的数据包，而保留 <strong>低-rank（高优先级）</strong> 的数据包，因为低-rank 数据包预计会更早被调度。准入阈值根据不同 rank 数据包的到达速率分布来确定，从而保证被接收的数据包在 rank 分布上与 PIFO 接收的数据包相似。</p>
+</li>
+</ul>
+<p>我们注意到，这种<strong>动态、比例式调节（dynamic, proportional adaptation）</strong>的基本思想已被广泛应用，尤其是在网络领域中的拥塞控制机制中。例如：
+- 基于时延的拥塞控制算法（如 TIMELY 和 Swift）会根据端到端时延动态调整 TCP 窗口大小；
+- 基于 ECN 的算法（如 DCTCP）会根据被打上 ECN 标记的数据包数量按比例调整窗口大小。</p>
+<p>这些机制都将控制逻辑放在<strong>端主机（end hosts）</strong>上。相比之下，<strong>AIFO 将这种动态、比例调节机制放置在网络内部</strong>，并用于一个完全不同的目的——<strong>可编程分组调度（programmable packet scheduling）</strong>。</p>
+<p>这一背景对算法设计提出了非常严格的要求：算法不仅要在性能上接近最优，还必须能够在<strong>现有硬件的数据平面上以线速（line rate）运行</strong>。</p>
+<p>对于熟悉分组调度研究的读者来说，可以将 AIFO 看作是一种 <strong>AQM（主动队列管理）方案</strong>。传统的 AQM 方案通常针对某一个特定目标，通过将平均队列长度或时延估计值与阈值进行比较来决定是否丢包。相比之下，<strong>AIFO 被设计为一种通用机制</strong>，可以被编程以支持不同的调度目标，其丢包决策同时基于：
+- 阈值比较（时间组件），以及
+- 相对的数据包 rank 估计（空间组件）。</p>
+<h3 id="algorithm">Algorithm</h3>
+<p>我们基于上述关键思想设计了 AIFO。<strong>算法 1</strong> 给出了其伪代码。</p>
+<p>在<strong>入口（ingress，1–8 行）</strong>，AIFO 使用<strong>准入控制</strong>（第 2–5 行）来决定一个到达的数据包是被<strong>入队</strong>（第 6 行）还是被<strong>丢弃</strong>（第 8 行）。准入阈值由<strong>当前队列长度</strong> (c) 和<strong>队列大小</strong> (C) 动态决定，同时使用<strong>分位数估计</strong>$(W.\text{quantile(pkt)})$来估计当前数据包的<strong>相对 rank</strong>。队列本身是一个 FIFO 队列，新到的数据包被插入到队尾。</p>
+<p>在<strong>出口（egress，9–12 行）</strong>，当队列非空时，AIFO 从队首取出一个数据包并发送出去。</p>
+<p>时间组件使用<strong>当前队列长度</strong>（记为 (c)）与<strong>目标队列大小</strong>（记为 (C)）之间的差值，来刻画<strong>到达速率与离开速率之间的偏差</strong>。当当前队列长度接近目标队列大小时（即 (C - c) 较小），准入控制的阈值会变得更加严格。</p>
+<p>我们通过一个参数 (k) 分配一段 <strong>headroom（余量）</strong>，用于容忍小规模的突发流量。当队列长度处于 headroom 范围内（即 (c \le k \cdot C)）时，<strong>所有数据包都会被接收</strong>。相应地，为了反映 headroom 的存在，队列长度与队列大小之间的差值还会乘以一个缩放因子 (\frac{1}{1-k})。</p>
+<p>为了表述清晰，在算法第 5 行中，我们将以下两个条件分开写出：</p>
+<ul>
+<li>
+<p>$c \le k \cdot C$</p>
+</li>
+<li>
+<p>$W.\text{quantile(pkt)} \le \frac{1}{1-k} \cdot \frac{C-c}{C}$</p>
+</li>
+</ul>
+<p>从数学角度来看，第一个条件 $c \le k \cdot C$ 是冗余的。因为当 $c \le k \cdot C$ 时，有<br />
+$$
+\frac{1}{1-k} \cdot \frac{C-c}{C} \ge 1 \ge W.\text{quantile(pkt)}<br />
+$$
+其中 $W.\text{quantile(pkt)}$ 表示对数据包 rank 分位数的估计，因此该数据包必然会被接收。</p>
+<p>需要注意的是，<strong>$C$ 并不一定等于 FIFO 队列的物理大小</strong>。商用交换机中队列的物理大小因 ASIC 不同而差异很大，从几十个数据包到几百甚至上千个数据包不等。尽管硬件支持较大的缓冲区，但在实际生产网络中，为了降低时延，通常会使用<strong>浅缓冲（shallow buffers）</strong>并限制队列长度。因此，在算法描述中，$C$ 被配置为一个<strong>小于物理队列大小的值</strong>，我们将其称为<strong>目标队列大小（target queue size）</strong>，而非物理队列大小。</p>
+<p>在空间组件中，AIFO 维护一个<strong>最近到达数据包的滑动窗口</strong>，并使用到达数据包 rank 的<strong>分位数</strong>$(W.\text{quantile(pkt)}$ 作为准入判据。</p>
+<p>当数据包的 rank 分位数不大于<br />
+$$<br />
+\frac{1}{1-k} \cdot \frac{C-c}{C}<br />
+$$
+时，数据包被接收；否则，数据包被丢弃。</p>
+<p>其直觉在于：在考虑 headroom（通过 $\frac{1}{1-k}$ 进行修正）之后，$\frac{C-c}{C}$ 表示<strong>剩余队列空间占目标队列长度的比例</strong>。只有一部分后续到达的数据包能够填满这部分剩余空间。我们找到一个 rank 阈值 $r^<em>$，使得其分位数等于剩余队列空间所对应的比例，并且</em><em>只接收 rank 不大于 $r^</em>$ 的数据包<strong>。这样可以确保被接收的数据包集合主要由</strong>低-rank（高优先级）数据包**组成，并且它们正好能够填满剩余的队列空间。</p>
+<p>滑动窗口用于根据历史到达的数据包，对当前数据包的 rank 分位数进行估计。</p>
+<p>二维准入控制的一个重要优势在于：<strong>一个组件的不准确性可以由另一个组件进行补偿</strong>。例如，如果滑动窗口的分位数估计（空间组件）略有偏差，导致接收了额外的数据包，那么队列长度 (c) 会随之增大，从而使得分位数阈值<br />
+$$
+\frac{1}{1-k} \cdot \frac{C-c}{C}<br />
+$$
+（时间组件）变得更加严格。这种变化会反过来迫使空间组件使用一个更小的 rank 阈值，从而纠正之前的偏差。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["search.suggest", "search.highlight", "search.share", "navigation.tabs", "navigation.path", "navigation.top", "navigation.footer", "navigation.indexes", "content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
