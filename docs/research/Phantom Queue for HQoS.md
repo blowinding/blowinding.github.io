@@ -53,32 +53,33 @@
 			- 需要说明这个极限对于目前研制片上缓存技术无法突破
 - 更丰富的调度策略与更多的物理队列并不等价
 	- QoS服务的本质是差异化处理
-	- 调度物理队列存在的本质意义是改变包进入发送队列的顺序
-	- 
+	- 调度物理队列存在的本质意义是改变包进入发送队列的分布
+	- 目前存在其他的方式改变包进入发送队列的分布(SP-PIFO、AIFO、PACKS）
 - PIFO系列
-	- SP-PIFO
-		- 可扩展性不足，需要占用大量队列
-		- 不天然支持HQoS，若支持HQoS则队列数量不足
-	- AIFO
-		- 较长队列积累则调度失真（实验配置可说明）
-		- 实际上没有任何优先级调度，强依赖Rank分布（变式AQM）
-		- 不适合用于ISP（丢包损害更严重）
-		- 和phantom queue机理相似（都是准入控制）
-	- PACKS
-		- 将准入控制和优先级映射结合
-		- TODO
-	- vPIFO
-		- 基本实现HQoS，但是除了调度没有其他策略（shaping、policy）
-		- 没有对出口队列的拥塞控制策略
-	- BMW tree
-		- 没有对出口队列的拥塞控制策略
+	- FIFO原语
+		- SP-PIFO
+			- 不支持Hierarchy Schedule以及non work-conserving scheduling algorithms.
+		- AIFO
+			- 不支持Hierarchy Schedule以及non work-conserving scheduling algorithms.
+		- PACKS
+			- 不支持Hierarchy Schedule以及non work-conserving scheduling algorithms.
+	- PIFO原语
+		- vPIFO
+			- 每一层节点都需要消耗SRAM，需要额外的面积容纳RPU
+		- BMW tree
+			- 每一层节点都需要消耗SRAM，需要额外的面积容纳RPU
+- BC_PQP
+	- 无优先级调度
 - 使用虚拟队列替换物理队列
-	- 低优先级的包在缓存中等待的代价与直接丢包的代价的trade off
-		- 与其让低优先级的包等待，不如直接丢掉让端系统重传
-		- 可以减轻缓存负担以及队列维护负担
-		- 需要考虑丢包的代价
-- 路由器的调度策略在TM实现，是否可以在NP实现以增加灵活性
-- 本质上是如何设计一个最小化队列占用，以实现（TODO）多级调度的的调度算法
+	- Challenge
+		- 如何使用虚拟队列近似实现HQoS
+			- 调度算法的近似程度
+				- $\Delta(t) = \frac{\lvert P(t) \setminus A(t) \rvert + \lvert A(t) \setminus P(t) \rvert}{\lvert P(t) \rvert + \lvert A(t) \rvert}$ 
+					- 单位时间窗内带宽占用
+				- 
+		- 低优先级的包在缓存中等待的代价与直接丢包的代价的trade off
+			- 可以减轻缓存负担以及队列维护负担
+			- 需要考虑丢包的代价
 ### DESIGN
 - 问题
 	- 如何在NP中正确实现多层调度（SP、DWRR等）
