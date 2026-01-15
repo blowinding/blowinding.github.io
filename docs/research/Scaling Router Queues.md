@@ -104,6 +104,15 @@
 				- ***TODO***
 			- 顺序：单位时间窗内出队包顺序差异
 				- ***TODO***
+- thoughts
+	- 虚拟队列的阈值含义
+		- token bucket size
+		- 调度导致的虚拟队列的变化，会在长时间尺度上影响实体队列的排布
+	- 流映射
+	- 虚拟队列入队和出队
+## IMPLEMENTATION
+- ***传统HQoS的实现（TODO）***
+
 ## REFERENCE
 [1] https://support.huawei.com/enterprise/zh/doc/EDOC1100335696/f1b1b569
 [2] https://en.wikipedia.org/wiki/Service-level_agreement
