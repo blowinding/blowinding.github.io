@@ -20,7 +20,7 @@
 		- QoS描述了网络在资源受限条件下对不同流量类型进行差异化处理的能力，以满足各种业务的性能需求（例如带宽、延迟、抖动和丢包率）的保证。[1]
 		- SLA是服务提供商与客户之间的一种正式承诺性合同，用于定义具体的服务质量指标、责任和保障措施。SLA 的核心作用是在业务层面将用户的 QoS 需求转化为可衡量、可执行的服务等级目标。[2]
 		- 传统 IP 网络的 Best-Effort 机制无法保证性能，因而 QoS 技术（如 DiffServ）引入了按一些机制来实现可控的服务质量。[3]
-		- 为了保证QoS，目前有work conserving（schedule）和non work conserving（traffic shaping、 traffic policy）等机制
+		- 为了保证QoS，目前有work conserving（schedule）和non work conserving（traffic shaping）等机制
 			- schedule有DWRR[4]、SP[5]、WFQ[6]等算法
 			- traffic shaping
 			- traffic policing一般使用token bucket[7]
@@ -65,9 +65,9 @@
 			- 当前路由器架构，带有标记的包会被引导至对应的物理队列
 		- 需要维护更多的队列会带来什么代价
 			- queue info table开销增大
-				- ***具体增大多少（TODO）***
+				- 对于BCM88480，一共有32K个VOQ，按照每个QIT只存储head ptr、tail ptr，字长为64bit估计，需要0.48MB缓存存储QIT，占约1/16
 		- 为什么这个代价需要优化
-			- 维护队列的缓存存放在片内缓存
+			- ***维护队列的缓存存放在片内缓存（TODO）***
 			- 片外缓存或许可以存放报文，但是片内缓存无法维护更多的队列（存在极限）
 			- 片上 SRAM 缩放已经远落后于逻辑电路缩放，造成功耗更高、面积效率更低，因此SRAM不能大容量扩展[13]、[14]、[15]
 			- 目前单位带宽的SRAM容量下降了4倍[16]
@@ -89,6 +89,10 @@
 				- 不支持non work-conserving scheduling algorithms
 			- BMW tree[22]
 				- 不支持non work-conserving scheduling algorithms
+			- BBQ
+				- 不支持non work-conserving scheduling algorithms
+			- Loom
+				- 不支持过多的流，只能小规模使用
 	- BC_PQP[23]
 		- 无优先级调度
 - 使用虚拟队列替换物理队列
@@ -110,6 +114,8 @@
 		- 调度导致的虚拟队列的变化，会在长时间尺度上影响实体队列的排布
 	- 流映射
 	- 虚拟队列入队和出队
+- 单个SP
+- 单个WFQ
 ## IMPLEMENTATION
 - ***传统HQoS的实现（TODO）***
 
