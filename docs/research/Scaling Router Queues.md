@@ -67,7 +67,7 @@
 			- queue info table开销增大
 				- 对于BCM88480，一共有32K个VOQ，按照每个QIT只存储head ptr、tail ptr，字长为64bit估计，需要0.48MB缓存存储QIT，占约1/16
 		- 为什么这个代价需要优化
-			- ***维护队列的缓存存放在片内缓存（TODO）***
+			- 维护队列的缓存存放在片内缓存[23]
 			- 片外缓存或许可以存放报文，但是片内缓存无法维护更多的队列（存在极限）
 			- 片上 SRAM 缩放已经远落后于逻辑电路缩放，造成功耗更高、面积效率更低，因此SRAM不能大容量扩展[13]、[14]、[15]
 			- 目前单位带宽的SRAM容量下降了4倍[16]
@@ -181,3 +181,4 @@
 [20] Everything Matters in Programmable Packet Scheduling
 [21] vPIFO: Virtualized Packet Scheduler for Programmable Hierarchical Scheduling in High-Speed Networks
 [22] BMW Tree: Large-scale, High-throughput and Modular PIFO Implementation using Balanced Multi-Way Sorting Tree
+[23]  [System Monitoring Configuration Guide for Cisco NCS 5500 Series Routers, IOS XR Release 7.8.x - Graceful Handling of Out of Resource Situations \[Cisco Network Convergence System 5500 Series\] - Cisco](https://www.cisco.com/c/en/us/td/docs/iosxr/ncs5500/system-monitoring/78x/b-system-monitoring-cg-ncs5500-78x/oor-handling.html)
