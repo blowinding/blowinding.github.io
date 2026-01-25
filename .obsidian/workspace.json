@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "329659d23ad303df",
+        "id": "6ad27e419399c136",
         "type": "tabs",
         "children": [
           {
-            "id": "873098883345fc04",
+            "id": "d3e4fc7e39e695d4",
             "type": "leaf",
             "pane-relief:history-v1": {
               "pos": 0,
@@ -18,64 +18,40 @@
                   "eState": "{}"
                 },
                 {
-                  "title": "RNIC flow control&congestion control simulator",
+                  "title": "+ About x",
                   "icon": "lucide-file",
-                  "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"docs/research/RNIC flow control&congestion control simulator.md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"RNIC flow control&congestion control simulator\"}",
-                  "eState": "{\"cursor\":{\"from\":{\"line\":0,\"ch\":0},\"to\":{\"line\":0,\"ch\":0}}}"
-                },
-                {
-                  "title": "RDMA实验相关",
-                  "icon": "lucide-file",
-                  "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"docs/research/RDMA实验相关.md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"RDMA实验相关\"}",
-                  "eState": "{\"cursor\":{\"from\":{\"line\":0,\"ch\":0},\"to\":{\"line\":0,\"ch\":0}}}"
+                  "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"x/+ About x.md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"+ About x\"}",
+                  "eState": "{\"cursor\":{\"from\":{\"line\":10,\"ch\":0},\"to\":{\"line\":10,\"ch\":0}},\"scroll\":0}"
                 },
                 {
                   "title": "Scaling Router Queues",
                   "icon": "lucide-file",
                   "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"docs/research/Scaling Router Queues.md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"Scaling Router Queues\"}",
+                  "eState": "{\"cursor\":{\"from\":{\"line\":0,\"ch\":0},\"to\":{\"line\":0,\"ch\":0}},\"scroll\":142.7983870967742}"
+                },
+                {
+                  "title": "Practice Oral English Report",
+                  "icon": "lucide-file",
+                  "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"something/Practice Oral English Report.md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"Practice Oral English Report\"}",
                   "eState": "{\"cursor\":{\"from\":{\"line\":0,\"ch\":0},\"to\":{\"line\":0,\"ch\":0}},\"scroll\":0}"
                 },
                 {
-                  "title": "Template, Properties, Effort (Kit)",
+                  "title": "Scaling Router Queues",
                   "icon": "lucide-file",
-                  "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"x/Templates/Template, Properties, Effort (Kit).md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"Template, Properties, Effort (Kit)\"}",
-                  "eState": "{\"cursor\":{\"from\":{\"line\":6,\"ch\":0},\"to\":{\"line\":6,\"ch\":0}}}"
+                  "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"docs/research/Scaling Router Queues.md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"Scaling Router Queues\"}",
+                  "eState": "{\"cursor\":{\"from\":{\"line\":0,\"ch\":0},\"to\":{\"line\":0,\"ch\":0}},\"scroll\":4.433649289099526}"
                 },
                 {
-                  "title": "Template, Properties, Daily Note (Kit)",
+                  "title": "BMW Tree Large-scale, High-throughput and Modular PIFO Implementation using Balanced Multi-Way Sorting Tree",
                   "icon": "lucide-file",
-                  "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"x/Templates/Template, Properties, Daily Note (Kit).md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"Template, Properties, Daily Note (Kit)\"}",
-                  "eState": "{\"cursor\":{\"from\":{\"line\":3,\"ch\":0},\"to\":{\"line\":3,\"ch\":0}}}"
-                },
-                {
-                  "title": "Nick Milo's Custom Callouts",
-                  "icon": "lucide-file",
-                  "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"x/Templates/Nick Milo's Custom Callouts.md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"Nick Milo's Custom Callouts\"}",
+                  "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"docs/thesis/schedule/BMW Tree Large-scale, High-throughput and Modular PIFO Implementation using Balanced Multi-Way Sorting Tree.md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"BMW Tree Large-scale, High-throughput and Modular PIFO Implementation using Balanced Multi-Way Sorting Tree\"}",
                   "eState": "{\"cursor\":{\"from\":{\"line\":0,\"ch\":0},\"to\":{\"line\":0,\"ch\":0}}}"
-                },
-                {
-                  "title": "flight-school-hotkey-wide",
-                  "icon": "lucide-image",
-                  "state": "{\"type\":\"image\",\"state\":{\"file\":\"x/Images/flight-school-hotkey-wide.jpg\"},\"icon\":\"lucide-image\",\"title\":\"flight-school-hotkey-wide\"}",
-                  "eState": "{}"
-                },
-                {
-                  "title": "excalibrain",
-                  "icon": "excalidraw-icon",
-                  "state": "{\"type\":\"excalidraw\",\"state\":{\"file\":\"x/Excalidraw/excalibrain.md\"},\"icon\":\"excalidraw-icon\",\"title\":\"excalibrain\"}",
-                  "eState": "{}"
                 },
                 {
                   "title": "Scaling Router Queues",
                   "icon": "lucide-file",
                   "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"docs/research/Scaling Router Queues.md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"Scaling Router Queues\"}",
-                  "eState": "{\"cursor\":{\"from\":{\"line\":0,\"ch\":0},\"to\":{\"line\":0,\"ch\":0}},\"scroll\":168.08984375}"
-                },
-                {
-                  "title": "vPIFO",
-                  "icon": "lucide-file",
-                  "state": "{\"type\":\"markdown\",\"state\":{\"file\":\"docs/thesis/schedule/vPIFO.md\",\"mode\":\"source\",\"source\":false,\"backlinks\":true,\"backlinkOpts\":{\"collapseAll\":false,\"extraContext\":false,\"sortOrder\":\"alphabetical\",\"showSearch\":false,\"searchQuery\":\"\",\"backlinkCollapsed\":false,\"unlinkedCollapsed\":true}},\"icon\":\"lucide-file\",\"title\":\"vPIFO\"}",
-                  "eState": "{\"cursor\":{\"from\":{\"line\":0,\"ch\":0},\"to\":{\"line\":0,\"ch\":0}},\"scroll\":46.51927083333333}"
+                  "eState": "{\"cursor\":{\"from\":{\"line\":0,\"ch\":0},\"to\":{\"line\":0,\"ch\":0}}}"
                 }
               ]
             },
@@ -138,10 +114,19 @@
           {
             "id": "31992ee4f172a44b",
             "type": "leaf",
+            "pane-relief:history-v1": {
+              "pos": 0,
+              "stack": [
+                {
+                  "state": "{}",
+                  "eState": "{}"
+                }
+              ]
+            },
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "tag:#x/excalidraw",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -179,6 +164,15 @@
           {
             "id": "9c55ba4c504b122a",
             "type": "leaf",
+            "pane-relief:history-v1": {
+              "pos": 0,
+              "stack": [
+                {
+                  "state": "{}",
+                  "eState": "{}"
+                }
+              ]
+            },
             "state": {
               "type": "backlink",
               "state": {
@@ -198,6 +192,15 @@
           {
             "id": "cb4b3a903a9344c0",
             "type": "leaf",
+            "pane-relief:history-v1": {
+              "pos": 0,
+              "stack": [
+                {
+                  "state": "{}",
+                  "eState": "{}"
+                }
+              ]
+            },
             "state": {
               "type": "outgoing-link",
               "state": {
@@ -212,6 +215,15 @@
           {
             "id": "dac029658cd2f629",
             "type": "leaf",
+            "pane-relief:history-v1": {
+              "pos": 0,
+              "stack": [
+                {
+                  "state": "{}",
+                  "eState": "{}"
+                }
+              ]
+            },
             "state": {
               "type": "tag",
               "state": {
@@ -273,7 +285,7 @@
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
@@ -295,28 +307,32 @@
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
       "bases:新建数据库": false,
-      "marp-slides:Show Slide Preview": false
+      "marp-slides:Show Slide Preview": false,
+      "obsidian-git:Open Git source control": false
     }
   },
-  "active": "873098883345fc04",
+  "active": "d3e4fc7e39e695d4",
   "lastOpenFiles": [
+    "x/+ About x.md",
+    "docs/research/Scaling Router Queues.md",
+    "Calendar/2026-01-25.md",
+    "Calendar",
+    "something/Practice Oral English Report.md",
+    "docs/thesis/schedule/BMW Tree Large-scale, High-throughput and Modular PIFO Implementation using Balanced Multi-Way Sorting Tree.md",
     "docs/research/RNIC flow control&congestion control simulator.md",
     "docs/research/RDMA实验相关.md",
-    "docs/research/Scaling Router Queues.md",
     "x/Templates/Template, Properties, Effort (Kit).md",
     "x/Templates/Template, Properties, Daily Note (Kit).md",
     "x/Templates/Nick Milo's Custom Callouts.md",
     "x/Images/flight-school-hotkey-wide.jpg",
     "x/Excalidraw/excalibrain.md",
     "docs/thesis/schedule/vPIFO.md",
-    "something/Practice Oral English Report.md",
     "x/Templates/Template, Properties, Source (Kit).md",
     "x/Templates/Template, Properties, Dates Dates Dates (Kit).md",
     "x/Templates/Template, Properties, Base.md",
     "x/Templates/Template, Properties, Base + In (Kit).md",
     "x/Templates",
     "x/Excalidraw",
-    "x/+ About x.md",
     "x/Images/robert-mccall-black-hole-concept-art copy.jpg",
     "x/Images/stay-on-target.jpg",
     "x/Images/mckie-ship-and-sea-mid-narrow.jpg",
@@ -331,7 +347,6 @@
     "x",
     "docs/thesis/schedule/SP-PIFO.md",
     "docs/thesis/schedule/Efficient Policy-Rich Rate Enforcement with Phantom Queues.md",
-    "docs/thesis/schedule/BMW Tree Large-scale, High-throughput and Modular PIFO Implementation using Balanced Multi-Way Sorting Tree.md",
     "docs/research/Scaling Router Queues.pdf",
     "docs/research/Scaling Router Queues.html",
     "LiteratureNotes/10.1109_LANMAN.2007.4295978.md",
