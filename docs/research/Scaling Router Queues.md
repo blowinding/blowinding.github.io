@@ -1,9 +1,9 @@
 ## PLAN(WEEKLY UPDATE)
 ### OVERALL PLAN
 - BACKGROUND & MOTIVATION 2 week DONE
-	- 继续阅读相关论文
 - DESIGN 2 week ONGOING
-	- 初步design ONGOING
+	- design  skeleton ONGOING
+	- design detail DELAY
 - IMPLEMENTATION 6 weeks TODO
 - EXPERIMENTS 4 weeks TODO
 ### GOALS FROM PREVIOUS WEEK
@@ -38,24 +38,26 @@
 	- 博通[9]、[10]
 	- 华为[11]
 	- 思科[12]
-- 路由器的结构（BCM88480）
-	- 路由器进行QoS完整的过程
-		- 由于Ingress缓存较大，主要的QoS大多发生在Ingress内
-		- 首先在NP进行流分类和流标记
-		- Ingress入队
-			- 标记映射到VOQ
-			- The TAR returns to the CGM Packet-Enqueue-Request that is evaluated for admission by the CGM based on available resources, queue-size, and queue parameters, resulting in an admit/drop decision. 
-			- If the packet is admitted, the queue number and start-SRAM buffer, along with additional packet information, are passed to the SRAM-Queue-Manager (SQM). Otherwise, the packet copy is discarded. If all packet copies have been discarded, then the packet’s Start-Buffers are sent to the SPB to be freed. The SQM allocates a Packet-Descriptor (PD) and links it to the queue.
-		- 路由器如何维护队列
-			- Queue Info Table、PD Table、SRAM buffer
-			- Queue Info Table每个表项维护头尾指针
-			- 在broadcom中，有CGM、ingress credit scheduler、SQM维护相关信息
-		- VOQ一旦有报文积压，ingress credit scheduler向egress credit scheduler发送flow status 
-		- egress credit scheduler进行调度
-			- The function of the egress credit scheduler is to allocate bandwidth to the VOQs. The scheduler allocates the bandwidth by sending credits to the competing VOQs. When a VOQ receives a credit, it is granted the right to send data to the target port. The worth, in bytes, of one credit is configurable (for example, 2 KB). Traffic shaping at all levels (that is, device, interface, OTM port, aggregate, and queue) is accomplished by shaping the credit allocation by the scheduler.
-		- Ingress出队
-			- When credit balance is positive, a Dequeue-Command with Dequeue-Command-Bytes is issued to the SRAM queue manager. The SRAM queue manager traverses the queue, dequeuing several packets. Until the queue becomes empty OR until the Dequeue-Command-Bytes are exhausted
-			- The SRAM buffer manager reads the packet, updates the SRAM buffer user-count, and frees the buffer. The packet data is read and sent to the Ingress Transmit Packet Processor (ITPP) and then to the Transmit queues that have multiple contexts according to the source (SRAM/DRAM).
+##### 路由器的结构（BCM88480）
+- ***路由器进行QoS完整的过程（画图TODO）***
+	- 由于Ingress缓存较大，主要的QoS大多发生在Ingress内
+	- 首先在NP进行流分类和流标记
+	- Ingress入队
+		- 标记映射到VOQ
+		- The TAR returns to the CGM Packet-Enqueue-Request that is evaluated for admission by the CGM based on available resources, queue-size, and queue parameters, resulting in an admit/drop decision. 
+		- If the packet is admitted, the queue number and start-SRAM buffer, along with additional packet information, are passed to the SRAM-Queue-Manager (SQM). Otherwise, the packet copy is discarded. If all packet copies have been discarded, then the packet’s Start-Buffers are sent to the SPB to be freed. The SQM allocates a Packet-Descriptor (PD) and links it to the queue.
+---
+- 路由器如何维护队列
+	- Queue Info Table、PD Table、SRAM buffer
+	- Queue Info Table每个表项维护头尾指针
+	- 在broadcom中，有CGM、ingress credit scheduler、SQM维护相关信息
+---
+- egress credit scheduler进行调度
+	- The function of the egress credit scheduler is to allocate bandwidth to the VOQs. The scheduler allocates the bandwidth by sending credits to the competing VOQs. When a VOQ receives a credit, it is granted the right to send data to the target port. The worth, in bytes, of one credit is configurable (for example, 2 KB). Traffic shaping at all levels (that is, device, interface, OTM port, aggregate, and queue) is accomplished by shaping the credit allocation by the scheduler.
+---
+- Ingress出队
+	- When credit balance is positive, a Dequeue-Command with Dequeue-Command-Bytes is issued to the SRAM queue manager. The SRAM queue manager traverses the queue, dequeuing several packets. Until the queue becomes empty OR until the Dequeue-Command-Bytes are exhausted
+	- The SRAM buffer manager reads the packet, updates the SRAM buffer user-count, and frees the buffer. The packet data is read and sent to the Ingress Transmit Packet Processor (ITPP) and then to the Transmit queues that have multiple contexts according to the source (SRAM/DRAM).
 ---
 ### MOTIVATION
 #### 目前路由器遇到的瓶颈
@@ -70,11 +72,12 @@
 		- 需要维护更多的队列会带来什么代价
 			- queue info table开销增大
 				- 对于BCM88480，一共有32K个VOQ，按照每个QIT只存储head ptr、tail ptr，字长为64bit估计，需要0.48MB缓存存储QIT，占约1/16
-		- 为什么这个代价需要优化
-			- 维护队列的缓存存放在片内缓存[23]
-			- 片外缓存或许可以存放报文，但是片内缓存无法维护更多的队列（存在极限）
-			- 片上 SRAM 缩放已经远落后于逻辑电路缩放，造成功耗更高、面积效率更低，因此SRAM不能大容量扩展[13]、[14]、[15]
-			- 目前单位带宽的SRAM容量下降了4倍[16]
+---
+- 为什么这个代价需要优化
+	- 维护队列的缓存存放在片内缓存[23]
+	- 片外缓存或许可以存放报文，但是片内缓存无法维护更多的队列（存在极限）
+	- 片上 SRAM 缩放已经远落后于逻辑电路缩放，造成功耗更高、面积效率更低，因此SRAM不能大容量扩展[13]、[14]、[15]
+	- 目前单位带宽的SRAM容量下降了4倍[16]
 --- 
 #### 更丰富的调度策略与更多的物理队列并不等价
 - QoS服务的本质是差异化处理
@@ -90,6 +93,7 @@
 		- 不支持Hierarchy Schedule以及non work-conserving scheduling algorithms.
 	- PACKS
 		- 不支持Hierarchy Schedule以及non work-conserving scheduling algorithms.
+---
 - PIFO原语
 	- vPIFO[21]
 		- 不支持non work-conserving scheduling algorithms
@@ -157,6 +161,7 @@
 	- 为某些流提供绝对的优先
 - 出队策略
 	- 优先级从高到低排列，当高优先级计数器为正数时，低优先级出队速率为0
+---
 - 映射策略
 	- SP-PIFO
 		- ***为什么使用SP-PIFO（TODO）***
@@ -164,17 +169,20 @@
 - 准入分析
 	- 优先级从高到低排列，除了第一个计数器为正数的队列，其他低优先级队列均满载，即入速率大于出速率，最终执行准入策略后得到的结果为理想结果
 		- 按照出队策略，优先级从高到低排列，当高优先级计数器为正数时，低优先级出队速率为0，因此低优先级队列会按照入队速率累积
-- 映射分析
-	- ***（TODO）***
+---
+- ***映射分析（TODO）***
 ---
 #### WFQ
 - 目标
 	- 公平分配每个流的带宽，做到per-flow isolation
 - 出队策略
 	- 可按照GPS，叶子队列出队时按照权重同时出队
+- ***映射策略（TODO）***
 ---
 - 准入分析
-	- 每个队列均满载时，即入速率大于出速率，最终执行准入策略后得到的结果为理想结果
+	- 儿子节点的数据包到达速率小于分配的带宽时，不需要进行限制，因为没有发生带宽的争用
+	- 每个儿子节点的虚拟队列达到阈值后，且入速率大于出速率，最终执行准入策略后得到的结果为理想结果
+- ***映射分析（TODO）***
 ---
 #### Shaper
 - 目标
@@ -182,9 +190,13 @@
 - 出队策略
 	- 按照限定速率进行出队
 ---
+#### ***combine work-conserving-schedule node and non-work-conserving-schedule node（TODO）***
+---
+#### ***Hierarchy admission and mapping（TODO）***
+---
 ## IMPLEMENTATION
 - ***传统HQoS的实现（TODO）***
-
+---
 ## REFERENCE
 [1] https://support.huawei.com/enterprise/zh/doc/EDOC1100335696/f1b1b569
 [2] https://en.wikipedia.org/wiki/Service-level_agreement
@@ -198,6 +210,8 @@
 [10] https://docs.broadcom.com/doc/88800-DG1-PUB
 [11] https://support.huawei.com/enterprise/zh/doc/EDOC1100464252/da76c2c0?idPath=24030814|9856750|22715517|9858994|15969
 [12] https://www.ciscolive.com/c/dam/r/ciscolive/global-event/docs/2024/pdf/BRKARC-2096.pdf
+
+---
 [13] Enabling static random-access memory cell scaling with monolithic 3D integration of 2D field-effect transistors
 [14] SRAM Cell Design Challenges in Modern Deep Sub-Micron Technologies: An Overview
 [15] https://semiengineering.com/sram-scaling-issues-and-what-comes-next/
@@ -207,6 +221,8 @@
 [19] Programmable packet scheduling with a single queue
 [20] Everything Matters in Programmable Packet Scheduling
 [21] vPIFO: Virtualized Packet Scheduler for Programmable Hierarchical Scheduling in High-Speed Networks
+
+---
 [22] BMW Tree: Large-scale, High-throughput and Modular PIFO Implementation using Balanced Multi-Way Sorting Tree
 [23]  [System Monitoring Configuration Guide for Cisco NCS 5500 Series Routers, IOS XR Release 7.8.x - Graceful Handling of Out of Resource Situations \[Cisco Network Convergence System 5500 Series\] - Cisco](https://www.cisco.com/c/en/us/td/docs/iosxr/ncs5500/system-monitoring/78x/b-system-monitoring-cg-ncs5500-78x/oor-handling.html)
 [24] Improving TCP performance with bufferless token bucket policing: A TCP friendly policer
