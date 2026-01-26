@@ -7,9 +7,9 @@
 - IMPLEMENTATION 6 weeks TODO
 - EXPERIMENTS 4 weeks TODO
 ### GOALS FROM PREVIOUS WEEK
-- 完成BACKGROUND和MOTIVATION
+- 完成DESIGN
 ### UPDATES FROM PREVIOUS WEEK
-- 完成MOTIVATION和DESIGN GOALS
+- 完成DESIGN
 ---
 ### NEXT WEEK PLAN
 - 初步设计design
@@ -117,11 +117,11 @@
 		- 出队自根节点开始，按调度策略选择叶节点扣减计数器
 ---
 #### Challenge
-##### drop can be harmful
+##### drop can be harmful（可以改为threshold）
 - 文献[24]指出类似policer的策略会对TCP丢包敏感流损害严重，需要有足够大的阈值
 - 若阈值过大，会导致更多的突发流进入TM，导致缓存系统丢包严重，影响结果的确定性
 ---
-##### burst make result uncertain
+##### burst make result uncertain（delete）
 - 以SP调度举例
 	- 当高优先级backlog，仅调度高优先级的数据包
 	- 假设根节点调度出速率为10Mbps，q1到达速率10Mbps，q2到达速率10Mbps
@@ -142,6 +142,8 @@
 			- ***TODO***
 ---
 #### OVERVIEW
+- 图
+	- ***HCAR+ LBMS port cache去掉 port schedule改成port queue schedule，HCAR+mapping框起来（TODO）***
 - 准入
 	- 虚拟队列控制准入
 		- 计数器维护通过节点的数据包长度
@@ -162,6 +164,8 @@
 - 出队策略
 	- 优先级从高到低排列，当高优先级计数器为正数时，低优先级出队速率为0
 ---
+- ***阈值策略（TODO）***
+---
 - 映射策略
 	- SP-PIFO
 		- ***为什么使用SP-PIFO（TODO）***
@@ -176,7 +180,7 @@
 - 目标
 	- 公平分配每个流的带宽，做到per-flow isolation
 - 出队策略
-	- 可按照GPS，叶子队列出队时按照权重同时出队
+	- ***按照给定出队包长度，按照权重分配+轮询***
 - ***映射策略（TODO）***
 ---
 - 准入分析
@@ -188,7 +192,7 @@
 - 目标
 	- 对流进行限速
 - 出队策略
-	- 按照限定速率进行出队
+	- ***按照限定速率进行出队，如果出的包大于剩余的token，则可调度下一个（TODO）***
 ---
 #### ***combine work-conserving-schedule node and non-work-conserving-schedule node（TODO）***
 ---
