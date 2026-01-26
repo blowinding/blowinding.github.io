@@ -10,9 +10,11 @@
 - 完成BACKGROUND和MOTIVATION
 ### UPDATES FROM PREVIOUS WEEK
 - 完成MOTIVATION和DESIGN GOALS
+---
 ### NEXT WEEK PLAN
 - 初步设计design
 - 补全background&motivation
+---
 ## DETAILS
 ### BACKGROUND
 #### QoS
@@ -30,6 +32,7 @@
 		- HQoS功能
 			- HQoS 在传统 QoS 的基础上增加了多级调度结构，通过树形队列结构实现对服务、用户和用户组等多个层次的差异化调度，从而在接入网环境中更有效地保证 SLA 级别的 QoS 目标。
 			- ***画图举个例子（TODO）***
+---
 #### 网络设备（路由器）
 - QoS（HQoS）大多在网络设备（路由器）中实现
 	- 博通[9]、[10]
@@ -53,14 +56,15 @@
 		- Ingress出队
 			- When credit balance is positive, a Dequeue-Command with Dequeue-Command-Bytes is issued to the SRAM queue manager. The SRAM queue manager traverses the queue, dequeuing several packets. Until the queue becomes empty OR until the Dequeue-Command-Bytes are exhausted
 			- The SRAM buffer manager reads the packet, updates the SRAM buffer user-count, and frees the buffer. The packet data is read and sent to the Ingress Transmit Packet Processor (ITPP) and then to the Transmit queues that have multiple contexts according to the source (SRAM/DRAM).
+---
 ### MOTIVATION
-- 目前路由器遇到的瓶颈
-	- 目前，支持更丰富的调度策略，则需要更多的队列
-		- 如何定义更丰富的调度策略
-			- 更精细的流量标记和分类
-				- 依照用户组分类->依照用户分类，分类更加精细
-				- 不同用户的流量可以进行不同的调度
-				- ***画图举个例子（TODO）***
+#### 目前路由器遇到的瓶颈
+- 目前，支持更丰富的调度策略，则需要更多的队列
+	- 如何定义更丰富的调度策略
+		- 更精细的流量标记和分类
+			- 依照用户组分类->依照用户分类，分类更加精细
+			- 不同用户的流量可以进行不同的调度
+			- ***画图举个例子（TODO）***
 		- 目前的路由器架构，为什么更丰富的调度策略需要更多的队列
 			- 当前路由器架构，带有标记的包会被引导至对应的物理队列
 		- 需要维护更多的队列会带来什么代价
@@ -71,37 +75,60 @@
 			- 片外缓存或许可以存放报文，但是片内缓存无法维护更多的队列（存在极限）
 			- 片上 SRAM 缩放已经远落后于逻辑电路缩放，造成功耗更高、面积效率更低，因此SRAM不能大容量扩展[13]、[14]、[15]
 			- 目前单位带宽的SRAM容量下降了4倍[16]
-- 更丰富的调度策略与更多的物理队列并不等价
-	- QoS服务的本质是差异化处理
-	- 调度本质意义是改变包进入发送队列的分布（时间、顺序）[17]
-	- 目前存在其他的方式改变包进入发送队列的分布(SP-PIFO[18]、AIFO[19]、PACKS[20]）
-- ***为什么其他工作不行（TODO）***
-	- PIFO系列
-		- FIFO原语
-			- SP-PIFO
-				- 不支持Hierarchy Schedule以及non work-conserving scheduling algorithms.
-			- AIFO
-				- 不支持Hierarchy Schedule以及non work-conserving scheduling algorithms.
-			- PACKS
-				- 不支持Hierarchy Schedule以及non work-conserving scheduling algorithms.
-		- PIFO原语
-			- vPIFO[21]
-				- 不支持non work-conserving scheduling algorithms
-			- BMW tree[22]
-				- 不支持non work-conserving scheduling algorithms
-			- BBQ
-				- 不支持non work-conserving scheduling algorithms
-			- Loom
-				- 不支持过多的流，只能小规模使用
-	- BC_PQP[23]
-		- 无优先级调度
-- 使用虚拟队列替换物理队列
-	- Challenge
-		- 低优先级的包在缓存中等待的代价与直接丢包的代价的trade off
-			- 可以减轻缓存负担以及队列维护负担
-			- 需要考虑丢包的代价
-### DESIGN OVERVIEW
-#### 目标
+--- 
+#### 更丰富的调度策略与更多的物理队列并不等价
+- QoS服务的本质是差异化处理
+- 调度本质意义是改变包进入发送队列的分布（时间、顺序）[17]
+- 目前存在其他的方式改变包进入发送队列的分布(SP-PIFO[18]、AIFO[19]、PACKS[20]）
+---
+#### ***为什么其他工作不行（TODO）***
+#####  PIFO系列
+- FIFO原语
+	- SP-PIFO
+		- 不支持Hierarchy Schedule以及non work-conserving scheduling algorithms.
+	- AIFO
+		- 不支持Hierarchy Schedule以及non work-conserving scheduling algorithms.
+	- PACKS
+		- 不支持Hierarchy Schedule以及non work-conserving scheduling algorithms.
+- PIFO原语
+	- vPIFO[21]
+		- 不支持non work-conserving scheduling algorithms
+	- BMW tree[22]
+		- 不支持non work-conserving scheduling algorithms
+	- BBQ
+		- 不支持non work-conserving scheduling algorithms
+	- Loom
+		- 不支持过多的流，只能小规模使用
+- BC_PQP[23]
+	- 无优先级调度
+---
+### BASIC IDEA
+#### 虚拟队列
+- 基础结构
+	- 根节点处有限速，限制输出总带宽
+	- 节点
+		- 虚拟队列（计数器）
+		- 调度策略
+		- 入队自叶节点开始，向根节点逐级增加计数器
+		- 出队自根节点开始，按调度策略选择叶节点扣减计数器
+---
+#### Challenge
+##### drop can be harmful
+- 文献[24]指出类似policer的策略会对TCP丢包敏感流损害严重，需要有足够大的阈值
+- 若阈值过大，会导致更多的突发流进入TM，导致缓存系统丢包严重，影响结果的确定性
+---
+##### burst make result uncertain
+- 以SP调度举例
+	- 当高优先级backlog，仅调度高优先级的数据包
+	- 假设根节点调度出速率为10Mbps，q1到达速率10Mbps，q2到达速率10Mbps
+	- 当q1、q2计数器未满时，两个虚拟队列所对应的数据包均可正常发送
+	- 根节点一直使q1计数器扣减，导致q2计数器以10Mbps的速率上涨
+	- 当q2计数器到达阈值，到达q2的包丢包，此时只有到达q1的数据包可发送
+	- 在q2计数器上涨的过程中，q2的包一直可发送，导致调度结果与预期不一致
+- 如果阈值低，可以迅速达到上述效果，但是会造成很大程度的丢包，对流性能损害严重
+---
+### DESIGN
+#### GOALS
 - 使用虚拟队列近似实现HQoS
 	- 模拟SP调度、WFQ调度、shaping
 	- 调度算法的近似程度
@@ -109,53 +136,52 @@
 			- ***TODO***
 		- 顺序：单位时间窗内出队包顺序差异
 			- ***TODO***
-#### 基础调度器模型
-- 传统HQoS可由两个组件进行模拟
-	- 准入（主要部分）
-		- 为什么需要有准入
-			- non-work-conserving schedule算法需要准入近似控制，准入模块通过丢包可以暂缓数据包发送
-			- buffer-management有对队列进行准入控制的模块[9] 、[10]，如果将物理队列从TM中剔除，原有对队列的准入控制应当也一并在虚拟队列中实现
-			- 准入可改变数据包的分布，从而近似模拟调度的结果[19]
-	- 调度（辅助）
-		- 为什么需要有调度
-			- 准入策略不足以完全实现调度，当虚拟队列未满载，并且入速率大于出速率，准入无法对进入的数据包进行控制，因此需要优先级调度
-- 基础结构
-	- 根节点处有限速，限制输出总带宽
-	- 节点
-		- 向上游队列发送入队指令
-		- 向下游队列发送出队指令
-	- 虚拟队列
-		- 使用计数器维护
-			- 维护报文长度和
-				- 由于进入同一个虚队列的包长度大小可能不一，只维护包个数会导致调度策略和限速策略的偏差
-		- 执行入队、出队操作
-			- 入队时，计数器加上报文长度
-		- 属性
-			- 阈值
-			- 限速
-### DESIGN
+---
+#### OVERVIEW
+- 准入
+	- 虚拟队列控制准入
+		- 计数器维护通过节点的数据包长度
+			- 一条流中数据包长度不一
+    - 为什么需要有准入
+        - non-work-conserving schedule算法需要准入近似控制，准入模块通过丢包可以暂缓数据包发送
+        - buffer-management有对队列进行准入控制的模块[9] 、[10]，如果将物理队列从TM中剔除，原有对队列的准入控制应当也一并在虚拟队列中实现
+        - 准入可改变数据包的分布，从而近似模拟调度的结果[19]
+---
+- 映射
+	- 为什么需要有映射
+		- 通过映射可以使用粗粒度优先级队列模拟细粒度优先级队列[18]
+		- 准入策略不足以完全实现调度，当虚拟队列未满载，并且入速率大于出速率，准入无法对进入的数据包进行控制，因此需要优先级调度
+---
 #### SP
 - 目标
 	- 为某些流提供绝对的优先
 - 出队策略
 	- 优先级从高到低排列，当高优先级计数器为正数时，低优先级出队速率为0
+- 映射策略
+	- SP-PIFO
+		- ***为什么使用SP-PIFO（TODO）***
+---
 - 准入分析
 	- 优先级从高到低排列，除了第一个计数器为正数的队列，其他低优先级队列均满载，即入速率大于出速率，最终执行准入策略后得到的结果为理想结果
 		- 按照出队策略，优先级从高到低排列，当高优先级计数器为正数时，低优先级出队速率为0，因此低优先级队列会按照入队速率累积
-		- 丢掉的低优先级包会损害低优先级流的性能，故最佳策略是丢掉的低优先级包即使进入缓存系统也会被丢掉
-		- 当低优先级队列未满载时，实际出队的包不符合优先级调度策略，可通过分类策略纠正
+- 映射分析
+	- ***（TODO）***
+---
 #### WFQ
 - 目标
 	- 公平分配每个流的带宽，做到per-flow isolation
 - 出队策略
 	- 可按照GPS，叶子队列出队时按照权重同时出队
+---
 - 准入分析
 	- 每个队列均满载时，即入速率大于出速率，最终执行准入策略后得到的结果为理想结果
+---
 #### Shaper
 - 目标
 	- 对流进行限速
 - 出队策略
 	- 按照限定速率进行出队
+---
 ## IMPLEMENTATION
 - ***传统HQoS的实现（TODO）***
 
@@ -183,3 +209,4 @@
 [21] vPIFO: Virtualized Packet Scheduler for Programmable Hierarchical Scheduling in High-Speed Networks
 [22] BMW Tree: Large-scale, High-throughput and Modular PIFO Implementation using Balanced Multi-Way Sorting Tree
 [23]  [System Monitoring Configuration Guide for Cisco NCS 5500 Series Routers, IOS XR Release 7.8.x - Graceful Handling of Out of Resource Situations \[Cisco Network Convergence System 5500 Series\] - Cisco](https://www.cisco.com/c/en/us/td/docs/iosxr/ncs5500/system-monitoring/78x/b-system-monitoring-cg-ncs5500-78x/oor-handling.html)
+[24] Improving TCP performance with bufferless token bucket policing: A TCP friendly policer
