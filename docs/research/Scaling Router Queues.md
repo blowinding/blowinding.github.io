@@ -1,7 +1,7 @@
 ## PLAN(WEEKLY UPDATE)
 ### OVERALL PLAN
 - BACKGROUND & MOTIVATION 2 week DONE
-- DESIGN 2 week ONGOING
+- DESIGN 4 week ONGOING
 	- design  skeleton ONGOING
 	- design detail DELAY
 - IMPLEMENTATION 6 weeks TODO
