@@ -1,0 +1,1730 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://blowindingblog.cn/learning/Parallel%20Computer%20Architecture/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Parallel Computer Architecture - blowinding's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1%207.775V2.75C1%201.784%201.784%201%202.75%201h5.025c.464%200%20.91.184%201.238.513l6.25%206.25a1.75%201.75%200%200%201%200%202.474l-5.026%205.026a1.75%201.75%200%200%201-2.474%200l-6.25-6.25A1.75%201.75%200%200%201%201%207.775m1.5%200c0%20.066.026.13.073.177l6.25%206.25a.25.25%200%200%200%20.354%200l5.025-5.025a.25.25%200%200%200%200-.354l-6.25-6.25a.25.25%200%200%200-.177-.073H2.75a.25.25%200%200%200-.25.25ZM6%205a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.5%201.75v11.5c0%20.138.112.25.25.25h3.17a.75.75%200%200%201%200%201.5H2.75A1.75%201.75%200%200%201%201%2013.25V1.75C1%20.784%201.784%200%202.75%200h8.5C12.216%200%2013%20.784%2013%201.75v7.736a.75.75%200%200%201-1.5%200V1.75a.25.25%200%200%200-.25-.25h-8.5a.25.25%200%200%200-.25.25m13.274%209.537zl-4.557%204.45a.75.75%200%200%201-1.055-.008l-1.943-1.95a.75.75%200%200%201%201.062-1.058l1.419%201.425%204.026-3.932a.75.75%200%201%201%201.048%201.074M4.75%204h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M4%207.75A.75.75%200%200%201%204.75%207h2a.75.75%200%200%201%200%201.5h-2A.75.75%200%200%201%204%207.75%22/%3E%3C/svg%3E');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M3.499.75a.75.75%200%200%201%201.5%200v.996C5.9%202.903%206.793%203.65%207.662%204.376l.24.202c-.036-.694.055-1.422.426-2.163C9.1.873%2010.794-.045%2012.622.26%2014.408.558%2016%201.94%2016%204.25c0%201.278-.954%202.575-2.44%202.734l.146.508.065.22c.203.701.412%201.455.476%202.226.142%201.707-.4%203.03-1.487%203.898C11.714%2014.671%2010.27%2015%208.75%2015h-6a.75.75%200%200%201%200-1.5h1.376a4.5%204.5%200%200%201-.563-1.191%203.84%203.84%200%200%201-.05-2.063%204.65%204.65%200%200%201-2.025-.293.75.75%200%200%201%20.525-1.406c1.357.507%202.376-.006%202.698-.318l.009-.01a.747.747%200%200%201%201.06%200%20.75.75%200%200%201-.012%201.074c-.912.92-.992%201.835-.768%202.586.221.74.745%201.337%201.196%201.621H8.75c1.343%200%202.398-.296%203.074-.836.635-.507%201.036-1.31.928-2.602-.05-.603-.216-1.224-.422-1.93l-.064-.221c-.12-.407-.246-.84-.353-1.29a2.4%202.4%200%200%201-.507-.441%203.1%203.1%200%200%201-.633-1.248.75.75%200%200%201%201.455-.364c.046.185.144.436.31.627.146.168.353.305.712.305.738%200%201.25-.615%201.25-1.25%200-1.47-.95-2.315-2.123-2.51-1.172-.196-2.227.387-2.706%201.345-.46.92-.27%201.774.019%203.062l.042.19.01.05c.348.443.666.949.94%201.553a.75.75%200%201%201-1.365.62c-.553-1.217-1.32-1.94-2.3-2.768L6.7%205.527c-.814-.68-1.75-1.462-2.692-2.619a3.7%203.7%200%200%200-1.023.88c-.406.495-.663%201.036-.722%201.508.116.122.306.21.591.239.388.038.797-.06%201.032-.19a.75.75%200%200%201%20.728%201.31c-.515.287-1.23.439-1.906.373-.682-.067-1.473-.38-1.879-1.193L.75%205.677V5.5c0-.984.48-1.94%201.077-2.664.46-.559%201.05-1.055%201.673-1.353z%22/%3E%3C/svg%3E');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M13.78%204.22a.75.75%200%200%201%200%201.06l-7.25%207.25a.75.75%200%200%201-1.06%200L2.22%209.28a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018L6%2010.94l6.72-6.72a.75.75%200%200%201%201.06%200%22/%3E%3C/svg%3E');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.92%206.085h.001a.749.749%200%201%201-1.342-.67c.169-.339.436-.701.849-.977C6.845%204.16%207.369%204%208%204a2.76%202.76%200%200%201%201.637.525c.503.377.863.965.863%201.725%200%20.448-.115.83-.329%201.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6%206%200%200%200-.26.16%201%201%200%200%200-.276.245.75.75%200%200%201-1.248-.832c.184-.264.42-.489.692-.661q.154-.1.313-.195l.007-.004c.1-.061.182-.11.258-.161a1%201%200%200%200%20.277-.245C8.96%206.514%209%206.427%209%206.25a.61.61%200%200%200-.262-.525A1.27%201.27%200%200%200%208%205.5c-.369%200-.595.09-.74.187a1%201%200%200%200-.34.398M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.344%202.343za8%208%200%200%201%2011.314%2011.314A8.002%208.002%200%200%201%20.234%2010.089a8%208%200%200%201%202.11-7.746m1.06%2010.253a6.5%206.5%200%201%200%209.108-9.275%206.5%206.5%200%200%200-9.108%209.275M6.03%204.97%208%206.94l1.97-1.97a.749.749%200%200%201%201.275.326.75.75%200%200%201-.215.734L9.06%208l1.97%201.97a.749.749%200%200%201-.326%201.275.75.75%200%200%201-.734-.215L8%209.06l-1.97%201.97a.749.749%200%200%201-1.275-.326.75.75%200%200%201%20.215-.734L6.94%208%204.97%206.03a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4.72.22a.75.75%200%200%201%201.06%200l1%20.999a3.5%203.5%200%200%201%202.441%200l.999-1a.748.748%200%200%201%201.265.332.75.75%200%200%201-.205.729l-.775.776c.616.63.995%201.493.995%202.444v.327q0%20.15-.025.292c.408.14.764.392%201.029.722l1.968-.787a.75.75%200%200%201%20.556%201.392L13%207.258V9h2.25a.75.75%200%200%201%200%201.5H13v.5q-.002.615-.141%201.186l2.17.868a.75.75%200%200%201-.557%201.392l-2.184-.873A5%205%200%200%201%208%2016a5%205%200%200%201-4.288-2.427l-2.183.873a.75.75%200%200%201-.558-1.392l2.17-.868A5%205%200%200%201%203%2011v-.5H.75a.75.75%200%200%201%200-1.5H3V7.258L.971%206.446a.75.75%200%200%201%20.558-1.392l1.967.787c.265-.33.62-.583%201.03-.722a1.7%201.7%200%200%201-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72%201.28a.75.75%200%200%201%200-1.06m.53%206.28a.75.75%200%200%200-.75.75V11a3.5%203.5%200%201%200%207%200V7.25a.75.75%200%200%200-.75-.75ZM6.173%205h3.654A.17.17%200%200%200%2010%204.827V4.5a2%202%200%201%200-4%200v.327c0%20.096.077.173.173.173%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="blowinding&#39;s blog" class="md-header__button md-logo" aria-label="blowinding's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            blowinding's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Parallel Computer Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Introduction
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="blowinding&#39;s blog" class="md-nav__button md-logo" aria-label="blowinding's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    blowinding's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        集群计算概述
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="集群计算概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        并行处理技术可以
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多处理机系统用途
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三类高性能计算系统
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        并行计算的难点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        基于网络的高性能计算环境
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        非冯诺依曼结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        相关理论基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="相关理论基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        并行性的等级
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        并行性开发的途径
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从控制工作流角度，目前有三大类体系结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        计算机的概念分类模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        并行计算机访存模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        并行计算性能分析模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        并行计算机Cache一致性
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="并行计算机Cache一致性">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cache_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        引发Cache一致性问题缘由
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多机系统Cache一致性维护策略
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        监听总线协议
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        互联网络
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="互联网络">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        互连网络特性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        寻径函数
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        静态互连网络
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        动态互连网络
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="动态互连网络">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        消息传递机制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        并行计算机系统结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="并行计算机系统结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UMA型并行计算机
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nora" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NORA型并行计算机
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        节点并行技术
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        资源管理与任务调度
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="资源管理与任务调度">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多机操作系统概述
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        资源管理和调度（RMS）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Parallel Computer Architecture</h1>
+
+<h2 id="_1">集群计算概述</h2>
+<h3 id="_2">并行处理技术可以</h3>
+<ul>
+<li>可构建高性能的计算机<ul>
+<li>流水线技术</li>
+<li>超标量和多处理机技术</li>
+</ul>
+</li>
+<li>可很好解决单个处理器瓶颈</li>
+</ul>
+<h3 id="_3">多处理机系统用途</h3>
+<ul>
+<li>获得高速处理能力</li>
+<li>实现高可靠性系统</li>
+<li>实现资源共享和协同</li>
+</ul>
+<h3 id="_4">三类高性能计算系统</h3>
+<ul>
+<li>高端系统：可实现最高性能但价格昂贵，如太湖之光等超级计算机</li>
+<li>集群系统：低价格，构建周期短，但持续性能低</li>
+<li>网络计算/云计算</li>
+</ul>
+<h3 id="_5">并行计算的难点</h3>
+<ul>
+<li>并行性的描述和提取问题，关键理论问题</li>
+<li>并行程序实现有难度</li>
+<li>性能的极限问题（受限于1、2的进展）</li>
+</ul>
+<h3 id="_6">基于网络的高性能计算环境</h3>
+<ul>
+<li>网格计算<blockquote>
+<p>网格基本技术要求标准：Ian Foster的网格标准
+目标有资源共享、协同工作、通用开放标准以及动态功能</p>
+</blockquote>
+</li>
+<li>云计算</li>
+</ul>
+<h3 id="_7">非冯诺依曼结构</h3>
+<ul>
+<li>非指令驱动式结构</li>
+<li>光计算处理技术</li>
+<li>量子计算技术</li>
+<li>生物计算处理技术</li>
+</ul>
+<h2 id="_8">相关理论基础</h2>
+<h3 id="_9">并行性的等级</h3>
+<ul>
+<li>指令内部的并行</li>
+<li>指令间的并行</li>
+<li>任务或进程之间的并行</li>
+<li>作业或程序之间的并行</li>
+</ul>
+<h3 id="_10">并行性开发的途径</h3>
+<ul>
+<li>时间重叠（流水线）<ul>
+<li>概念：让多个处理过程在时间上相互错开，轮流重复的使用同一硬件设备的各个部分</li>
+<li>流水处理适合连续相同多操作/作业处理应用</li>
+</ul>
+</li>
+<li>空间重叠（资源重复）<ul>
+<li>概念：通过重复设置硬件资源提高可靠性和性能</li>
+</ul>
+</li>
+<li>用户重叠（资源共享）</li>
+</ul>
+<h3 id="_11">从控制工作流角度，目前有三大类体系结构</h3>
+<ul>
+<li>基于指令流计算的体系结构<ul>
+<li>冯诺依曼计算机体系结构</li>
+<li>有CISC、RISC、DSP三种处理器</li>
+<li>运算指令：操作码+数据地址码</li>
+<li>指令流包括操作流和数据流，按照控制流原理工作</li>
+<li>应用最灵活，但是性能低，难以实现大规模并行</li>
+</ul>
+</li>
+<li>基于数据流计算的体系结构<ul>
+<li>ASIC电路，设计生产后逻辑功能固定</li>
+<li>速度快效率高，但是灵活性差</li>
+</ul>
+</li>
+<li>基于构令流计算的体系结构<ul>
+<li>静态可重构<ul>
+<li>可重构FPGA电路：一次上电，全芯片烧写</li>
+</ul>
+</li>
+<li>动态可重构<ul>
+<li>粗粒度FPGA芯片：根据应用对不同区域动态烧写</li>
+<li>重构通过构件实现：在任务处理过程中，可以通过构件（FPGA静态区域）定义rPU（FGPA动态区域）的功能</li>
+<li>高效率、灵活性好<blockquote>
+<p>构件指功能模块，流件指在构建中流动的数据单元</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="_12">计算机的概念分类模型</h3>
+<ul>
+<li>Flynn分类法（针对冯式机）：<ul>
+<li>SISD单指令单数据流</li>
+<li>SIMD单指令多数据流</li>
+<li>MISD多指令单数据流</li>
+<li>MIMD多指令多数据流
+实现并行计算机结构的技术模型（基于指令流）：</li>
+</ul>
+</li>
+<li>并行向量处理机PVP<ul>
+<li>特征：所有部件定制专用</li>
+<li>处理器为向量处理机，通过交叉开关访存</li>
+<li>易编程</li>
+</ul>
+</li>
+<li>对称多处理机SMP<ul>
+<li>特征：使用商品化的微处理器每个处理器可以等同地访问SM、I/O及OS服务，使用高速缓存</li>
+<li>当代服务器和工作站架构</li>
+<li>易编程</li>
+</ul>
+</li>
+<li>大规模并行处理机MPP<ul>
+<li>处理节点-&gt;商品微处理器</li>
+<li>分布式局部存储器</li>
+<li>定制互联网络</li>
+<li>异步MIMD，程序由多个进程构成，由进程传递消息</li>
+<li>不易编程，易扩展</li>
+</ul>
+</li>
+<li>分布共享存储多处理机DSM<ul>
+<li>在每个处理节点设置高速缓存目录DIR，支持分布存储的数据一致性</li>
+<li>对于用户而言，形成了一个单地址的编址空间</li>
+</ul>
+</li>
+<li>工作站集群COW<ul>
+<li>节点都是完整的工作站
+<img alt="并行计算机结构的技术模型比较." src="../assets/screenshots/25-11-16-1.png" /></li>
+</ul>
+</li>
+</ul>
+<h3 id="_13">并行计算机访存模型</h3>
+<ul>
+<li>均匀存储访问模型UMA<ul>
+<li>共享物理存储器、单一地址空间</li>
+<li>访问任何存储字访问延迟一致、共享同一总线或交叉开关</li>
+<li>每台处理器可带有高速缓冲cache</li>
+<li>外设也可以一定形式共享</li>
+<li>仅适合小规模</li>
+<li>为紧耦合系统，可由SMP和非对称处理机（分为主从处理器）应用</li>
+</ul>
+</li>
+<li>非均匀存储访问模型NUMA<ul>
+<li>地址空间统一编址</li>
+<li>非均一内存访问</li>
+<li>每个处理器可带cache，且外设也可以某种形式共享</li>
+<li>可有层次性结构，可有全局共享存储器和群内共享存储器</li>
+<li>变种<ul>
+<li>全高速缓存存储访问模型COMA<ul>
+<li>无存储层次结构，缓存作为主存</li>
+<li>有分布的高速缓存目录</li>
+<li>高速缓存容量较大</li>
+</ul>
+</li>
+<li>高速缓存一致性非均匀存储访问模型CC-NUMA<ul>
+<li>将SMP机器作为一个单节点而彼此连接起来所形成的较大系统，实际上为DSM</li>
+<li>使用基于目录的高速缓存一致性协议</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>非远程存储访问模型NORMA<ul>
+<li>所有存储器都是私有的，仅能由本地处理器访问</li>
+<li>以消息通信方式完成信息交换</li>
+</ul>
+</li>
+</ul>
+<h3 id="_14">并行计算性能分析模型</h3>
+<ul>
+<li>Amdahl定律<ul>
+<li>适用于固定负载，总问题规模不变，分析计算速度的加速比</li>
+<li>定义了串行程序并行化后加速比计算公式与理论上限</li>
+<li>假设：不能改善和可改善部分占总任务的比例固定</li>
+<li>加速比公式：$\frac{1}{(1-r)+\frac{r}{a}}$，r为可进行改善部分所占的比例，a表示进行改善部分改善的程度（处理器数量）</li>
+<li>结论1：加速效果与改进部分占总执行时间的比例有关</li>
+<li>结论2：任务规模固定时，在某个处理器数时，会达到加速比上限，再增加处理器个数没有意义</li>
+</ul>
+</li>
+<li>Gustafsom定律<ul>
+<li>任务规模增加，，每核处理问题规模不便，分析计算速度的加速比</li>
+<li>假设：不能改善部分的规模是固定的，可改善部分的规模是可变的</li>
+<li>加速比公式：$1+(n-1)a$，n表示处理器个数，a表示能改善部分的并行时间所占比例</li>
+</ul>
+</li>
+<li>性能上限分析<ul>
+<li>强可扩展性：Amdahl定律</li>
+<li>弱可扩展性：Gustafson定律</li>
+</ul>
+</li>
+<li>粒度模型<ul>
+<li>粒度是衡量计算任务所含计算量的尺度</li>
+<li>假设R代表程序执行时间，C代表用于通信/访存开销，使用R/C比值衡量任务粒度大小尺度<ul>
+<li>粗粒度：R/C比值大，计算量大，通信/访存少，PVP、SMP适合</li>
+<li>细粒度：R/C比值小，计算量小，通信/访存少，MPP、DSM、COW适合</li>
+</ul>
+</li>
+<li>假设每个任务执行时间以R为单位，每个任务获取数据时间以C为单位<ul>
+<li>M为子任务总数，M-K、K为两台机器任务分配数</li>
+<li>总处理时间：$R*max(M-K,K)+C(M-K)K$</li>
+<li>当$R/C&lt;M/2$时，把所有任务分配到同一台处理机</li>
+<li>当$R/C&gt;M/2$时，把所有任务平均分配给两台处理机</li>
+</ul>
+</li>
+<li>优化方式<ul>
+<li>采用通信与计算过程重叠的优化方法</li>
+<li>通过硬件/软件减少通信开销</li>
+</ul>
+</li>
+<li>并行度M与粒度R/C具有trade off</li>
+</ul>
+</li>
+<li>Roofline模型<ul>
+<li>使用计算强度进行软硬件性能定量、直观分析</li>
+<li>算力$\pi$——每秒钟能完成的最大浮点运算数</li>
+<li>带宽$\beta$——获取数据的带宽上限</li>
+<li>计算强度上限$I_{max}=\frac{\pi}{\beta}$ ，在计算平台上，访存获取单位数据最多可用来进行多少次计算</li>
+<li><img alt="Roofline." src="../assets/screenshots/25-11-16-2.png" /></li>
+<li>可以得到计算模型的计算强度，根据机器的最大计算强度进行比较，选择合适的机器</li>
+</ul>
+</li>
+</ul>
+<h2 id="cache">并行计算机Cache一致性</h2>
+<h3 id="cache_1">引发Cache一致性问题缘由</h3>
+<p>在多处理机系统中：
+- 写共享数据操作时会引发Cache与主存以及各Cache之间数据不一致
+- 进程迁移引发各Cache之间数据不一致
+- I/O操作造成主存与各Cache中数据不一致</p>
+<h3 id="cache_2">多机系统Cache一致性维护策略</h3>
+<p>基本思路：及时<strong>更新</strong>或<strong>作废</strong>主存和其他Cache中的数据（更新法一般不用）
+4种一致性维护策略
+- 基于Write Through策略
+    - 基于WT策略的更新法
+    - 基于WT策略的作废法
+- 基于WB策略
+    - 基于WB策略的更新法
+    - 基于WB策略的作废法
+策略实现方法
+- 播写法（监听总线协议，广播写操作，适合总线结构）
+- 目录表法（适合非总线互连网结构）</p>
+<h3 id="_15">监听总线协议</h3>
+<p>基于总线的多处理机系统中，处理器可通过总线检测到所有对存储器正在进行的活动；如果总线业务破坏了cache数据块一致性状态，cache控制器就应该采取相应动作使本地副本更新或无效。
+- 基于WT策略的一致性维护原理
+    - 当处理器修改cache中的数据时，由总线使其他cache中的相同地址的数据均为无效
+- 基于WB策略的一致性维护原理
+    - 当处理器修改cache中的数据时，由总线使其他cache和主存中的相同地址的数据均为无效
+- 典型一致性维护数据副本状态协议（一般使用作废法）
+    - 2状态Cache协议
+        - 每个数据块有<code>有效S</code>和<code>无效I</code>状态
+        - 一致性四种操作
+            - <code>Rr</code>和<code>Wr</code>其他处理机对该数据块副本的读写
+            - <code>Rl</code>和<code>Wl</code>本地处理机对该数据块的读写
+        - <img alt="2状态Cache协议状态机." src="../assets/screenshots/25-11-18-1.png" />
+    - 3状态Cache协议
+        - 每个数据块有<code>不止一个数据块副本正确S</code>、<code>只有这个副本正确M（至少这个Cache数据块被写过一次，但memory内容未修改）</code>、<code>无效I</code>三种状态
+        - 一致性四种操作
+            - <code>Rr</code>和<code>Wr</code>其他处理机对该数据块副本的读写
+            - <code>Rl</code>和<code>Wl</code>本地处理机对该数据块的读写
+            - <img alt="3状态Cache协议状态机." src="../assets/screenshots/25-11-18-2.png" />
+    - 4状态Cache协议（MESI协议）
+        - Write-Once策略：第一次写采用WT，之后的写采用WB（程序执行特点）
+        - 把M状态分为Reserved状态和Dirty状态
+        - 四种状态
+            - Shared：从共享存储器读入并与存储器副本一致的cache数据块
+            - Invalid：在Cache中找不到，或者Cache中的数据块与共享存储器中不一致的Cache数据块
+            - Exclusive：从共享存储器读入的Cache数据只被写过一次，与共享存储器中的副本一致，且是正确副本（仅一个Cache和内存一致）
+            - Modified：Cache中数据块不止一次被写过，共享存储器中数据块也不是正确数据块，唯一正确的数据块在Cache中（Cache和内存不一致）
+        - <img alt="4状态Cache协议状态机." src="../assets/screenshots/25-11-18-3.png" />
+    - 5状态Cache协议（MOESI协议和MESIF协议）
+        - 问题：其他CPU请求数据时，所有S状态下的CPU都发数据会导致数据拥塞
+        - MOESI协议
+        - <img alt="MOESI状态Cache协议状态机." src="../assets/screenshots/25-11-18-4.png" />
+        - O为1：Cache行中数据是系统中最新数据拷贝，且其他CPU一定具有该Cache行副本，其他CPU的Cache行状态只能为S，Cache行数据与主存中数据不一致
+        - S位：Cache行状态为S时，其数据并不一定与存储器一致
+            - 如果其他CPU的Cache中不存在状态为O副本，该Cache行中的数据与存储器一致
+            - 如果其他CPU的Cache中存在状态为O的副本时，Cache行中的数据与存储器不一致
+    - 目录表协议（基于互连网络）
+        - 使用目录来记录共享数据的所有高速缓存数据行的位置与状态
+        - 组件
+            - 目录表
+                - 存放与共享数据块副本相关的数据
+                - 可以集中存放或分散存放
+            - 目录项
+                - 每个数据块一个目录项
+                - 包含多个指针，指向该数据块的多个远程副本的地址
+                - 一个重写位，用来说明是否有cache被允许数据块写入
+        - 全映射目录
+            - 在存储器中，每个目录项中有N个处理机指针位和1个重写位C
+            - 处理机指针位：表示相应处理机Cache中对应块状态
+            - 重写位：如果为1，表示有且仅有一个处理机指针位为1，且该处理机可对该块写操作
+        - 有限目录
+        - 链式目录
+    - MESIF协议（用于ccNUMA）
+        - 解决基于点到点的全互连处理器系统的Cache共享一致性问题
+        - ccNUMA架构使用目录表，不能使用总线监听
+        - 多个处理器Cache数据副本中，只有1个Cache行状态为F，其他为S
+        - Cache行状态位为F时，Cache中数据与存储器一致</p>
+<h2 id="_16">互联网络</h2>
+<h3 id="_17">互连网络特性</h3>
+<p>概念
+- 计算/处理单元、存储单元和I/O单元等称为节点
+- 节点间通过互连网络连接以交换信息
+- 节点度：与节点相连接的边数，是节点需要的I/O端口数
+- 网络直径：任意两个节点之间最短距离的最大值
+- 等分宽度：网络被切分成相等的两半，沿切口的最小边数
+- 节点间线长：两个节点间线的长度
+- 对称性：从任何节点看网络的拓扑结构都是一样的
+- 寻径功能：实现节点与节点之间连接方法
+互连网络的性能指标
+- 通信时延：从源节点到目的节点传送一条消息所需的总时间。包括4部分：软件开销、通道时延、选路时延、竞争时延
+- 网络时延：通道时延、选路时延
+- 端口带宽：单位时间传送到其他端口的最大信息量
+- 聚集带宽：从一半节点到另一半节点，单位时间传送的最大信息量
+- 对剖带宽：最小对剖平面所有边单位时间传送的最大信息量
+- 网络吞吐率：单位时间内网络可传送的数据包数，对应用程序性能也有比较大影响</p>
+<h2 id="_18">寻径函数</h2>
+<p>如果将互连网络的N个输入端和N个输出端分别用整数0、1、…、N-1来表示，则寻径函数描述了相互连接的输出端号和输入端号之间的一一对应关系。
+- 交换置换
+    - 实现节点二进制编址中第k位值不同的输入端和输出端之间的连接
+    - 主要用于构造立方体互连网络和超立方体互连网络
+- 全混洗置换
+    - 把节点的二进制编码循环左移一位
+    - 每全混洗一次，循环左移一次，经过n次全混洗，可恢复到最初排序状态
+        - 子洗牌（K位子洗牌是最低k位进行洗牌，高位不变）
+        - 超洗牌（K位超洗牌是最高k位进行洗牌，低位不变）
+- 蝶式置换
+    - 节点编址的最高位和最低位交换
+        - 子蝶式（K位子蝶式是取最低k位进行蝶式置换，高位不变）
+        - 超蝶式（K位超蝶式是取最高k位进行蝶式置换，低位不变）
+- 位序颠倒置换
+    - 将输入端二进制地址的位序颠倒过来
+- 移数置换
+    - 在n位末尾加1，并取模$2^n$
+- 恒等置换
+    - 相同编号的输入端与输出端一一对应所实现的置换
+- 逆置换</p>
+<h2 id="_19">静态互连网络</h2>
+<p>入/出端节点固定
+- 每种连接可用一种寻径函数表示
+- 若存在m种连接，用m个寻径函数表示
+拓扑：
+- 一维线性阵列
+- 环形互连网（移数置换）
+- 树形网络
+- 树网连接
+- 金字塔连接
+- 超立方体网
+    - 路由方法：当前节点与目的节点编号从高位到低位依次比较，相同不动，不同则向该位取反的相邻节点移动
+    - 改进
+        - 带环立方体CCC
+        - k元n立方体网络</p>
+<h2 id="_20">动态互连网络</h2>
+<ul>
+<li>总线结构<ul>
+<li>最简单结构</li>
+<li>处理机、存储模块及I/O作为节点连接到总线上</li>
+<li>各节点以均等竞争方式使用总线，但容易引发冲突<ul>
+<li>结构改进<ul>
+<li>多总线结构</li>
+<li>多层总线结构</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>总线仲裁<ul>
+<li>排队器（优先权编码器）<ul>
+<li>当多个节点同时发出请求，排队器仲裁，仲裁结果经过译码器控制节点发送信息</li>
+</ul>
+</li>
+<li>菊花链<ul>
+<li>静态菊花链<ul>
+<li>给每个节点分配一个固定优先权</li>
+<li>当多个节点同时申请使用总线时，具有最高优先权的节点使用总线</li>
+<li>通过响应线连接到总线控制器的位置决定节点的优先权</li>
+<li>![[25-11-21-1.png]]</li>
+</ul>
+</li>
+<li>动态菊花链<ul>
+<li>节点优先权动态变化</li>
+<li>每个节点的接口都有总线控制器功能</li>
+<li>担当总线控制器功能的节点决定节点优先权</li>
+<li>![[25-11-21-2.png]]</li>
+<li>节点优先权变化策略<ul>
+<li>循环法（节点最高优先权依次循环，刚使用过总线的节点具有最低优先权）</li>
+<li>基于某种函数确定优先权</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>交叉开关<ul>
+<li>任何时刻任何节点可以访问任一其他节点</li>
+<li>无冲突现象发生</li>
+</ul>
+</li>
+<li>多级互连网络<ul>
+<li>速度高，灵活性好，传输率低于完全开关网络，适用于PE较多的情形</li>
+<li>开关形式<ul>
+<li>2*2交叉开关</li>
+</ul>
+</li>
+<li>级间拓扑结构</li>
+<li>开关控制方式<ul>
+<li>级控制（同一级开关只用一个控制信号）</li>
+<li>单元控制（每一个开关都有自己单独的控制信号）</li>
+<li>部分级控制</li>
+</ul>
+</li>
+<li>示例<ul>
+<li>STARAN网络</li>
+<li>Omega网络</li>
+<li>Parker网络<ul>
+<li>基准网的递归组成：任何一个$N\times{N}$的互连网络，可以由两个$\frac{N}{2}\times{\frac{N}{2}}$的子网络组成</li>
+</ul>
+</li>
+<li>多级互联网中的路径冲突<ul>
+<li>冲突解决办法</li>
+<li>两个多级开关网串接在一起（延迟较大）</li>
+</ul>
+</li>
+<li>两个Omega网络相连得到$\pi$网</li>
+<li>Benes网：两个基准网且级合并</li>
+<li>Cantor网络</li>
+<li>Banyan网络<ul>
+<li>每个根节点对应下面各级都是一棵树</li>
+<li>可以实现目标节点地址寻址</li>
+</ul>
+</li>
+<li>Delta网络<ul>
+<li>分组混洗</li>
+<li>用$a*b$的开关可以构成${a^n}\times{b^n}$的网络</li>
+<li>小规模时：MIN跳数少，成本低；但链路数少，总带宽低，容错差</li>
+</ul>
+</li>
+<li>Batcher-Banyan非阻塞动态网</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="_21">消息传递机制</h3>
+<ul>
+<li>消息格式<ul>
+<li>消息：节点间通信的逻辑单位；由任意数目的固定长度包组成；长度可变。</li>
+<li>包：节点间信息传输最小单位；包含寻径目的地址、顺序号和数据片；一般长64～512位。</li>
+<li>数据片：包由固定长度的数据片组成。寻径信息和序号形成头片，其余的片是数据片。一般8～16位。</li>
+</ul>
+</li>
+<li>寻径方式<ul>
+<li>线路交换<ul>
+<li>先建立好专有路径，再传递消息</li>
+<li>时延公式：$T=(L_t/B)\times{D}+L/B$，$L_t$为建立路径所需的寻径信息片长度，L为信息包的长度，D为经过的节点数，B为带宽</li>
+<li>缺点<ul>
+<li>物理通道不共享</li>
+<li>开销大</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>存储转发寻径<ul>
+<li>当包到达中间节点时，首先被存入缓冲区，当所输出通道和接收节点包缓冲区可使用时，再传送给下一个节点</li>
+<li>时延公式：$T=D\times{L/B}$，L为信息包的长度，D为经过节点数，B为带宽</li>
+<li>缺点<ul>
+<li>包缓冲区大，不利于VLSI（超大规模集成电路）实现</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>虚拟直通寻径<ul>
+<li>为了减少时延，没有必要等到整个消息全部接受后再作路由选择，只要收到消息头部即可判断寻径</li>
+<li>时延公式：$T=L_h+L/B$，$L_h$为基于消息寻径头部寻径时间</li>
+<li>缺点：遇到阻塞时，依然是存储-转发。节点需要包缓冲区大，包缓冲区独立在寻径芯片外，转发延时大</li>
+</ul>
+</li>
+<li>虫蚀寻径<ul>
+<li>节点的寻径器硬件中只设置片缓冲区</li>
+<li>消息从源节点传送到目的节点经过寻径器</li>
+<li>时延公式：$T=T_f\times{L/B}=(L_f/B)\times{D}+L/B$，$L_f$为片长度，$T_f$为片经过一个节点所需时间</li>
+<li>优点<ul>
+<li>缓冲区较小</li>
+<li>网络传输时延低</li>
+<li>通道共享性好，利用率高</li>
+<li>易于实现选播和广播通信方式</li>
+</ul>
+</li>
+<li>需要注意<ul>
+<li>同一包中所有的片不可分离，以虫蚀方式顺序地发送</li>
+<li>只有头片知道包发往何处，所有数据片必须跟着头片</li>
+<li>不同的包可以交替地传送，但不同包的片不能交叉，否则它们可能被送到错误的目的地</li>
+</ul>
+</li>
+<li>主要问题<ul>
+<li>通道争用时，更容易引起阻塞、死锁</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>死锁和虚拟通道<ul>
+<li>由于缓存区或通道上的循环等待会引起死锁</li>
+<li>死锁解决策略<ul>
+<li>防死锁路由算法</li>
+<li>增加物理硬件通道</li>
+<li>虚拟通道（适合虫蚀寻径）<ul>
+<li>建立节点间逻辑链路</li>
+<li>物理链路通道由所有虚拟通道分时共享</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>包冲突时处理策略<ul>
+<li>包处理冲突策略不能解决死锁问题</li>
+<li>阻塞法<ul>
+<li>控制简单，但可能会引起大面积阻塞</li>
+</ul>
+</li>
+<li>扬弃并重发法<ul>
+<li>控制简单，重发效果未知，会加大网络负载</li>
+</ul>
+</li>
+<li>虚拟直通法<ul>
+<li>不会浪费已经分配的资源，但需要一个能存放整个包的缓冲区</li>
+</ul>
+</li>
+<li>绕道法<ul>
+<li>需要按某种算法重新寻径</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>防死锁寻径算法<ul>
+<li>确定寻径<ul>
+<li>预先确定源节点到目标节点的路径，与网络的状况无关</li>
+<li>网络资源利用率不高，会影响系统性能</li>
+<li>两种确定寻径方法<ul>
+<li>二维网格中的X-Y寻径<ul>
+<li>首先沿着X维方向确定路径，然后沿着Y维方向选择路径</li>
+<li>四种模式：东-北，东-南，西-北，西-南</li>
+<li>路由与源节点无关，先编址的高位相等，再低位相等</li>
+<li>特点<ul>
+<li>无死锁：总是先沿X维方向寻径，然后再沿Y维方向寻径，寻径不会出现死锁或循环等待现象。</li>
+<li>可扩展：可以扩充到n维网络，如X-Y-Z三维等等。</li>
+<li>最短路径：可用于存储转发或Wormhole寻径网络，在源和目的节点之间形成一条距离最短的路径。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>立方体网络中的E立方体寻径（TODO）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>自适应寻径（Subnet法）<ul>
+<li>当节点故障或链路故障、冲突时，不能绕道，需要自适应寻径</li>
+<li>在网格网络中，同一维的所有连接都使用多个虚拟通道</li>
+<li>![[25-11-21-3.png]]</li>
+<li>拆分成两个虚拟子网</li>
+<li>两个方向寻径使用不同的虚拟通道，不会构成环路</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>通信模式<ul>
+<li>模式分类<ul>
+<li>单播模式</li>
+<li>选播模式</li>
+<li>广播模式</li>
+<li>会议模式</li>
+</ul>
+</li>
+<li>寻径算法效率需考虑因素<ul>
+<li>信道量：传输消息所使用的通道数</li>
+<li>通信时延：包最长传输时间</li>
+</ul>
+</li>
+<li>不同寻径方式关注因素<ul>
+<li>在虫蚀寻径方式下，关注信道量参数</li>
+<li>在存储转发网络中，关注通信时延</li>
+</ul>
+</li>
+<li>如何选择选播和广播<ul>
+<li>选播：使得网络流量（信道量）和时延最少</li>
+<li>广播：生成广播树</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="_22">并行计算机系统结构</h2>
+<h3 id="uma">UMA型并行计算机</h3>
+<ul>
+<li>Bus多处理器系统<ul>
+<li>Bus是瓶颈，解决思路<ul>
+<li>减少使用总线<ul>
+<li>增加Cache</li>
+<li>开发数据局部性</li>
+</ul>
+</li>
+<li>提高总线性能<ul>
+<li>使总线性能更高</li>
+<li>多总线、多级总线</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>总线仲裁<ul>
+<li>集中式仲裁</li>
+<li>分散式仲裁<ul>
+<li>静态菊花链</li>
+<li>动态菊花链<ul>
+<li>优先权循环法</li>
+<li>AB母线仲裁（TODO）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>需要解决饥饿问题</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Switch多处理器系统<ul>
+<li>Crossbar<ul>
+<li>特点<ul>
+<li>开关控制，速度快</li>
+<li>严重受PIN数量限制；开关数多，成本高</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>MIN（Multistage Interconnection Network）<ul>
+<li>麻痹<ul>
+<li>问题：数据在传输过程中，经过的路径过于集中造成的阻塞现象</li>
+<li>解决方法<ul>
+<li>减少请求<ul>
+<li>合并消息</li>
+</ul>
+</li>
+<li>增加可选路径<ul>
+<li>增加开关级数</li>
+<li>多重输出网络</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>NUMA型并行计算机<ul>
+<li>CC-NUMA<ul>
+<li>HM中数据的管理方式<ul>
+<li>全映射法<ul>
+<li>第一位：C表示数据是否有效/可重写</li>
+<li>每个PU占一位：表示对应Cache是否包含本页</li>
+<li>管理位的多少与PU数有关</li>
+</ul>
+</li>
+<li>Limited Pointed法<ul>
+<li>基本思想：同时使用同一副本的PU数不超过4</li>
+<li>其他PU使用时，进行替换</li>
+</ul>
+</li>
+<li>指针法<ul>
+<li>HM存储一个指向使用该页PU编号的指针</li>
+<li>PU依次存储指向下一个使用的PU编号的指针</li>
+<li>最后一个使用的PU指向结束标志</li>
+</ul>
+</li>
+<li>Cache一致性协议<ul>
+<li>三状态协议</li>
+<li>HM：U(没有被Cache)；S(Memory和Cache一致)；D(Memory和Cache不一致)</li>
+<li>Cache：I(无效页)；S(共有页)；D(独有页)</li>
+<li>CC-NUMA数据一致性维护太复杂，成本高，性能损失大；HM仅数据开始、结束用到，中间可以不保存/修改HM中数据块，但目录表是需要的。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>COMA（Cache Only Memory Architecture）<ul>
+<li>结构特点<ul>
+<li>阶层Bus</li>
+<li>目录D用于存储页的位置信息</li>
+</ul>
+</li>
+<li>数据的访问方式<ul>
+<li>初始：数据随机分配在Cache，并在Directory记录</li>
+<li>PU待访问数据通过Cache和Directory找到后，拷贝到本地Cache</li>
+<li>问题<ul>
+<li>访问数据地址的虚拟化，cache数据变化时，目录需要重新映射</li>
+<li>分布式缓存比共享驻村中页的替换更复杂</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>COMA协议<ul>
+<li>I（Invalid）：无效</li>
+<li>E（Exclusive）：其它位置不存在Copy</li>
+<li>S（Shared）：在其它地方存在Copy</li>
+<li>R（Reading）：发出读要求后的等待状态</li>
+<li>W（Waiting）：发出其它Copy无效化的等待状态</li>
+<li>A（Answering）：正在回答其它Processor的读要求</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Dash多处理机系统<ul>
+<li>高速地址映射D将全局地址翻译为本地地址</li>
+<li>采用分布式目录方式的缓存一致性协议，使用硬件保持缓存数据一致性，减少访问延迟</li>
+<li>网络接口含目录，目录具有与配置在群里主存相对应的项，并保持着其他群的缓存状态信息</li>
+<li>数据分布在各群的局部主存中，但有局部性的数据尽量分布在相应群中。（M中数据不移动，和COMA不同）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="nora">NORA型并行计算机</h2>
+<ul>
+<li>NORA型MPP<ul>
+<li>结构特点<ul>
+<li>不共享内存</li>
+<li>通过消息传送方式进行协调</li>
+<li>规模较大</li>
+</ul>
+</li>
+<li>结构分析<ul>
+<li>静态网连接<ul>
+<li>Mesh<ul>
+<li>简单的网络结构和路由算法就能够构成Mesh</li>
+<li>但规模较大时，mesh的网络时延成为关键问题</li>
+</ul>
+</li>
+<li>超立方体Hypercube<ul>
+<li>性能优异，寻径简单</li>
+<li>节点度很大，实现成本高</li>
+</ul>
+</li>
+<li>CCC（Cube Connected Cycle）</li>
+<li>k-ary n-cube Torus（超立方体改进）</li>
+<li>RDT（mesh改进）</li>
+<li>静态不等距网（fat tree）</li>
+<li>动态不等距网（fat tree）</li>
+</ul>
+</li>
+<li>任务的逻辑结构由算法决定</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>NORA型集群COW<ul>
+<li>消息的传输控制方式<ul>
+<li>VIA（virtual interface architecture）</li>
+<li>RDMA（Remote Direct Memory Access）</li>
+</ul>
+</li>
+<li>未来COW-&gt;MPP</li>
+</ul>
+</li>
+</ul>
+<h2 id="_23">节点并行技术</h2>
+<ul>
+<li>一般是SMP、cc-NUMA架构</li>
+<li>芯片：定制、商用</li>
+<li>多芯片、大容量内存、高速网络接口</li>
+<li>处理器芯片：多核、众核、异构多核/众核（趋势）</li>
+<li>协处理器加速</li>
+<li>发展趋势应该是通用核心的计算地位将随着时间推移不断减弱，以协处理器为中心思想</li>
+<li>实例<ul>
+<li>CELL<ul>
+<li>采用协处理器技术</li>
+<li>异构多核</li>
+<li>PPU：主处理单元（运行操作系统）</li>
+<li>SPU：协处理器（运行应用程序相关的线程计算）</li>
+<li>负载均衡：应用程序的多个线程被平均分布到各个SPE</li>
+<li>Cell只要求具备强劲的浮点效能，而对整数运算不作要求，因此通用的主核心可以非常精简，没有要求通用性和兼容性</li>
+</ul>
+</li>
+<li>Intel的Many Core<ul>
+<li>采用类似Cell的专用化结构</li>
+<li>将对等设计的四核心处理器中的某一个或几个内核置换为若干数量的DSP逻辑</li>
+<li>Many Core必须考虑兼容大量的X86应用软件，专用的任务居于从属性地位，仍然要求通用性和兼容性</li>
+</ul>
+</li>
+<li>MIC架构</li>
+<li>通用处理GPU——GPGPU</li>
+<li>国产<ul>
+<li>神威</li>
+<li>飞腾</li>
+<li>迈创</li>
+<li>海光</li>
+<li>华为鲲鹏</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="_24">资源管理与任务调度</h2>
+<h3 id="_25">多机操作系统概述</h3>
+<p>多级操作系统主要功能
+- 多机系统中用中间件层实现，处于节点操作系统和用户层环境中间
+- 由软件基础结构的两个子层组成
+    - SSI（Single System Image）基础结构
+        - 与节点操作系统联系在一起，提供对系统资源的统一访问
+    - 系统可用性基础结构
+        - 在各个节点提供可用性服务
+        - 检查点设置和进程迁移
+多机操作系统分类
+- 主从型
+    - 操作系统仅在指定的主处理机上运行
+- 独立型
+    - 每个处理机有自己操作系统或管理程序
+- 浮动型
+    - 主处理机可以从一个处理机浮动到另一个处理机</p>
+<h3 id="rms">资源管理和调度（RMS）</h3>
+<ul>
+<li>原因<ul>
+<li>提高系统效率和可靠性</li>
+<li>提高可编程性和易管理性</li>
+</ul>
+</li>
+<li>功能<ul>
+<li>线程/进程迁移</li>
+<li>检查点</li>
+<li>容错</li>
+<li>搜索空闲周期</li>
+<li>减少用户干预</li>
+<li>负载平衡</li>
+<li>多应用程序队列</li>
+</ul>
+</li>
+<li>组成<ul>
+<li>资源调度器<ul>
+<li>组织管理好物理资源</li>
+</ul>
+</li>
+<li>作业调度器<ul>
+<li>任务和物理资源的有效匹配</li>
+<li>处理应用程序队列等待任务（Job Selection）</li>
+<li>资源定位和任务分配（Job Allocation）</li>
+<li>调度的基本单位：计算节点或更细粒度资源</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>调度概述<ul>
+<li>在一组具有任意特性处理机中对一组进程进行调度</li>
+<li>性能指标（从最大化资源利用率，最快完成任务执行角度）<ul>
+<li>最小完成时间</li>
+<li>最小平均等待时间</li>
+<li>所需最少处理机数</li>
+<li>处理机最大利用率</li>
+<li>处理机最小空闲时间</li>
+</ul>
+</li>
+<li>两类调度策略<ul>
+<li>确定性调度<ul>
+<li>在求解问题前给出表示问题特征的所有信息，主要有任务运行时间和任务间关系</li>
+<li>分类<ul>
+<li>单作业并行调度<ul>
+<li>子任务之间有数据、控制等相关性，调度时必须考虑同步等问题</li>
+<li>实现<ul>
+<li>非抢先调度方法</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>多作业并行调度<ul>
+<li>各作业之间无相关，独立执行，作业内子任务有相关</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>不确定性调度<ul>
+<li>系统运行过程中根据系统状态对任务进行分配</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>两种调度实现方法<ul>
+<li>抢先调度</li>
+<li>非抢先调度</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "search.share", "navigation.tabs", "navigation.path", "navigation.top", "navigation.footer", "navigation.indexes", "content.code.copy", "content.code.select"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
