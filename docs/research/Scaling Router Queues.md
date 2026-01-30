@@ -116,27 +116,27 @@
 		- 调度策略
 		- 入队自叶节点开始，向根节点逐级增加计数器
 		- 出队自根节点开始，按调度策略选择叶节点扣减计数器
+---
 #### 优先级映射
 ---
 #### Challenge
 ##### threshold is hard to set
-- 文献[24]指出类似policer的策略会对TCP丢包敏感流损害严重，需要有足够大的阈值
+- 若阈值过小，会导致不必要的丢包
 - 若阈值过大，会导致更多的突发流进入TM，导致缓存系统丢包严重，影响结果的确定性
----
+- 阈值需要动态调整，以满足调度需要
+	- 如果高优先级包和低优先级包共享同一个物理队列，低优先级包先到达并占满队列，高优先级后到达，低优先级包需要让出缓存空间给高优先级包
 ---
 ### DESIGN
 #### GOALS
 - 使用虚拟队列近似实现HQoS
 	- 模拟SP调度、公平调度、shaping
 	- 调度算法的近似程度
-		- 时间：单个流中单位时间出包的个数
+		- 分布：单个流中单位时间出包的个数
 			- ***TODO***
 		- 顺序：单位时间窗内出队包顺序差异
 			- ***TODO***
 ---
 #### OVERVIEW
-- 图
-	- ***HCAR+ LBMS port cache去掉 port schedule改成port queue schedule，HCAR+mapping框起来（TODO）***
 - 准入
 	- 虚拟队列控制准入
 		- 计数器维护通过节点的数据包长度
@@ -157,16 +157,14 @@
 ---
 - 调度策略
 	- 子队列优先级从高到低依次调度
+---
 ```Cpp
 doDequeue(expectSize) {
-	scheduleSize = 0;
-	for(cls in spQueue) {
-		scheduleSize += cls.doDequeue(expectSize);
-		if (expectSize <= scheduleSize) {
-			break;
-		}
+	totalScheduleSize = 0;
+	for(cls in spQueue && expectSize <= scheduleSize) {
+		totalScheduleSize += cls.doDequeue(expectSize - totalScheduleSize);
 	}
-	return scheduleSize;
+	return totalScheduleSize;
 }
 ```
 ---
@@ -182,20 +180,48 @@ doDequeue(expectSize) {
 ---
 - ***映射分析（TODO）***
 ---
-#### DWRR
+#### 公平调度
 - 目标
 	- 公平分配每个流的带宽，做到per-flow isolation
 ---
 - 调度策略
 	- 为每个子队列维护一个deficit，每次调度deficit扣减调度出队的包长度
 	- deficit大于0可被调度，小于等于0不可被调度。
+---
 ```Cpp
 doDequeue(expectSize) {
-	for(cls in dwrrQueue) {
+	totalScheduleSize = 0;
+	for(cls in newDwrrQueue && expectSize <= totalScheduleSize) {
 		if (cls.deficit > 0) {
-			cls.doDequeue(ex)
+			flowScheduleSize = cls.doDequeue(expectSize - scheduleSize);
+			if (flowScheduleSize <= 0) {
+				oldDwrrQueue.push_back(cls);
+				newDwrrQueue.pop_front();
+			}
+			cls.deficit -= flowScheduleSize;
+			totalScheduleSize += flowScheduleSize;
+		} else {
+			cls.deficit += cls.quantum; // quantum = weight * MTU
+			oldDwrrQueue.push_back(cls);
+			newDwrrQueue.pop_front();
 		}
 	}
+	for(cls in oldDwrrQueue && expectSize <= totalScheduleSize) {
+		if (cls.deficit > 0) {
+			flowScheduleSize = cls.doDequeue(expectSize - scheduleSize);
+			if (flowScheduleSize <= 0) {
+				oldDwrrQueue.push_back(cls);
+				oldDwrrQueue.pop_front();
+			}
+			cls.deficit -= flowScheduleSize;
+			totalScheduleSize += flowScheduleSize;
+		} else {
+			cls.deficit += cls.quantum; // quantum = weight * MTU
+			oldDwrrQueue.push_back(cls);
+			oldDwrrQueue.pop_front();
+		}
+	}
+	return totalScheduleSize;
 }
 ```
 ---
@@ -213,6 +239,24 @@ doDequeue(expectSize) {
 - 调度策略
 	- 为队列维护一个token bucket，每次被调度出队从token bucket扣减token
 	- 当token小于等于0时，该队列不可被调度
+---
+```Cpp
+doDequeue(expectSize) {
+	totalScheduleSize = 0;
+	tmp_token = token
+	tmp_token += rate * interval
+	if (token < expectSize) {
+		// delay
+		schedule()
+		return 0;
+	} else {
+		totalScheduleSize = cls.doDequeue(expectSize);
+		tmp_token -= totalScheduleSize;
+		token = tmp_token
+	}
+	return totalScheduleSize;
+}
+```
 ---
 #### ***combine work-conserving-schedule node and non-work-conserving-schedule node（TODO）***
 ---
