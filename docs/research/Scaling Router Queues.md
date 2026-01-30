@@ -22,16 +22,17 @@
 	- QoS描述了网络在资源受限条件下对不同流量类型进行差异化处理的能力，以满足各种业务的性能需求（例如带宽、延迟、抖动和丢包率）的保证。[1]
 	- SLA是服务提供商与客户之间的一种正式承诺性合同，用于定义具体的服务质量指标、责任和保障措施。SLA 的核心作用是在业务层面将用户的 QoS 需求转化为可衡量、可执行的服务等级目标。[2]
 	- 传统 IP 网络的 Best-Effort 机制无法保证性能，因而 QoS 技术（如 DiffServ）引入了按一些机制来实现可控的服务质量。[3]
-	- 为了保证QoS，目前有work conserving（schedule）和non work conserving（traffic shaping）等机制
+	- 为了保证QoS，目前有work conserving schedule和non work conserving schedule等调度算法
 		- schedule有DWRR[4]、SP[5]、WFQ[6]等算法
 		- traffic shaping
 		- traffic policing一般使用token bucket[7]
-	- HQoS
-		- HQoS定义
-			- 随着用户规模增加和业务种类多样化，传统单层 QoS 已难满足对不同用户和不同业务的细粒度服务要求。因此在接入网尤其是运营商边缘网关中引入了层次化 QoS（Hierarchical QoS, HQoS）机制。[8]
-		- HQoS功能
-			- HQoS 在传统 QoS 的基础上增加了多级调度结构，通过树形队列结构实现对服务、用户和用户组等多个层次的差异化调度，从而在接入网环境中更有效地保证 SLA 级别的 QoS 目标。
-			- ***画图举个例子（TODO）***
+---
+- HQoS
+	- HQoS定义
+		- 随着用户规模增加和业务种类多样化，传统单层 QoS 已难满足对不同用户和不同业务的细粒度服务要求。因此在接入网尤其是运营商边缘网关中引入了层次化 QoS（Hierarchical QoS, HQoS）机制。[8]
+	- HQoS功能
+		- HQoS 在传统 QoS 的基础上增加了多级调度结构，通过树形队列结构实现对服务、用户和用户组等多个层次的差异化调度，从而在接入网环境中更有效地保证 SLA 级别的 QoS 目标。
+		- ***画图举个例子（TODO）***
 ---
 #### 网络设备（路由器）
 - QoS（HQoS）大多在网络设备（路由器）中实现
@@ -115,6 +116,7 @@
 		- 调度策略
 		- 入队自叶节点开始，向根节点逐级增加计数器
 		- 出队自根节点开始，按调度策略选择叶节点扣减计数器
+#### 优先级映射
 ---
 #### Challenge
 ##### threshold is hard to set
@@ -125,7 +127,7 @@
 ### DESIGN
 #### GOALS
 - 使用虚拟队列近似实现HQoS
-	- 模拟SP调度、WFQ调度、shaping
+	- 模拟SP调度、公平调度、shaping
 	- 调度算法的近似程度
 		- 时间：单个流中单位时间出包的个数
 			- ***TODO***
@@ -152,8 +154,21 @@
 #### SP
 - 目标
 	- 为某些流提供绝对的优先
-- 出队策略
-	- 优先级从高到低排列，当高优先级计数器为正数时，低优先级出队速率为0
+---
+- 调度策略
+	- 子队列优先级从高到低依次调度
+```Cpp
+doDequeue(expectSize) {
+	scheduleSize = 0;
+	for(cls in spQueue) {
+		scheduleSize += cls.doDequeue(expectSize);
+		if (expectSize <= scheduleSize) {
+			break;
+		}
+	}
+	return scheduleSize;
+}
+```
 ---
 - ***阈值策略（TODO）***
 ---
@@ -167,11 +182,23 @@
 ---
 - ***映射分析（TODO）***
 ---
-#### WFQ
+#### DWRR
 - 目标
 	- 公平分配每个流的带宽，做到per-flow isolation
-- 出队策略
-	- ***按照给定出队包长度，按照权重分配+轮询***
+---
+- 调度策略
+	- 为每个子队列维护一个deficit，每次调度deficit扣减调度出队的包长度
+	- deficit大于0可被调度，小于等于0不可被调度。
+```Cpp
+doDequeue(expectSize) {
+	for(cls in dwrrQueue) {
+		if (cls.deficit > 0) {
+			cls.doDequeue(ex)
+		}
+	}
+}
+```
+---
 - ***映射策略（TODO）***
 ---
 - 准入分析
@@ -182,8 +209,10 @@
 #### Shaper
 - 目标
 	- 对流进行限速
-- 出队策略
-	- ***按照限定速率进行出队，如果出的包大于剩余的token，则可调度下一个（TODO）***
+---
+- 调度策略
+	- 为队列维护一个token bucket，每次被调度出队从token bucket扣减token
+	- 当token小于等于0时，该队列不可被调度
 ---
 #### ***combine work-conserving-schedule node and non-work-conserving-schedule node（TODO）***
 ---
