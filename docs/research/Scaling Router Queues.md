@@ -192,13 +192,14 @@ doDequeue(expectSize) {
 doDequeue(expectSize) {
 	totalScheduleSize = 0;
 	// activeFlow is a bitmap, noting the backlogged flow and flow's deficit > 0
-	while (totalScheduleSize >= expectSize) {
-		ptr = (ptr + 1) % dwrrQueue.length();
+	while (totalScheduleSize < expectSize) {
+		
 		scheduleSize = dwrrQueue[ptr].doDequeue(min(expectSize, dwrrQueue[ptr].deficit));
 		dwrrQueue[ptr].deficit -= scheduleSize;
 		totalScheduleSize += scheduleSize;
 		isDeficitNegative = (dwrrQueue[ptr].deficit >> 31) & 1;
 		dwrrQueue[ptr].deficit += (dwrrQueue[ptr].deficit & -isDeficitNegative);
+		ptr = (ptr + (totalScheduleSize < expectSize || isDeficitNegative)) % dwrrQueue.length();
 	}
 	return totalScheduleSize;
 }
