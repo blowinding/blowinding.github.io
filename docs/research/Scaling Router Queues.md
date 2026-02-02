@@ -191,35 +191,14 @@ doDequeue(expectSize) {
 ```Cpp
 doDequeue(expectSize) {
 	totalScheduleSize = 0;
-	for(cls in newDwrrQueue && expectSize <= totalScheduleSize) {
-		if (cls.deficit > 0) {
-			flowScheduleSize = cls.doDequeue(expectSize - scheduleSize);
-			if (flowScheduleSize <= 0) {
-				oldDwrrQueue.push_back(cls);
-				newDwrrQueue.pop_front();
-			}
-			cls.deficit -= flowScheduleSize;
-			totalScheduleSize += flowScheduleSize;
-		} else {
-			cls.deficit += cls.quantum; // quantum = weight * MTU
-			oldDwrrQueue.push_back(cls);
-			newDwrrQueue.pop_front();
-		}
-	}
-	for(cls in oldDwrrQueue && expectSize <= totalScheduleSize) {
-		if (cls.deficit > 0) {
-			flowScheduleSize = cls.doDequeue(expectSize - scheduleSize);
-			if (flowScheduleSize <= 0) {
-				oldDwrrQueue.push_back(cls);
-				oldDwrrQueue.pop_front();
-			}
-			cls.deficit -= flowScheduleSize;
-			totalScheduleSize += flowScheduleSize;
-		} else {
-			cls.deficit += cls.quantum; // quantum = weight * MTU
-			oldDwrrQueue.push_back(cls);
-			oldDwrrQueue.pop_front();
-		}
+	// activeFlow is a bitmap, noting the backlogged flow and flow's deficit > 0
+	while (totalScheduleSize >= expectSize) {
+		ptr = (ptr + 1) % dwrrQueue.length();
+		scheduleSize = dwrrQueue[ptr].doDequeue(min(expectSize, dwrrQueue[ptr].deficit));
+		dwrrQueue[ptr].deficit -= scheduleSize;
+		totalScheduleSize += scheduleSize;
+		isDeficitNegative = (dwrrQueue[ptr].deficit >> 31) & 1;
+		dwrrQueue[ptr].deficit += (dwrrQueue[ptr].deficit & -isDeficitNegative);
 	}
 	return totalScheduleSize;
 }
@@ -242,18 +221,9 @@ doDequeue(expectSize) {
 ---
 ```Cpp
 doDequeue(expectSize) {
-	totalScheduleSize = 0;
-	tmp_token = token
-	tmp_token += rate * interval
-	if (token < expectSize) {
-		// delay
-		schedule()
-		return 0;
-	} else {
-		totalScheduleSize = cls.doDequeue(expectSize);
-		tmp_token -= totalScheduleSize;
-		token = tmp_token
-	}
+	// rate_interval is rate * interval between root schedule
+	totalScheduleSize = cls.doDequeue(min(expectSize, rate_interval));
+	
 	return totalScheduleSize;
 }
 ```
