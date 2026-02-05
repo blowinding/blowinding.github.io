@@ -191,15 +191,15 @@ doDequeue(expectSize) {
 ```Cpp
 doDequeue(expectSize) {
 	totalScheduleSize = 0;
-	while (totalScheduleSize < expectSize) {
-		
-		scheduleSize = dwrrQueue[ptr].doDequeue(min(expectSize, dwrrQueue[ptr].deficit));
-		dwrrQueue[ptr].deficit -= scheduleSize;
-		totalScheduleSize += scheduleSize;
-		isDeficitNegative = (dwrrQueue[ptr].deficit >> 31) & 1;
-		dwrrQueue[ptr].deficit += (dwrrQueue[ptr].deficit & -isDeficitNegative);
-		ptr = (ptr + (totalScheduleSize < expectSize || isDeficitNegative)) % dwrrQueue.length();
-	}
+	scheduleSize = dwrrQueue[ptr].doDequeue(min(expectSize,dwrrQueue[ptr].deficit));
+	dwrrQueue[ptr].deficit -= scheduleSize;
+	totalScheduleSize += scheduleSize;
+	// check if deficit is negative
+	isDeficitNegative = (dwrrQueue[ptr].deficit >> 31) & 1;
+	// if deficit is negative, add quantum
+	dwrrQueue[ptr].deficit += (dwrrQueue[ptr].quantum & -isDeficitNegative);
+	// if ptr queue is empty or deficit is negative, switch ptr
+	ptr = (ptr + (dwrrQueue[ptr].count < 0 || isDeficitNegative)) % dwrrQueue.length(); // switch to next queue
 	return totalScheduleSize;
 }
 ```
