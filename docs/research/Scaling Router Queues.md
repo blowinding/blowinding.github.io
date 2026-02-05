@@ -191,7 +191,6 @@ doDequeue(expectSize) {
 ```Cpp
 doDequeue(expectSize) {
 	totalScheduleSize = 0;
-	// activeFlow is a bitmap, noting the backlogged flow and flow's deficit > 0
 	while (totalScheduleSize < expectSize) {
 		
 		scheduleSize = dwrrQueue[ptr].doDequeue(min(expectSize, dwrrQueue[ptr].deficit));
