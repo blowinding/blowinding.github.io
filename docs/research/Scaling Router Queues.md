@@ -118,6 +118,9 @@
 		- 出队自根节点开始，按调度策略选择叶节点扣减计数器
 ---
 #### 优先级映射
+- 基础结构
+	- 参考PACKS进行优先级映射
+	- 自高到低扫描优先级队列，当$W.\mathrm{quantile}(r) \le \frac{1}{1-k} \cdot \sum_{i=1}^{j} \frac{B_j - b_j}{B}$且$b_i<B_i$时，进入第i个优先级队列
 ---
 #### Challenge
 ##### threshold is hard to set
@@ -161,22 +164,31 @@
 ```Cpp
 doDequeue(expectSize) {
 	totalScheduleSize = 0;
-	for(cls in spQueue && expectSize <= scheduleSize) {
+	for(cls in spQueue && expectSize <= totalScheduleSize) {
 		totalScheduleSize += cls.doDequeue(expectSize - totalScheduleSize);
 	}
 	return totalScheduleSize;
 }
 ```
 ---
-- ***阈值策略（TODO）***
----
-- 映射策略
-	- SP-PIFO
-		- ***为什么使用SP-PIFO（TODO）***
+- 阈值策略
+	- 当高优先级包到达时，低优先级包应当为高优先级包腾出缓存空间
+	- 当高优先级包未到达时，如果优先级数目小于物理优先级队列数目，低优先级包可以尽可能多的利用缓存空间
+	- $T_i(t)=\alpha(B-\sum_{j=0}^{i}q_j(t))$
+		- $T_i(t)$表示第i个优先级虚队列的阈值（$i$越小优先级越高）
+		- $B$表示父节点的阈值
+		- $\sum_{j=0}^{i}q_j(t)$表示优先级高于或等于$i$的虚队列的计数之和
 ---
 - 准入分析
 	- 优先级从高到低排列，除了第一个计数器为正数的队列，其他低优先级队列均满载，即入速率大于出速率，最终执行准入策略后得到的结果为理想结果
 		- 按照出队策略，优先级从高到低排列，当高优先级计数器为正数时，低优先级出队速率为0，因此低优先级队列会按照入队速率累积
+	- 阈值策略可以解决低优先级包和高优先级包均以大于出队速率入队，此时低优先级包不应占用过多的缓存，高优先级计数器阈值会“抢走”低优先级的阈值，导致低优先级数据包进入物理队列的过程得以遏制
+	- 当高优先级抢走低优先级的阈值之后，由于阈值策略，高优先级数据包并没有占满B，因此低优先级仍会剩余阈值，保证在高优先级流结束后，低优先级的流不会因阈值过低而丢包
+---
+- 映射策略
+	- PACKS
+		- 自高到低扫描优先级队列，当$W.\mathrm{quantile}(r) \le \frac{1}{1-k} \cdot \sum_{i=1}^{j} \frac{B_j - b_j}{B}$且$b_i<B_i$时，进入第i个优先级队列
+		- ***PACKS针对于无穷多个优先级进行设计，而我们只需对有限多个优先级进行处理，因此可针对该点进行优化或重新设计（TODO）***
 ---
 - ***映射分析（TODO）***
 ---
@@ -186,29 +198,44 @@ doDequeue(expectSize) {
 ---
 - 调度策略
 	- 为每个子队列维护一个deficit，每次调度deficit扣减调度出队的包长度
-	- deficit大于0可被调度，小于等于0不可被调度。
+	- deficit大于0可被调度，小于等于0不可被调度
+	- 当计数器为0时，认为该队列为非活跃队列，计数器置为0
 ---
 ```Cpp
 doDequeue(expectSize) {
 	totalScheduleSize = 0;
-	scheduleSize = dwrrQueue[ptr].doDequeue(min(expectSize,dwrrQueue[ptr].deficit));
-	dwrrQueue[ptr].deficit -= scheduleSize;
-	totalScheduleSize += scheduleSize;
-	// check if deficit is negative
-	isDeficitNegative = (dwrrQueue[ptr].deficit >> 31) & 1;
-	// if deficit is negative, add quantum
-	dwrrQueue[ptr].deficit += (dwrrQueue[ptr].quantum & -isDeficitNegative);
-	// if ptr queue is empty or deficit is negative, switch ptr
-	ptr = (ptr + (dwrrQueue[ptr].count < 0 || isDeficitNegative)) % dwrrQueue.length(); // switch to next queue
+	while (totalScheduleSize <= expectSize) {
+		scheduleSize = dwrrQueue[ptr].doDequeue(min(expectSize,dwrrQueue[ptr].deficit));
+		dwrrQueue[ptr].deficit -= scheduleSize;
+		totalScheduleSize += scheduleSize;
+		// if queue is empty, set deficit 0
+		if (dwrrQueue[ptr].count <= 0) {
+			dwrrQueue[ptr].deficit = 0;
+		}
+		// if deficit is negative, add quantum
+		// if ptr queue is empty or deficit is negative, switch ptr
+		if (dwrrQueue[ptr].deficit <= 0) {
+			ptr = (ptr + 1) % length;
+			dwrrQueue[ptr].deficit += dwrrQueue[ptr].quantum;
+		}
+	}
+	
 	return totalScheduleSize;
 }
 ```
 ---
-- ***映射策略（TODO）***
+- 阈值策略
+	- 如果为公平调度，则阈值策略为DT
+	- 如果为加权公平调度
+		- $T_i(t)=\alpha(B-\sum_{j=0}^{i}\frac{\omega_j}{\omega_i}\times{}{q_j(t)})$
 ---
 - 准入分析
 	- 儿子节点的数据包到达速率小于分配的带宽时，不需要进行限制，因为没有发生带宽的争用
 	- 每个儿子节点的虚拟队列达到阈值后，且入速率大于出速率，最终执行准入策略后得到的结果为理想结果
+	- ***阈值分析（TODO）***
+---
+- ***映射策略（TODO）***
+---
 - ***映射分析（TODO）***
 ---
 #### Shaper
@@ -216,8 +243,7 @@ doDequeue(expectSize) {
 	- 对流进行限速
 ---
 - 调度策略
-	- 为队列维护一个token bucket，每次被调度出队从token bucket扣减token
-	- 当token小于等于0时，该队列不可被调度
+	- 由于每次调度之间的时间间隔固定，可以每次从计数器扣减$T*r$字节
 ---
 ```Cpp
 doDequeue(expectSize) {
