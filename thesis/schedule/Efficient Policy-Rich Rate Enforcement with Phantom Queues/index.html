@@ -1,0 +1,864 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://blowindingblog.cn/thesis/schedule/Efficient%20Policy-Rich%20Rate%20Enforcement%20with%20Phantom%20Queues/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Efficient Policy Rich Rate Enforcement with Phantom Queues - blowinding's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1%207.775V2.75C1%201.784%201.784%201%202.75%201h5.025c.464%200%20.91.184%201.238.513l6.25%206.25a1.75%201.75%200%200%201%200%202.474l-5.026%205.026a1.75%201.75%200%200%201-2.474%200l-6.25-6.25A1.75%201.75%200%200%201%201%207.775m1.5%200c0%20.066.026.13.073.177l6.25%206.25a.25.25%200%200%200%20.354%200l5.025-5.025a.25.25%200%200%200%200-.354l-6.25-6.25a.25.25%200%200%200-.177-.073H2.75a.25.25%200%200%200-.25.25ZM6%205a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.5%201.75v11.5c0%20.138.112.25.25.25h3.17a.75.75%200%200%201%200%201.5H2.75A1.75%201.75%200%200%201%201%2013.25V1.75C1%20.784%201.784%200%202.75%200h8.5C12.216%200%2013%20.784%2013%201.75v7.736a.75.75%200%200%201-1.5%200V1.75a.25.25%200%200%200-.25-.25h-8.5a.25.25%200%200%200-.25.25m13.274%209.537zl-4.557%204.45a.75.75%200%200%201-1.055-.008l-1.943-1.95a.75.75%200%200%201%201.062-1.058l1.419%201.425%204.026-3.932a.75.75%200%201%201%201.048%201.074M4.75%204h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M4%207.75A.75.75%200%200%201%204.75%207h2a.75.75%200%200%201%200%201.5h-2A.75.75%200%200%201%204%207.75%22/%3E%3C/svg%3E');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M3.499.75a.75.75%200%200%201%201.5%200v.996C5.9%202.903%206.793%203.65%207.662%204.376l.24.202c-.036-.694.055-1.422.426-2.163C9.1.873%2010.794-.045%2012.622.26%2014.408.558%2016%201.94%2016%204.25c0%201.278-.954%202.575-2.44%202.734l.146.508.065.22c.203.701.412%201.455.476%202.226.142%201.707-.4%203.03-1.487%203.898C11.714%2014.671%2010.27%2015%208.75%2015h-6a.75.75%200%200%201%200-1.5h1.376a4.5%204.5%200%200%201-.563-1.191%203.84%203.84%200%200%201-.05-2.063%204.65%204.65%200%200%201-2.025-.293.75.75%200%200%201%20.525-1.406c1.357.507%202.376-.006%202.698-.318l.009-.01a.747.747%200%200%201%201.06%200%20.75.75%200%200%201-.012%201.074c-.912.92-.992%201.835-.768%202.586.221.74.745%201.337%201.196%201.621H8.75c1.343%200%202.398-.296%203.074-.836.635-.507%201.036-1.31.928-2.602-.05-.603-.216-1.224-.422-1.93l-.064-.221c-.12-.407-.246-.84-.353-1.29a2.4%202.4%200%200%201-.507-.441%203.1%203.1%200%200%201-.633-1.248.75.75%200%200%201%201.455-.364c.046.185.144.436.31.627.146.168.353.305.712.305.738%200%201.25-.615%201.25-1.25%200-1.47-.95-2.315-2.123-2.51-1.172-.196-2.227.387-2.706%201.345-.46.92-.27%201.774.019%203.062l.042.19.01.05c.348.443.666.949.94%201.553a.75.75%200%201%201-1.365.62c-.553-1.217-1.32-1.94-2.3-2.768L6.7%205.527c-.814-.68-1.75-1.462-2.692-2.619a3.7%203.7%200%200%200-1.023.88c-.406.495-.663%201.036-.722%201.508.116.122.306.21.591.239.388.038.797-.06%201.032-.19a.75.75%200%200%201%20.728%201.31c-.515.287-1.23.439-1.906.373-.682-.067-1.473-.38-1.879-1.193L.75%205.677V5.5c0-.984.48-1.94%201.077-2.664.46-.559%201.05-1.055%201.673-1.353z%22/%3E%3C/svg%3E');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M13.78%204.22a.75.75%200%200%201%200%201.06l-7.25%207.25a.75.75%200%200%201-1.06%200L2.22%209.28a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018L6%2010.94l6.72-6.72a.75.75%200%200%201%201.06%200%22/%3E%3C/svg%3E');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.92%206.085h.001a.749.749%200%201%201-1.342-.67c.169-.339.436-.701.849-.977C6.845%204.16%207.369%204%208%204a2.76%202.76%200%200%201%201.637.525c.503.377.863.965.863%201.725%200%20.448-.115.83-.329%201.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6%206%200%200%200-.26.16%201%201%200%200%200-.276.245.75.75%200%200%201-1.248-.832c.184-.264.42-.489.692-.661q.154-.1.313-.195l.007-.004c.1-.061.182-.11.258-.161a1%201%200%200%200%20.277-.245C8.96%206.514%209%206.427%209%206.25a.61.61%200%200%200-.262-.525A1.27%201.27%200%200%200%208%205.5c-.369%200-.595.09-.74.187a1%201%200%200%200-.34.398M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.344%202.343za8%208%200%200%201%2011.314%2011.314A8.002%208.002%200%200%201%20.234%2010.089a8%208%200%200%201%202.11-7.746m1.06%2010.253a6.5%206.5%200%201%200%209.108-9.275%206.5%206.5%200%200%200-9.108%209.275M6.03%204.97%208%206.94l1.97-1.97a.749.749%200%200%201%201.275.326.75.75%200%200%201-.215.734L9.06%208l1.97%201.97a.749.749%200%200%201-.326%201.275.75.75%200%200%201-.734-.215L8%209.06l-1.97%201.97a.749.749%200%200%201-1.275-.326.75.75%200%200%201%20.215-.734L6.94%208%204.97%206.03a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4.72.22a.75.75%200%200%201%201.06%200l1%20.999a3.5%203.5%200%200%201%202.441%200l.999-1a.748.748%200%200%201%201.265.332.75.75%200%200%201-.205.729l-.775.776c.616.63.995%201.493.995%202.444v.327q0%20.15-.025.292c.408.14.764.392%201.029.722l1.968-.787a.75.75%200%200%201%20.556%201.392L13%207.258V9h2.25a.75.75%200%200%201%200%201.5H13v.5q-.002.615-.141%201.186l2.17.868a.75.75%200%200%201-.557%201.392l-2.184-.873A5%205%200%200%201%208%2016a5%205%200%200%201-4.288-2.427l-2.183.873a.75.75%200%200%201-.558-1.392l2.17-.868A5%205%200%200%201%203%2011v-.5H.75a.75.75%200%200%201%200-1.5H3V7.258L.971%206.446a.75.75%200%200%201%20.558-1.392l1.967.787c.265-.33.62-.583%201.03-.722a1.7%201.7%200%200%201-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72%201.28a.75.75%200%200%201%200-1.06m.53%206.28a.75.75%200%200%200-.75.75V11a3.5%203.5%200%201%200%207%200V7.25a.75.75%200%200%200-.75-.75ZM6.173%205h3.654A.17.17%200%200%200%2010%204.827V4.5a2%202%200%201%200-4%200v.327c0%20.096.077.173.173.173%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#abstract" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="blowinding&#39;s blog" class="md-header__button md-logo" aria-label="blowinding's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            blowinding's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Efficient Policy Rich Rate Enforcement with Phantom Queues
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Introduction
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="blowinding&#39;s blog" class="md-nav__button md-logo" aria-label="blowinding's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    blowinding's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#abstract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ABSTRACT
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INTRODUCTION
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BACKGROUND
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BACKGROUND">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#traffic-shapers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traffic Shapers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traffic-policer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traffic Policer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policers-with-phantom-queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policers with Phantom Queues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Policers with Phantom Queues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#policing-with-a-single-phantom-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policing with a Single Phantom Queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policing-with-multiple-phantom-queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policing with Multiple Phantom Queues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scope-and-properties-of-pqp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope and Properties of PQP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scope and Properties of PQP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-drop-after-enqueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        限制一：入队后不可丢弃（No drop after enqueue）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        限制二：速率共享策略的适用范围
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bounds-on-rate-and-policy-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bounds on Rate and Policy Enforcement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sizing-the-phantom-queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sizing the Phantom Queues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#burst-controlled-pqp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Burst Controlled PQP
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Efficient Policy Rich Rate Enforcement with Phantom Queues</h1>
+
+<h2 id="abstract">ABSTRACT</h2>
+<p>ISP 通常会对用户流量进行限速（例如，使其符合用户所订购的带宽速率）。除了能够正确地执行目标速率之外，限速机制还必须在每个流量聚合内部支持丰富的速率共享策略（例如逐流公平、加权公平以及优先级调度）。同时，这些功能还必须具备良好的可扩展性，以高效支持数量巨大的用户规模。</p>
+<p>目前主要有两类限速机制：<strong>流量整形（traffic shaping）</strong>和<strong>流量监管（traffic policing）</strong>。<br />
+流量整形通过在队列中缓存数据包来强制执行目标速率和调度策略；而流量监管则是在不进行缓存的情况下，根据目标速率直接过滤（丢弃）数据包。</p>
+<p>流量监管机制轻量且易于扩展，但无法支持复杂的策略执行，并且其速率控制效果往往较差（配置难度大、行为难以预测）。相比之下，流量整形能够很好地实现目标速率和丰富的调度策略，但代价是较高的系统资源消耗（包括内存和 CPU），从而限制了其可扩展性。</p>
+<p>在本文中，我们探讨是否能够兼得二者之长——既具备流量监管的高可扩展性，又拥有流量整形在速率控制和策略执行方面的优良特性。我们给出了肯定的答案，并提出了一种系统 <strong>BC-PQP</strong>。</p>
+<p>BC-PQP 通过以下两点增强了传统的流量监管机制：<br />
+1）引入多个<strong>虚拟队列（phantom queues）</strong>，利用计数器来模拟缓冲区占用情况，从而支持丰富的策略执行；<br />
+2）提出了一种新的<strong>突发控制（burst control）机制</strong>，实现队列参数的自动配置，以保证正确的速率执行。</p>
+<p>我们基于 DPDK 将 BC-PQP 实现为一个中间盒（middlebox）。实验评估结果表明，BC-PQP 在速率和策略执行效果上接近流量整形机制，同时在效率上提升了 <strong>7 倍</strong>。</p>
+<h2 id="introduction">INTRODUCTION</h2>
+<p>限速机制必须能够为每一个流量聚合（例如属于某个特定用户的一组流）<strong>正确地执行其期望的总速率</strong>。除此之外，它还必须满足两个重要要求:
+- 限速机制应当能够支持在同一流量聚合内部对不同流之间实施多样化的速率共享策略。
+- 速率和策略执行机制必须具备<strong>高效率</strong>。这一要求源于系统的运行规模——典型的 ISP 往往需要支持成千上万的用户。
+由于在效率方面具有优势，<strong>流量监管器（policer）</strong> 逐渐成为更为常用的限速方案。然而，这种可扩展性也伴随着一些显著的缺陷：
+- <strong>典型的 policer 在设计上并不提供任何机制</strong>，用于在每个被限速的流量聚合内部执行期望的速率共享策略；<br />
+- <strong>policer 的配置困难</strong>，这往往会导致较差的速率执行效果，在“满足期望的平均速率限制”与“降低突发性和丢包率”之间存在明显的权衡
+本文提出了兼二者之长的方案，通过使用虚拟队列（phantom queues）来实现 policer。
+基于虚拟队列的 policer 在数据包到达时，如果虚拟队列中仍有足够的“容量”（等价于该数据包大小），就立即转发该数据包；否则就将其丢弃。每当成功转发一个数据包时，系统便在虚拟队列中“入队”一个与该数据包大小相同的<strong>虚拟数据包</strong>——这些虚拟数据包在实现上仅表现为字节计数器。虚拟队列以期望的速率进行“出队”，即通过递减相应的字节计数器来实现。
+为了执行不同的速率共享策略，我们将这种基于虚拟队列的监管系统扩展为：<strong>为每个流量聚合维护多个虚拟队列</strong>。系统根据数据包头部字段中的流标识，将到达的数据包分类到某一个虚拟队列中，并按照前述方式，依据该虚拟队列的占用情况立即决定是转发还是丢弃该数据包。随后，系统按照期望的策略（例如优先级调度、轮询等，类似于流量整形器）对这些虚拟队列中的虚拟数据包进行“出队”（即递减对应的字节计数器）。</p>
+<p>尽管当虚拟队列的容量足够大时，PQP 能够在<strong>平均意义上</strong>（跨越多个往返时延 RTT）正确地执行期望的速率限制，但在<strong>更短的时间尺度</strong>上，其瞬时速率可能会突发到远高于目标值的水平，并且这种突发性会随着队列规模的增大而加剧。</p>
+<p>事实上，为了利用虚拟队列正确地执行平均速率限制，所需的<strong>最小队列容量本身就非常大</strong>：其数量级为 <strong>O(BDP²)</strong>（相比之下，使用真实数据包的流量整形队列只需要 <strong>O(BDP)</strong> 规模的缓冲区）。如此庞大的队列规模在 PQP 中会进一步放大突发问题——当系统中存在 <strong>N 个活跃的虚拟队列</strong>时，<strong>最坏情况下的突发规模可能会扩大到原来的 N 倍</strong>！
+我们为虚拟队列设计了一种新的<strong>突发控制机制</strong>。该机制首先将每个虚拟队列的容量设置为足够大的值。然而，当某个虚拟队列的入队速率超过预设阈值时，我们会<strong>虚拟地将该队列填满一些“魔法虚拟数据包”（magic phantom packets）</strong>——这些数据包并不对应任何真实的数据包。通过这种方式填满队列，可以抑制流量突发并触发<strong>提前丢包</strong>。与此同时，队列本身仍然保持较大的容量（只是被这些以期望出队速率排出的魔法虚拟数据包所占据），从而满足<strong>正确执行平均速率限制</strong>所需的队列大小条件。</p>
+<h2 id="background">BACKGROUND</h2>
+<h3 id="traffic-shapers">Traffic Shapers</h3>
+<h3 id="traffic-policer">Traffic Policer</h3>
+<h2 id="policers-with-phantom-queues">Policers with Phantom Queues</h2>
+<h3 id="policing-with-a-single-phantom-queue">Policing with a Single Phantom Queue</h3>
+<p>可通过<strong>虚拟队列（phantom queue）</strong> 来实现这样的流量监管系统，其核心思想是：构造一个容量为 <strong>B</strong>、服务速率为 <strong>r</strong> 的（模拟）缓冲区。</p>
+<ul>
+<li>当一个大小为 <strong>s</strong> 的数据包到达时，系统首先检查虚拟队列所模拟的缓冲区中是否还有足够的剩余容量。如果虚拟队列的剩余容量不少于 <strong>s</strong>，则系统<strong>立即转发该（真实）数据包</strong>，并代表该数据包在虚拟队列中“入队”一个大小为 <strong>s</strong> 的<strong>虚拟数据包</strong>。</li>
+<li>如果虚拟队列已满（或其剩余容量小于 <strong>s</strong>），则系统直接<strong>丢弃该（真实）数据包</strong>。</li>
+<li>虚拟队列中的虚拟数据包会以速率 <strong>r</strong> 被“出队”。需要注意的是，在整个过程中，我们<strong>不会缓存任何真实数据包</strong>——所有真实数据包在到达时都会被立即转发或丢弃。虚拟队列中的虚拟数据包在实现上仅通过<strong>字节计数器</strong>来表示，在发生虚拟入队或出队事件时对该计数器进行相应的递增或递减。</li>
+<li>此外，与流量整形器不同，整形器需要按照速率 <strong>r</strong> 定期地对真实数据包进行出队操作；而在虚拟队列中，<strong>虚拟出队操作可以进行批量处理</strong>，仅在虚拟队列达到满状态时才需要执行。</li>
+</ul>
+<p>以这种方式、使用<strong>单个虚拟队列</strong>实现的流量监管系统，其行为本质上等价于一个<strong>桶容量为 B、速率为 r 的令牌桶过滤器（TBF）</strong>，如第 2.2 节所述。</p>
+<h3 id="policing-with-multiple-phantom-queues">Policing with Multiple Phantom Queues</h3>
+<p>一旦我们将流量监管器实现为一个<strong>虚拟队列（phantom queue）</strong>，就可以将其扩展为一个由 <strong>N 个虚拟队列</strong>组成的系统（类似于包含 N 个队列的流量整形器），以实现不同的速率共享策略。</p>
+<ul>
+<li>当一个大小为 <strong>s</strong> 的数据包到达时，系统会根据数据包头部字段（例如流 ID、源–目的地址对的哈希值等），将其分类到 <strong>N 个虚拟队列</strong>中的某一个（记为 <strong>Qᵢ</strong>，其缓冲区大小为 <strong>Bᵢ</strong>）。</li>
+<li>如果 <strong>Qᵢ</strong> 的剩余缓冲容量不少于 <strong>s</strong>，系统便立即转发该真实数据包，并通过将其字节计数器增加 <strong>s</strong> 的方式，在 <strong>Qᵢ</strong> 中为其“入队”一个对应的虚拟数据包。</li>
+<li>若在考虑所有待处理的虚拟出队操作后，<strong>Qᵢ</strong> 的剩余缓冲容量小于 <strong>s</strong>，则该数据包会被直接丢弃。</li>
+</ul>
+<p>虚拟队列中的虚拟数据包（即字节计数器）会按照期望的策略进行“出队”，也就是递减相应的计数器。</p>
+<p>e.g. 为了实现<strong>逐流公平（per-flow fairness）</strong>，系统可以为每一个流维护一个虚拟队列（或者通过对数据包头部中的流标识进行哈希，将多个流近似地映射到 <strong>N 个虚拟队列</strong>中），并以<strong>总速率 r</strong> 按照<strong>轮询（round-robin）</strong> 方式从所有非空的虚拟队列中对虚拟数据包进行出队。</p>
+<ul>
+<li>这种仅通过计数器维护的虚拟系统，与一个通过逐流队列存储真实数据包、并以总速率 <strong>r</strong> 采用轮询方式进行服务的流量整形系统在行为上是<strong>完全等价的</strong>。</li>
+<li>这种<strong>包含多个虚拟队列的流量监管系统</strong>称为 <strong>PQP（Phantom Queue Policer）</strong></li>
+<li>使用术语“对应的流量整形系统（analogous shaper system）”来指代这样一种假想的整形器：它在真实数据包上执行与 PQP 在虚拟数据包上所采用的<strong>相同入队与出队策略</strong></li>
+</ul>
+<h3 id="scope-and-properties-of-pqp">Scope and Properties of PQP</h3>
+<p>需要注意的是，<strong>PQP 直接在虚拟数据包（phantom packets）上执行期望的策略</strong>（这些虚拟数据包在实现上仅以计数器的形式维护）。这些策略通过改变虚拟队列的占用情况，<strong>间接地影响真实数据包的行为</strong>，从而决定真实数据包是被转发还是被丢弃。真实数据包与虚拟数据包在行为上的这种差异，使得 PQP 在可实现的策略类型上受到一定限制。</p>
+<h4 id="no-drop-after-enqueue">限制一：入队后不可丢弃（No drop after enqueue）</h4>
+<p>第一个限制源于这样一个事实：<strong>PQP 在数据包到达时就决定其命运</strong>（转发或丢弃）。如果对应的虚拟队列当前的占用情况允许该数据包被转发，那么该数据包会被<strong>立即转发</strong>，同时其虚拟副本会被“入队”（并假设该虚拟数据包最终一定会被出队）。按照这种设计，PQP 无法模拟那些<strong>在数据包入队之后，其命运仍可能发生变化的策略</strong>。</p>
+<h4 id="_1">限制二：速率共享策略的适用范围</h4>
+<p>第二个限制源于这样一个事实：在 PQP 中，<strong>真实数据包与虚拟数据包的出队时间并不一致</strong>。因此，尽管 PQP 在虚拟数据包上执行了与“对应流量整形系统”对真实数据包所采用的相同策略，但这些<strong>具体的时间行为并不会映射到真实数据包上</strong>。
+其结果是，PQP <strong>无法执行与数据包精确时序或调度顺序相关的策略</strong>——一个在时间 <em>t</em> 到达 PQP 的数据包，要么在 <em>t</em> 时刻被丢弃，要么在 <em>t</em> 时刻被立即转发。
+尽管 PQP 无法控制<strong>细粒度的数据包时序</strong>，但它可以在<strong>平均意义上</strong>（即在更长的时间尺度上）执行不同的速率共享策略，具体体现为如何将总速率 <strong>r</strong> 在各个队列之间进行分配。
+<strong>PQP 在设计上保证了以下几个关键性质，使其能够在平均意义上执行上述速率共享策略：</strong></p>
+<ul>
+<li><strong>性质 1（Property 1）</strong>  假设进入 PQP 系统的数据包集合与进入其对应流量整形系统（analogous shaper system）的数据包集合完全一致，那么如果某个数据包在整形系统中于时间 <strong>$t_d$</strong> 被出队，其对应的虚拟副本在 PQP 系统中也会在<strong>相同的时间 $t_d$</strong> 被出队。</li>
+<li><strong>性质 2（Property 2）</strong>  如果某个（真实）数据包被 PQP 转发，那么其对应的虚拟副本最终一定会被 PQP 出队。</li>
+<li><strong>性质 3（Property 3）</strong>  如果 PQP 在时间 <strong>$t_e$</strong> 转发了一个（真实）数据包，那么该数据包的虚拟副本会在时间 <strong>$t_e$</strong> 被入队到虚拟队列 <strong>Qᵢ</strong> 中，并在$t_d=t_e+D(i,t_e)t_d = t_e + D(i, t_e)t_d​=t_e​+D(i,t_e​)$时刻被出队，其中 <strong>D(i, $t_e$)</strong> 表示<strong>虚拟排队时延</strong>，即在 <strong>$t_e$</strong> 之前在 <strong>Qᵢ</strong> 中累积的虚拟队列需要被排空所需的时间。
+可以结合上述性质来理解 <strong>PQP 如何有效地执行速率共享策略</strong>。</li>
+<li>根据<strong>性质 1</strong>，如果一个对应的流量整形系统将总速率 <strong>r</strong> 在 <strong>N 个队列</strong>之间进行分配，使得队列 <strong>Qᵢ</strong> 以速率 <strong>rᵢ</strong> 得到服务（例如通过加权轮询、优先级调度，或它们的分层组合实现），那么对应的 PQP 系统也会以速率 <strong>rᵢ</strong> 对 <strong>Qᵢ</strong> 中的虚拟数据包进行出队。</li>
+<li>根据<strong>性质 2 和性质 3</strong>，如果 <strong>Qᵢ</strong> 中的虚拟数据包以速率 <strong>rᵢ</strong> 被出队，那么在<strong>平均意义上（跨越较长时间尺度）</strong>，对应的真实数据包同样会以速率 <strong>rᵢ</strong> 得到服务。</li>
+<li>真实数据包的<strong>瞬时速率</strong>相对于其理想的虚拟速率偏离多少，取决于<strong>虚拟排队时延</strong>；而虚拟排队时延又由<strong>虚拟队列的容量</strong>决定（该容量控制了 PQP 系统允许的突发程度）。我们将在第 3.4 节中对此进行更为形式化的分析，并在第 4 节中提出一种有效限制突发的机制。</li>
+<li>此外需要注意的是，<strong>性质 1 成立的前提是假设 PQP 系统与对应整形系统接收到的输入数据包集合完全一致</strong>。然而，在 PQP 中，数据包实际被发送的时间偏差会影响拥塞控制算法的反馈回路，从而改变后续数据包的到达速率。尽管存在这一影响，我们在第 6 节的实验评估表明，PQP 在速率与策略执行方面的表现仍然<strong>与对应的流量整形系统高度接近</strong>。</li>
+</ul>
+<h3 id="bounds-on-rate-and-policy-enforcement">Bounds on Rate and Policy Enforcement</h3>
+<p>考虑一个大小为 <strong>B</strong>、以速率 <strong>r</strong> 提供服务的虚拟队列（phantom queue）<strong>Q</strong>。设在时间 <strong>t</strong> 时，虚拟队列的长度（即模拟缓冲区中的字节数）为 <strong>L(Q, t)</strong>。该队列长度决定了在时间 <strong>t</strong> 被发送的数据包所经历的虚拟排队时延。</p>
+<p>在任意时间区间 <strong>Δt = t₂ − t₁</strong> 内，只要虚拟队列 <strong>Q</strong> 的占用量始终不为零，即<br />
+$$<br />
+L(Q,t) &gt; 0,\quad \forall t \in (t_1, t_2),<br />
+$$
+则在该持续时间 <strong>Δt</strong> 内所强制执行的速率被界定在<br />
+$$
+(r \pm B/Δt)^+<br />
+$$
+之内。</p>
+<p>已知在 <strong>t₁ &lt; t &lt; t₂</strong> 期间 <strong>L(Q,t) &gt; 0</strong>，因此队列 <strong>Q</strong> 会持续以速率 <strong>r</strong> 出队虚拟数据包。在时间 <strong>Δt</strong> 内，它共出队 <strong>rΔt</strong> 字节。</p>
+<p>因此，在区间 <strong>(t₁, t₂)</strong> 内，队列 <strong>Q</strong> 所接受的数据量 <strong>A(t₁, t₂)</strong> 可表示为：<br />
+$$
+A(t_1, t_2) = \big(L(Q,t_2) - L(Q,t_1) + rΔt\big)^+<br />
+$$
+其中 ((v)^+ = \max(0, v))。</p>
+<p>由于<br />
+$$
+0 &lt; L(Q,t) \le B,<br />
+$$
+我们可以得到在该时间段内可接受数据量的上下界。</p>
+<p><strong>上界：</strong><br />
+当 (L(Q,t_1)=0)，且 (L(Q,t_2)=B) 时，<br />
+$$
+A_{\max}(t_1,t_2) = rΔt + B<br />
+$$</p>
+<p><strong>下界：</strong><br />
+当 (L(Q,t_1)=B)，且 (L(Q,t_2)=0) 时，<br />
+$$
+A_{\min}(t_1,t_2) = (rΔt - B)^+<br />
+$$</p>
+<p>因此，在持续时间 <strong>Δt</strong> 内，被接受的数据量满足：<br />
+$$
+A(t_1,t_2) = (rΔt \pm B)^+<br />
+$$</p>
+<p>将上式除以 <strong>Δt</strong>，即可得到在该时间区间内实际被强制执行的速率 <strong>r′</strong>。当 <strong>Δt</strong> 增大时，实际执行速率逐渐逼近虚拟队列的出队速率 <strong>r</strong>：<br />
+$$
+r' = \lim_{\Delta t \to \infty} \frac{A(t_1,t_2)}{\Delta t}<br />
+= \lim_{\Delta t \to \infty} (r \pm B/Δt)^+ = r<br />
+$$</p>
+<p>图 3 展示了一个被限制在 10 Mbps 的 Reno 流的情况。图中的虚线表示根据定理 1 得到的理论速率误差界，而阴影区域表示实际测得的速率误差。随着 <strong>Δt</strong> 的增大，速率误差会不断减小。</p>
+<p>需要注意的是，上述结果仅在虚拟队列在整个 <strong>Δt</strong> 时间内保持非空时才严格成立。如果虚拟队列在某段时间内为空，则所执行的速率将低于 <strong>r</strong>。这种情况可能发生在以下两种情形中：
+1. 数据包到达速率（即业务需求）本身低于 <strong>r</strong>；
+2. 业务需求高于 <strong>r</strong>，但队列容量不足，在典型拥塞控制行为下导致队列被耗尽。
+现在考虑一个由 <strong>N</strong> 个虚拟队列组成的系统，其以累计速率 <strong>r</strong> 提供服务，并按照期望策略（§3.3 中讨论）将 <strong>r</strong> 分配给各个虚拟队列 <strong>Qᵢ</strong>，使其分别以速率 <strong>rᵢ</strong> 被服务。若每个队列的大小为 <strong>Bᵢ</strong>，则可由上述定理得到如下结论：</p>
+<p>如果某个虚拟队列 <strong>Qᵢ</strong> 在持续时间 <strong>Δt</strong> 内保持非空，且其虚拟出队速率为 <strong>rᵢ</strong>，则其在该时间段内所强制执行的实际速率满足：<br />
+$$
+r'<em>i = (r_i \pm B_i/Δt)^+<br />
+$$
+进一步，对所有队列求和，可得到系统整体强制执行速率的界：<br />
+$$
+r' = (r \pm \sum</em>{i=1}^{N} B_i / Δt)^+<br />
+$$
+因此，若每个虚拟队列的大小均为 <strong>B</strong>，则整体强制执行速率为：<br />
+$$
+r' = (r \pm NB/Δt)^+<br />
+$$
+上述定理带来两个关键结论：
+1. <strong>只要虚拟队列保持非空，PQP 在真实数据包上强制执行的平均速率，在足够长的时间尺度上将与期望速率（即在虚拟数据包上执行的速率）一致。</strong>
+2. <strong>在较短时间尺度上，真实速率与虚拟速率之间的偏差由虚拟队列的大小所界定。</strong>
+    - 虚拟队列过大，会导致瞬时执行速率显著高于期望速率（即产生较大的突发流量）；
+    - 虚拟队列过小，则可能导致虚拟队列在某些时刻变空，从而使瞬时速率甚至平均速率低于期望值。</p>
+<h3 id="sizing-the-phantom-queues">Sizing the Phantom Queues</h3>
+<p><strong>幻影队列（phantom queue）的容量配置准则</strong>取决于多个因素，例如限速速率 (r)、RTT 以及流所采用的拥塞控制协议。下面我们分析，为了实现<strong>正确的平均速率约束</strong>，幻影队列应当如何进行容量配置。</p>
+<p>在 §3.4 中，我们对强制执行速率给出的界限是以<strong>队列在给定时间区间内始终保持非空</strong>为前提条件的。因此，为了达到这些界限，幻影队列必须足够大，使得一个<strong>始终有数据可发送（backlogged）</strong>、且其发送速率高于被限速速率 (r) 的发送端，其拥塞控制协议能够持续将该队列保持为非空状态¹。这一点与我们在分析<strong>真实数据包的整形队列（shaper queue）</strong> 容量配置时的思路是类似的 [9]。<br />
+然而，由于<strong>幻影数据包出队的时间与真实数据包发送时间之间存在时序差异</strong>，以及这种差异对拥塞控制反馈回路的影响，最终得到的结论（即所需队列大小）与真实队列有着显著不同。</p>
+<p>我们考虑当前生产环境中常用的几种拥塞控制协议：Cubic（大多数用户的默认协议 [19]）、New Reno（Netflix 使用 [47]）、以及 BBR（Google 和 YouTube 使用 [3,10]）。幻影队列的容量 (B) 应足以支持上述任意一种协议。其中，<strong>Reno 系列协议对队列容量的要求最高</strong>（本文中“Reno”同时指 Reno 和 New Reno，两者的核心逻辑一致，仅在快速恢复阶段有所不同）。因此，只要按 Reno 的需求来配置幻影队列容量，就可以保证对其他协议也能实现正确的速率约束。</p>
+<p>对于存放真实数据包的整形队列，一个经验法则是：只需 <strong>$O(\mathrm{BDP})$</strong> 规模的缓冲区，就可以保证在 Reno 发送端始终有数据可发送的情况下，队列保持非空 [9]，其中 BDP 表示网络的带宽–时延积（bandwidth-delay product）。</p>
+<p>相比之下，我们发现：<strong>为了在幻影队列中保持一个 backlogged 的 Reno 流始终占用队列，需要将队列容量配置为 $O(\mathrm{BDP}^2)$</strong>。更具体地说，为了对 Reno 流实现正确的速率约束，幻影队列的容量至少应为：</p>
+<p>$$
+\frac{\mathrm{BDP}^2}{18 \times \mathrm{MSS}} ;\text{字节}<br />
+$$</p>
+<p>其中<br />
+$$
+\mathrm{BDP} = r \times \mathrm{RTT}<br />
+$$
+$r$ 是幻影队列的出队速率，RTT 是该流的往返时延。</p>
+<p>这一结果来源于我们在附录 A 中的分析：为了维持平均速率为 (r)，Reno 流在稳态的 AIMD（加性增加、乘性减少）阶段，其<strong>瞬时发送速率需要在 $\frac{2r}{3}$ 到 $\frac{4r}{3}$ 之间波动</strong>。要支持这种速率波动，幻影队列必须具备至少上述规模的缓冲能力。</p>
+<p>还需要注意的是，在稳态下，<strong>队列容量的上界并不关键</strong>。一旦幻影队列被填满，它会自动以速率 $r$ 为新到达的数据腾出空间。</p>
+<p>与真实数据包队列相比，幻影队列需要更大缓冲区的根本原因在于：<strong>幻影队列不会对真实数据包引入排队时延</strong>。</p>
+<p>在真实队列中，当流的拥塞窗口（cwnd）超过 BDP 时，多余的数据包会被排队，并以速率 (r) 出队，从而引入额外的排队时延（叠加在基础 RTT 之上）。只有当该窗口内的所有数据包的 ACK 都返回发送端后，cwnd 才会增加 1。因此，当下一次由于 cwnd 增加而产生的新数据包到达队列时，前一轮 cwnd 中的所有数据包已经发送完毕，队列中的<strong>驻留队列长度</strong>在每次 cwnd 更新后只增加 1 个数据包。</p>
+<p>而在幻影队列中，不论幻影队列实际需要多长时间才能被清空，<strong>对应于整个 cwnd 的 ACK 都会在一个基础 RTT 内返回</strong>。由于反馈回路中不包含排队时延，当下一轮 cwnd 的数据包到达时，前一轮中 <strong>$(\mathrm{cwnd}-\mathrm{BDP})^+$</strong> 个幻影数据包仍然滞留在队列中。因此，在真实队列中每次 cwnd 更新只会使队列增加 1 个包，而在幻影队列中，队列长度会增加 $(\mathrm{cwnd}-\mathrm{BDP})^+$ 个包。</p>
+<p>因此，幻影队列必须足够大，以容纳这些额外累积的幻影数据包。</p>
+<p>如果按 $O(\mathrm{BDP}^2)$ 的规则配置幻影队列容量，确实可以在稳态下对所有拥塞控制协议实现良好的速率约束，但这也会带来一系列问题。</p>
+<p>首先，它会在流的<strong>慢启动阶段</strong>引发极大的速率突发。举例来说，假设我们希望通过幻影队列强制执行 15 Mbps 的速率限制，并按最大 RTT 为 100 ms 来配置队列容量（约 1.4 MB）。若一个 RTT 为 10 ms 的流经过该幻影队列，在慢启动阶段（假设 Linux 默认初始 cwnd 为 10 MSS），它可以在 100 ms 内突发到 <strong>143 Mbps</strong> 的速率。</p>
+<p>这还会导致较高的丢包率：慢启动结束时 cwnd 已经增长到非常大的值，需要经过多轮丢包和 cwnd 减半，才能回落到与 BDP 相当、从而实现正确速率约束的水平。</p>
+<h3 id="burst-controlled-pqp">Burst Controlled PQP</h3>
+<p>一旦幻影队列变为满状态，只要其大小超过 Reno 所需的最小要求，那么<strong>无论队列有多大</strong>，在稳态下都可以实现<strong>正确的平均速率约束</strong>。换言之，在流的稳态阶段，为了实现正确的速率约束，幻影队列的大小并不存在一个严格的上限。</p>
+<p>因此，与其去回答一个更加复杂的问题——即如何动态地调整队列大小（而这个问题的答案取决于多种因素，例如流所使用的拥塞控制协议、RTT、所需约束速率 (r)，以及其他流的需求）——我们转而思考：<strong>如何在不产生大规模突发（burst）的情况下，让流尽快进入稳态？</strong></p>
+<p>在上一节中我们已经看到，为了约束速率为 (r)，我们必须允许一定程度的速率波动。例如，对于 Reno，稳态下其发送速率会在 $\frac{2}{3}r$ 和 $\frac{4}{3}r$ 之间振荡。然而，任何<strong>超过这一范围的突发流量都是不希望出现的</strong>。</p>
+<p>因此，我们提出了一种<strong>主动的幻影队列管理机制</strong>，其目标是在仍然实现正确速率和策略约束的前提下，尽量减少突发。</p>
+<p>我们的设计基于如下观察：<br />
+一旦一个<strong>尺寸合适的幻影队列</strong>被填满，对于一个需求大于 (r) 的饱和流而言，它会在稳态（例如 TCP Reno 的 AIMD 阶段）中尝试保持该队列始终为满状态，而这正是实现正确平均速率约束的关键。</p>
+<p>然而，在流的起始阶段（即慢启动阶段），由于幻影队列最初为空，流可能会以<strong>极高的速率突发发送</strong>，直到队列被填满之后才退出慢启动阶段。</p>
+<p><strong>我们的关键洞察是：我们并不需要等到幻影队列真的被填满，才让流退出起始阶段。</strong></p>
+<p>相反，当流的发送速率超过某个<strong>上阈值</strong>（例如 (\frac{4}{3}r)，即 Reno 稳态下的最大速率）时，我们可以“<strong>魔法般地</strong>”直接将幻影队列填满。<br />
+类似地，当流的发送速率低于某个<strong>下阈值</strong>（例如 (\frac{2}{3}r)，即 Reno 稳态下的最小速率）时，我们再将这些“魔法包”移除。</p>
+<p>我们为一个包含 (N) 个幻影队列的 PQP 系统维护以下额外参数：</p>
+<ol>
+<li>
+<p>上阈值乘子 $\theta^+$</p>
+</li>
+<li>
+<p>下阈值乘子 $\theta^-$</p>
+</li>
+<li>
+<p>时间窗口长度 $T$</p>
+</li>
+</ol>
+<p>当一个数据包被入队到幻影队列 $Q_i$ 时，我们首先估计该队列的<strong>期望出队速率</strong> $r_i^*$，并计算在时间窗口 $T$ 内该队列期望能够出队的字节数：</p>
+<p>$$
+X_i = r_i^* \cdot T<br />
+$$</p>
+<p>其中 $r_i^*$ 可以根据当前活跃队列集合以及速率共享策略直接计算得到。例如：</p>
+<ul>
+<li>
+<p><strong>公平共享</strong>：<br />
+    $$<br />
+    r_i^* = \frac{r}{\text{活跃队列数}}<br />
+    $$</p>
+</li>
+<li>
+<p><strong>优先级调度</strong>：<br />
+    若 $Q_i$ 是当前最高优先级的活跃队列，则 $r_i^* = r$，否则为 0。</p>
+</li>
+</ul>
+<p>基于此，我们定义两个阈值：</p>
+<ul>
+<li>
+<p>上阈值：<br />
+    $$
+    X_i^+ = \theta^+ X_i<br />
+    $$</p>
+</li>
+<li>
+<p>下阈值：<br />
+    $$
+    X_i^- = \theta^- X_i<br />
+    $$</p>
+</li>
+</ul>
+<p>如果在当前长度为 $T$ 的时间窗口内，幻影队列 $Q_i$ 接受的数据量超过 $X_i^+$，我们就<strong>向该队列中填充“魔法幻影包”</strong>，即将其字节计数器增加：</p>
+<p>$$
+M_i = B - L(Q_i, t)<br />
+$$</p>
+<p>其中 $B$ 是队列容量，$L(Q_i,t)$ 是当前队列占用。</p>
+<p>我们会记录每个队列中加入的魔法包数量；当在时间窗口 (T) 内接受的数据量低于 $X_i^-$ 时，我们会将这些魔法包全部移除（即相应减少字节计数器）。</p>
+<p>采用该机制的 PQP 系统被称为 <strong>BC-PQP（Burst-Controlled PQP）</strong>。</p>
+<p>在 BC-PQP 中，每个幻影队列 $Q_i$ 的最大突发量不超过 $X_i^+$。如果将 $T$ 设为与 RTT 同量级，那么该突发规模是 <strong>O(BDP)</strong> 的。</p>
+<p>在整个聚合流量中，对于任意速率共享策略，总突发不超过：</p>
+<p>$$
+N \cdot \theta^+ X<br />
+\quad \text{其中 } X = \sum_{i=1}^N X_i<br />
+$$</p>
+<p>而对于公平共享和优先级等常见策略，平均突发会显著更小。</p>
+<ul>
+<li>
+<p><strong>公平共享的最坏情况</strong>：<br />
+    若在时间窗口 (T) 内，(n) 个流依次变为活跃，则突发形成一个调和级数：<br />
+    $$<br />
+    \theta^+ X \left( \ln n + 0.5772 \right)<br />
+    $$
+    当 $n=64$ 时，大约为 $4.72 \times \theta^+ X$。</p>
+</li>
+<li>
+<p><strong>优先级调度</strong>：<br />
+    若有更高优先级队列处于活跃状态，则低优先级队列的 $X_i = 0$。</p>
+</li>
+</ul>
+<p>此外，如 §3.4 所示，随着队列保持满状态的时间变长，这种有限突发的代价会进一步被摊销。</p>
+<p>我们将 (T) 配置为尾 RTT（例如 100 ms），以获得合理的入队和出队速率估计；<br />
+并将 $\theta^- = 0.5$、$\theta^+ = 1.5$（基于 New Reno 的需求）。</p>
+<p>这些配置在避免不必要突发的同时，仍能保证正确的速率约束。</p>
+<p>图 5b 显示，在存在 8.5 Mbps 次级瓶颈的情况下，BC-PQP 能够以非常小、受控的突发，实现 4 个流之间公平共享 7.5 Mbps。</p>
+<ol>
+<li><strong>幻影队列大小 (B_i) 如何设置？</strong><br />
+    虽然 BC-PQP 在达到上阈值后会自动填充队列，但我们仍建议将队列大小设置为 <strong>约 2 倍的 $O(BDP^2)$</strong>，以防止恶意流以略低于上阈值但高于 (r) 的速率长期发送。</li>
+<li><strong>为什么在流变为不活跃时移除魔法包？</strong><br />
+    这样可以立即将空余带宽分配给其他活跃流。若不移除，在普通 PQP 中，幻影队列需要很长时间才能自然排空，从而导致暂时性的速率不足。</li>
+<li><strong>BC-PQP 如何实现自动配置？</strong><br />
+    BC-PQP 会独立估计每个队列的 $r_i^*$，并随着活跃队列集合的变化自动调整阈值。这避免了难以调优的静态配置，并且可自然扩展到任意速率共享策略。</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["search.suggest", "search.highlight", "search.share", "navigation.tabs", "navigation.path", "navigation.top", "navigation.footer", "navigation.indexes", "content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
