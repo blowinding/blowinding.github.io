@@ -1,19 +1,23 @@
 ## PLAN(WEEKLY UPDATE)
-### OVERALL PLAN
+### OVERALL PLAN （ICNP 2026）
 - BACKGROUND & MOTIVATION 2 week DONE
 - DESIGN 4 week ONGOING
 	- design  skeleton ONGOING
 	- design detail DELAY
 - IMPLEMENTATION 6 weeks TODO
 - EXPERIMENTS 4 weeks TODO
+---
 ### GOALS FROM PREVIOUS WEEK
-- 完成DESIGN
+- 完成初步DESIGN
+	- SP调度、公平调度、shaper调度算法
+	- SP调度优先级映射算法
+	- SP调度、公平调度阈值策略
+---
 ### UPDATES FROM PREVIOUS WEEK
 - 完成DESIGN
 ---
 ### NEXT WEEK PLAN
-- 初步设计design
-- 补全background&motivation
+- 开始implementation
 ---
 ## DETAILS
 ### BACKGROUND
@@ -77,7 +81,7 @@
 - 为什么这个代价需要优化
 	- 维护队列的缓存存放在片内缓存[23]
 	- 片外缓存或许可以存放报文，但是片内缓存无法维护更多的队列（存在极限）
-	- 片上 SRAM 缩放已经远落后于逻辑电路缩放，造成功耗更高、面积效率更低，因此SRAM不能大容量扩展[13]、[14]、[15]
+	- 片上 SRAM 制程的下降已经远落后于逻辑电路制程的下降，造成功耗更高、面积效率更低，因此SRAM不能大容量扩展[13]、[14]、[15]
 	- 目前单位带宽的SRAM容量下降了4倍[16]
 --- 
 #### 更丰富的调度策略与更多的物理队列并不等价
@@ -187,7 +191,7 @@ doDequeue(expectSize) {
 ---
 - 映射策略
 	- PACKS
-		- 自高到低扫描优先级队列，当$W.\mathrm{quantile}(r) \le \frac{1}{1-k} \cdot \sum_{i=1}^{j} \frac{B_j - b_j}{B}$且$b_i<B_i$时，进入第i个优先级队列
+		- 数据包到达时，自高到低扫描优先级队列，当$W.\mathrm{quantile}(r) \le \frac{1}{1-k} \cdot \sum_{i=1}^{j} \frac{B_j - b_j}{B}$且$b_i<B_i$时，进入第i个优先级队列
 		- ***PACKS针对于无穷多个优先级进行设计，而我们只需对有限多个优先级进行处理，因此可针对该点进行优化或重新设计（TODO）***
 ---
 - ***映射分析（TODO）***
@@ -227,7 +231,8 @@ doDequeue(expectSize) {
 - 阈值策略
 	- 如果为公平调度，则阈值策略为DT
 	- 如果为加权公平调度
-		- $T_i(t)=\alpha(B-\sum_{j=0}^{i}\frac{\omega_j}{\omega_i}\times{}{q_j(t)})$
+		- 如果不同权重的流同时到达，权重大的流可以占到更多的缓存
+		- $T_i(t)=\alpha(B-\sum_{j=0}^{n}\frac{\omega_j}{\omega_i}\times{}{q_j(t)})$
 ---
 - 准入分析
 	- 儿子节点的数据包到达速率小于分配的带宽时，不需要进行限制，因为没有发生带宽的争用
@@ -247,8 +252,8 @@ doDequeue(expectSize) {
 ---
 ```Cpp
 doDequeue(expectSize) {
-	// rate_interval is rate * interval between root schedule
-	totalScheduleSize = cls.doDequeue(min(expectSize, rate_interval));
+	// sizePerInterval is CIR * interval between root schedule
+	totalScheduleSize = cls.doDequeue(min(expectSize, sizePerInterval));
 	
 	return totalScheduleSize;
 }
@@ -257,6 +262,7 @@ doDequeue(expectSize) {
 #### ***combine work-conserving-schedule node and non-work-conserving-schedule node（TODO）***
 ---
 #### ***Hierarchy admission and mapping（TODO）***
+
 ---
 ## IMPLEMENTATION
 - ***传统HQoS的实现（TODO）***
