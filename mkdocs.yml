@@ -1,5 +1,11 @@
 site_name: blowinding's blog
-site_url: https://blowindingblog.cn
+site_url: https://blowinding.github.io
+site_description: 记录一些学习笔记和生活琐事。
+# Repository
+repo_name: blowinding
+repo_url: https://github.com/blowinding
+# Copyright
+copyright: Copyright &copy; 2026 blowinding. All rights reserved.
 theme:
   name: material
   features:
@@ -31,3 +37,5 @@ theme:
       quote: octicons/quote-16
 nav:
   - Introduction: index.md
+  # - Learning CS:
+  # - Tools:
